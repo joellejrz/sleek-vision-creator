@@ -38,7 +38,7 @@ import {
   PawPrint,
   TrendingUp,
   Zap,
-  Theatre,
+  Theater,
   BookOpen as Book,
   Trophy,
   ShoppingBag,
