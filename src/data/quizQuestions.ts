@@ -1,13 +1,13 @@
 
 import { Paintbrush, Video, Lightbulb, Dumbbell, Dog } from "lucide-react";
-import { ReactNode } from "react";
+import React from "react";
 
 export interface QuizOption {
   id: string;
   label: string;
   description?: string;
   subtext?: string;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
 }
 
 export interface QuizQuestion {
@@ -21,11 +21,36 @@ const quizQuestions: QuizQuestion[] = [
     id: 1,
     question: "If money & time didn't exist, what would you create?",
     options: [
-      { id: "aesthetic", label: "🎨 Aesthetic Artistry", description: "Photography, Interior Design, Fashion, Beauty, Visual Content", icon: <Paintbrush className="h-5 w-5" /> },
-      { id: "cinematic", label: "🎥 Cinematic & Storytelling", description: "Travel, Documentary, Short Films, Emotional Narratives", icon: <Video className="h-5 w-5" /> },
-      { id: "knowledge", label: "💡 High-Value Knowledge", description: "Business, Finance, Self-Development, Psychology, Science", icon: <Lightbulb className="h-5 w-5" /> },
-      { id: "transformation", label: "🏋️‍♀️ Transformation & Wellness", description: "Fitness, Health, Nutrition, Mindset, Biohacking", icon: <Dumbbell className="h-5 w-5" /> },
-      { id: "lifestyle", label: "🐶 Lifestyle & Vibes", description: "Daily Life, Pets, Relationships, Community Building", icon: <Dog className="h-5 w-5" /> },
+      { 
+        id: "aesthetic", 
+        label: "🎨 Aesthetic Artistry", 
+        description: "Photography, Interior Design, Fashion, Beauty, Visual Content", 
+        icon: React.createElement(Paintbrush, { className: "h-5 w-5" }) 
+      },
+      { 
+        id: "cinematic", 
+        label: "🎥 Cinematic & Storytelling", 
+        description: "Travel, Documentary, Short Films, Emotional Narratives", 
+        icon: React.createElement(Video, { className: "h-5 w-5" }) 
+      },
+      { 
+        id: "knowledge", 
+        label: "💡 High-Value Knowledge", 
+        description: "Business, Finance, Self-Development, Psychology, Science", 
+        icon: React.createElement(Lightbulb, { className: "h-5 w-5" }) 
+      },
+      { 
+        id: "transformation", 
+        label: "🏋️‍♀️ Transformation & Wellness", 
+        description: "Fitness, Health, Nutrition, Mindset, Biohacking", 
+        icon: React.createElement(Dumbbell, { className: "h-5 w-5" }) 
+      },
+      { 
+        id: "lifestyle", 
+        label: "🐶 Lifestyle & Vibes", 
+        description: "Daily Life, Pets, Relationships, Community Building", 
+        icon: React.createElement(Dog, { className: "h-5 w-5" }) 
+      },
     ]
   },
   {
