@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Card, 
   CardContent, 
@@ -28,7 +29,22 @@ import {
   Wand2, 
   Crown, 
   BookOpen,
-  ChevronRight
+  ChevronRight,
+  Monitor,
+  Diamond,
+  Leaf,
+  House,
+  Plane,
+  PawPrint,
+  TrendingUp,
+  Zap,
+  Theatre,
+  BookOpen as Book,
+  Trophy,
+  ShoppingBag,
+  Check,
+  PartyPopper,
+  Star
 } from "lucide-react";
 
 // Quiz questions and options
@@ -74,56 +90,63 @@ const creatorArchetypes = {
     tagline: "Your beauty is an asset. Your mind is a weapon.",
     description: "Attractive people get 78% more engagement. What if you used that magnetism to dominate in tech?",
     cta: "Unlock the full blueprint",
-    icon: <Lightbulb className="h-10 w-10 text-accent" />
+    icon: <Monitor className="h-10 w-10 text-accent" />
   },
   "aesthetic": {
     title: "Aesthetic Lifestyle Icon",
     tagline: "People want your vibe, your aesthetic, your style. You are the IT Creator.",
     description: "Did you know high-status creators build 2x faster brand deals than others? Your lifestyle is a brand—let's monetize it.",
     cta: "Unlock how to make $$$ from your looks, content & presence",
-    icon: <Sparkles className="h-10 w-10 text-accent" />
+    icon: <Diamond className="h-10 w-10 text-accent" />
   },
   "wellness": {
     title: "Wellness Visionary",
     tagline: "Your transformation is power. Your mindset, your body, your energy—people want to learn from you.",
     description: "Wellness creators make 4x more revenue from coaching, brand deals & courses than entertainment influencers.",
     cta: "Unlock your fitness empire blueprint",
-    icon: <Heart className="h-10 w-10 text-accent" />
+    icon: <Leaf className="h-10 w-10 text-accent" />
   },
   "home": {
     title: "Home Aesthetic Guru",
     tagline: "Your sense of space, design & comfort is elite. You were born to curate beauty.",
     description: "Did you know interior creators earn the highest affiliate commissions per post? People spend more $$$ on home aesthetics than any other content niche.",
     cta: "Turn your passion into a monetized home brand",
-    icon: <Home className="h-10 w-10 text-accent" />
+    icon: <House className="h-10 w-10 text-accent" />
   },
   "travel": {
     title: "Travel Experience Architect",
     tagline: "You were born to explore & share the world's magic.",
     description: "Travel creators can monetize 5+ ways (sponsorships, digital products, partnerships, tourism deals). Want the roadmap?",
     cta: "Unlock how to get paid to travel",
-    icon: <Globe className="h-10 w-10 text-accent" />
+    icon: <Plane className="h-10 w-10 text-accent" />
   },
   "pet": {
     title: "Pet Content Whisperer",
     tagline: "Your connection with animals is powerful. Your content makes people feel warmth, happiness & love.",
     description: "Did you know pet content has the highest engagement rate across all platforms? That means serious monetization potential.",
     cta: "Unlock how to build a pet content empire",
-    icon: <Dog className="h-10 w-10 text-accent" />
+    icon: <PawPrint className="h-10 w-10 text-accent" />
+  },
+  "business": {
+    title: "Business & Finance Powerhouse",
+    tagline: "Your analytical mind and valuable insights can transform people's finances and businesses.",
+    description: "Finance creators earn 6x higher CPM rates than lifestyle creators. Your knowledge is literally worth more.",
+    cta: "Unlock your finance content empire strategy",
+    icon: <TrendingUp className="h-10 w-10 text-accent" />
   },
   "entertainment": {
     title: "Entertainment & Comedy Icon",
     tagline: "People don't just watch you—they feel like they KNOW you. Your energy is magnetic.",
     description: "Relatable creators explode 5x faster on TikTok & Reels because humor = instant shareability.",
     cta: "Unlock your viral formula & how to monetize your personality",
-    icon: <Sparkles className="h-10 w-10 text-accent" />
+    icon: <Theatre className="h-10 w-10 text-accent" />
   },
   "development": {
     title: "Self-Development Mentor",
     tagline: "Your knowledge transforms people's minds. You don't just think differently—you MAKE people think differently.",
     description: "Self-improvement creators are the most trusted—and trust = high-ticket $$$ sales & brand deals.",
     cta: "Unlock how to build your coaching empire & monetize your wisdom",
-    icon: <Rocket className="h-10 w-10 text-accent" />
+    icon: <Book className="h-10 w-10 text-accent" />
   },
   "spiritual": {
     title: "Esoteric & Spiritual Creator",
@@ -137,25 +160,27 @@ const creatorArchetypes = {
     tagline: "You don't just create content—you create a PRESENCE. People are drawn to you.",
     description: "Personal branding is the highest-income skill of the digital era. You become the product, the movement, the business.",
     cta: "Unlock how to position yourself as a high-status brand & build long-term influence",
-    icon: <Crown className="h-10 w-10 text-accent" />
+    icon: <Trophy className="h-10 w-10 text-accent" />
   },
   "digital": {
     title: "Digital Business Creator",
     tagline: "You are sitting on knowledge that can make you serious money. You just need the blueprint to package & sell it.",
     description: "Digital products have the highest profit margins—this is your passive income key.",
     cta: "Unlock how to turn your knowledge into automated income",
-    icon: <BookOpen className="h-10 w-10 text-accent" />
+    icon: <ShoppingBag className="h-10 w-10 text-accent" />
   }
 };
 
 const Onboarding = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [stage, setStage] = useState("loading");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [archetype, setArchetype] = useState("");
   const [progress, setProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // Handle the loading stage animation timing
   useEffect(() => {
@@ -173,6 +198,16 @@ const Onboarding = () => {
       setProgress(((currentQuestion) / quizQuestions.length) * 100);
     }
   }, [currentQuestion, stage]);
+
+  // Confetti effect timeout
+  useEffect(() => {
+    if (showConfetti) {
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showConfetti]);
 
   // Determine user's archetype based on answers
   const determineArchetype = () => {
@@ -211,14 +246,26 @@ const Onboarding = () => {
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
-        // Quiz completed, determine archetype
+        // Quiz completed, determine archetype and show confirmation
         const userArchetype = determineArchetype();
         setArchetype(userArchetype);
-        setStage("result");
+        setStage("confirmation");
         setProgress(100);
       }
       setIsAnimating(false);
     }, 500);
+  };
+
+  const handleConfirmResult = () => {
+    setStage("result");
+    setShowConfetti(true);
+    
+    // Show a toast notification
+    toast({
+      title: "Your creator archetype unlocked!",
+      description: `You are a ${creatorArchetypes[archetype as keyof typeof creatorArchetypes]?.title || "Content Creator"}`,
+      variant: "default",
+    });
   };
 
   const handleUpgrade = () => {
@@ -297,9 +344,54 @@ const Onboarding = () => {
         </Card>
       )}
 
+      {/* Confirmation Stage */}
+      {stage === "confirmation" && archetype && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <Card className="w-full max-w-lg animate-scale-in">
+            <CardHeader className="text-center">
+              <div className="mx-auto bg-accent/10 p-4 rounded-full mb-4">
+                <Sparkles className="h-8 w-8 text-accent" />
+              </div>
+              <CardTitle className="text-2xl font-display mb-2">
+                Ready to discover your true content creator identity?
+              </CardTitle>
+              <CardDescription className="text-lg">
+                This is your moment. You're about to unlock a career path that fits your energy, skills & dream lifestyle.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center pt-0">
+              <Button 
+                size="lg" 
+                className="bg-gradient-primary mt-4" 
+                onClick={handleConfirmResult}
+              >
+                Yes, unlock my {creatorArchetypes[archetype as keyof typeof creatorArchetypes]?.title || "Creator"} path!
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       {/* Results Stage */}
       {stage === "result" && archetype && (
-        <Card className="w-full max-w-3xl animate-scale-in">
+        <Card className="w-full max-w-3xl animate-scale-in relative overflow-hidden">
+          {showConfetti && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-0 left-1/4">
+                <PartyPopper className="h-8 w-8 text-accent animate-float" />
+              </div>
+              <div className="absolute top-10 right-1/4">
+                <Star className="h-6 w-6 text-primary animate-float animate-delay-200" />
+              </div>
+              <div className="absolute top-20 left-1/3">
+                <Diamond className="h-5 w-5 text-accent animate-float animate-delay-300" />
+              </div>
+              <div className="absolute top-5 right-1/3">
+                <Sparkles className="h-7 w-7 text-primary animate-float animate-delay-100" />
+              </div>
+            </div>
+          )}
+          
           <CardHeader className="text-center pb-2">
             <div className="mx-auto bg-accent/10 p-5 rounded-full mb-4">
               {creatorArchetypes[archetype as keyof typeof creatorArchetypes]?.icon || <Award className="h-10 w-10 text-accent" />}
@@ -326,7 +418,7 @@ const Onboarding = () => {
                 you need the roadmap.
               </p>
               <Button className="w-full bg-gradient-primary" onClick={handleUpgrade}>
-                {creatorArchetypes[archetype as keyof typeof creatorArchetypes]?.cta || "Unlock Your Full Potential"} → Premium Plan
+                Your dream career is waiting. Get the roadmap & start earning now → Unlock Premium
               </Button>
             </div>
           </CardContent>
@@ -356,6 +448,37 @@ const Onboarding = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-8">
+            {/* Success Path Visual */}
+            <div className="bg-muted/20 p-6 rounded-lg">
+              <h3 className="text-xl font-display mb-4 text-center">Your Success Path</h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="flex flex-col items-center p-4 bg-muted/30 rounded-lg border border-muted relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                  <Rocket className="h-8 w-8 text-primary mb-2" />
+                  <h4 className="font-medium text-center">Get the roadmap</h4>
+                  <p className="text-xs text-center mt-1 text-muted-foreground">Personalized content monetization plan</p>
+                </div>
+                <div className="flex flex-col items-center p-4 bg-muted/30 rounded-lg border border-muted relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                  <Crown className="h-8 w-8 text-primary mb-2" />
+                  <h4 className="font-medium text-center">Build your brand</h4>
+                  <p className="text-xs text-center mt-1 text-muted-foreground">Attract followers & brand deals</p>
+                </div>
+                <div className="flex flex-col items-center p-4 bg-muted/30 rounded-lg border border-muted relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                  <DollarSign className="h-8 w-8 text-primary mb-2" />
+                  <h4 className="font-medium text-center">Monetize your content</h4>
+                  <p className="text-xs text-center mt-1 text-muted-foreground">Earn from multiple revenue streams</p>
+                </div>
+                <div className="flex flex-col items-center p-4 bg-muted/30 rounded-lg border border-muted relative">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-accent-foreground w-6 h-6 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                  <TrendingUp className="h-8 w-8 text-primary mb-2" />
+                  <h4 className="font-medium text-center">Scale & grow</h4>
+                  <p className="text-xs text-center mt-1 text-muted-foreground">Turn content into a long-term business</p>
+                </div>
+              </div>
+            </div>
+
             <div className="bg-muted/30 rounded-lg p-6 border border-muted">
               <h3 className="text-xl font-display mb-4">What Premium Unlocks:</h3>
               <ul className="space-y-4">
@@ -399,6 +522,9 @@ const Onboarding = () => {
             </div>
             
             <div className="text-center">
+              <p className="text-muted-foreground mb-6">
+                <span className="font-medium text-foreground">Fast-forward 6 months:</span> You're living your dream, monetizing effortlessly. The only thing between you and that future? The roadmap.
+              </p>
               <p className="text-muted-foreground mb-6">Every day you wait, someone else is building the content empire you want.</p>
               
               <div className="flex flex-col gap-4">
