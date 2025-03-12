@@ -131,6 +131,18 @@
   .text-gradient-secondary {
     @apply bg-gradient-to-br from-soft-emerald via-soft-dark to-accent-gold bg-clip-text text-transparent;
   }
+  
+  .shadow-glow {
+    @apply shadow-[0_0_20px_rgba(110,203,164,0.3)];
+  }
+  
+  .shadow-glow-subtle {
+    @apply shadow-[0_0_15px_rgba(110,203,164,0.15)];
+  }
+  
+  .shadow-glow-button {
+    @apply shadow-[0_0_15px_rgba(245,193,108,0.35)];
+  }
 }
 
 /* Animations */
