@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col gradient-animate">
+    <div className="min-h-screen flex flex-col">
       <header className="w-full border-b backdrop-blur-lg bg-background/80">
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -41,14 +42,18 @@ const Home = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className={`space-y-6 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight tracking-tight text-gradient-primary">
-                  AI-Powered Content Creation Assistant
-                </h1>
+                <div className="gradient-animate p-1 rounded-xl inline-block">
+                  <div className="bg-background rounded-xl p-1">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight tracking-tight text-gradient-primary">
+                      AI-Powered Content Creation Assistant
+                    </h1>
+                  </div>
+                </div>
                 <p className="text-lg text-muted-foreground">
                   Create better content, faster. Our AI assistant helps you plan, prioritize, and perfect your content strategy.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button size="lg" className="bg-gradient-primary hover:bg-primary/90" onClick={() => navigate('/onboarding')}>
+                  <Button size="lg" className="bg-gradient-primary hover:bg-primary/90 gradient-animate" onClick={() => navigate('/onboarding')}>
                     Get Started Free
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -139,10 +144,12 @@ const Home = () => {
             </div>
 
             <div className="flex justify-center">
-              <Button size="lg" className="bg-gradient-primary hover:bg-primary/90" onClick={() => navigate('/onboarding')}>
-                Get Started Free
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
+              <div className="gradient-animate p-1 rounded-full">
+                <Button size="lg" className="bg-gradient-primary hover:bg-primary/90 rounded-full" onClick={() => navigate('/onboarding')}>
+                  Get Started Free
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
         </section>
