@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Crown, CheckIcon, Rocket, TrendingUp, DollarSign, ChevronRight } from "lucide-react";
 import { 
@@ -31,7 +30,6 @@ const PremiumScreen: React.FC = () => {
         </div>
       </CardHeader>
       <CardContent className="space-y-8">
-        {/* Success Path Visual */}
         <div className="bg-muted/20 p-6 rounded-lg">
           <h3 className="text-xl font-display mb-4 text-center">Your Success Path</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -126,24 +124,6 @@ const PremiumScreen: React.FC = () => {
         </div>
       </CardContent>
     </Card>
-  );
-};
-
-// CheckIcon component for the premium page
-const CheckIcon = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
   );
 };
 
