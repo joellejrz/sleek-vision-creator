@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -129,30 +130,6 @@
   
   .text-gradient-secondary {
     @apply bg-gradient-to-br from-soft-emerald via-soft-dark to-accent-gold bg-clip-text text-transparent;
-  }
-
-  .gradient-animate {
-    background: linear-gradient(
-      -45deg, 
-      #0EA5E9,
-      #06B6D4,
-      #0D9488,
-      #2DD4BF
-    );
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-  }
-
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
   }
 }
 

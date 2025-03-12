@@ -42,18 +42,14 @@ const Home = () => {
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className={`space-y-6 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-                <div className="gradient-animate p-1 rounded-xl inline-block">
-                  <div className="bg-background rounded-xl p-1">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight tracking-tight text-gradient-primary">
-                      AI-Powered Content Creation Assistant
-                    </h1>
-                  </div>
-                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight tracking-tight text-gradient-primary">
+                  AI-Powered Content Creation Assistant
+                </h1>
                 <p className="text-lg text-muted-foreground">
                   Create better content, faster. Our AI assistant helps you plan, prioritize, and perfect your content strategy.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button size="lg" className="bg-gradient-primary hover:bg-primary/90 gradient-animate" onClick={() => navigate('/onboarding')}>
+                  <Button size="lg" className="bg-gradient-primary hover:bg-primary/90" onClick={() => navigate('/onboarding')}>
                     Get Started Free
                     <ChevronRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -144,12 +140,10 @@ const Home = () => {
             </div>
 
             <div className="flex justify-center">
-              <div className="gradient-animate p-1 rounded-full">
-                <Button size="lg" className="bg-gradient-primary hover:bg-primary/90 rounded-full" onClick={() => navigate('/onboarding')}>
-                  Get Started Free
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
+              <Button size="lg" className="bg-gradient-primary hover:bg-primary/90" onClick={() => navigate('/onboarding')}>
+                Get Started Free
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </div>
         </section>
