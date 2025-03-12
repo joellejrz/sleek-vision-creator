@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { ArrowUp, BarChart2, Fire, MessageCircle, Mic, Send, Sparkles, Target, Trophy } from "lucide-react";
+import { ArrowUp, BarChart2, MessageCircle, Mic, Send, Sparkles, Target, Trophy, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select,
@@ -52,7 +51,6 @@ const PepTalk = () => {
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
-    // Add user message
     const userMessage = {
       id: messages.length + 1,
       type: "user",
@@ -64,9 +62,7 @@ const PepTalk = () => {
     setInputMessage("");
     setIsTyping(true);
 
-    // Simulate AI response after a delay
     setTimeout(() => {
-      // Sample responses based on user input
       let aiResponse;
       const lowerInput = inputMessage.toLowerCase();
       
@@ -260,7 +256,7 @@ const PepTalk = () => {
                 </div>
                 <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div className="flex items-center">
-                    <Fire className="mr-2 h-5 w-5 text-accent-gold" />
+                    <Zap className="mr-2 h-5 w-5 text-accent-gold" />
                     <span className="font-medium">{streakData.current} Day Streak</span>
                   </div>
                   <Badge variant="outline">Keep Going!</Badge>
