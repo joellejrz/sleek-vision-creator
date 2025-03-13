@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Zap } from "lucide-react";
+import { ChevronRight, Zap, Calendar, Sparkles, CheckSquare } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 
 const Home = () => {
@@ -38,7 +38,7 @@ const Home = () => {
       </header>
 
       <main className="flex-1">
-        <section className="py-16 md:py-24 px-4">
+        <section className="py-16 md:py-20 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className={`space-y-6 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
@@ -83,47 +83,101 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="py-16 bg-muted/50">
+        <section className="py-16 bg-muted/20">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="text-center mb-12">
+            <div className="text-center mb-10">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-gradient-primary mb-4">
-                Supercharge Your Content Creation
+                AI-Powered Features
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Our AI-powered features help you create better content while saving time.
+                Designed to transform your content creation process and boost your mindset
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "AI Content Planner",
-                  description: "Get optimal posting times, content ideas, and smart task prioritization.",
-                  delay: 100,
-                  icon: "📅"
-                },
-                {
-                  title: "AI Pep-Talk Coach",
-                  description: "Receive motivational affirmations and actionable engagement strategies.",
-                  delay: 200,
-                  icon: "🎤"
-                },
-                {
-                  title: "Smart To-Do Lists",
-                  description: "AI-suggested daily priorities and consistent task management.",
-                  delay: 300,
-                  icon: "✅"
-                }
-              ].map((feature, index) => (
-                <div 
-                  key={index} 
-                  className={`glass-card p-6 rounded-xl transform hover:translate-y-[-5px] transition-all duration-300 ${isLoaded ? `animate-slide-up animate-delay-${feature.delay}` : 'opacity-0'}`}
-                >
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-medium mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-muted hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Calendar className="h-6 w-6 text-primary" />
                 </div>
-              ))}
+                <h3 className="text-xl font-medium mb-3">Content Planner</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  AI-suggested best posting times and content ideas tailored to your audience
+                </p>
+                <Button variant="link" className="px-0 text-primary">
+                  Learn More
+                </Button>
+              </div>
+              
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-muted hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-medium mb-3">Mindset Coach</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  Personalized pep-talks and affirmations to overcome creator's block and self-doubt
+                </p>
+                <Button variant="link" className="px-0 text-primary">
+                  Learn More
+                </Button>
+              </div>
+              
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-muted hover:shadow-md transition-all">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <CheckSquare className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-medium mb-3">Smart To-Do List</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  AI-prioritized tasks and content schedule to maximize your productivity
+                </p>
+                <Button variant="link" className="px-0 text-primary">
+                  Learn More
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="container mx-auto max-w-6xl px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-gradient-primary mb-4">
+                Experience VisionCreator
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Interactive previews of our AI-powered features
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-muted">
+                <h3 className="text-xl font-medium mb-3">AI Pep-Talk Coach</h3>
+                <p className="text-muted-foreground text-sm mb-6">
+                  Our AI coach provides personalized motivation exactly when you need it.
+                </p>
+                <div className="mt-4">
+                  <Button className="bg-gradient-primary hover:bg-primary/90">
+                    Try Demo
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="bg-card/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-muted">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-xl font-medium">Daily To-Do List</h3>
+                  <span className="text-xs bg-muted px-2 py-1 rounded-full">Today</span>
+                </div>
+                <div className="border border-muted rounded-lg p-4 bg-background/50 mb-4">
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="w-3 h-3 rounded-full bg-primary/80"></div>
+                    <p>Post a Reel at 3PM</p>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <Button className="bg-gradient-primary hover:bg-primary/90">
+                    Try Demo
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
