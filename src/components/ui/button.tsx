@@ -20,6 +20,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         gradient: "bg-gradient-to-r from-deep-teal to-soft-emerald text-white hover:brightness-105 shadow-glow-button",
+        "pulsating-gradient": "bg-gradient-to-r from-deep-teal to-soft-emerald text-white hover:brightness-105 shadow-glow-button animate-pulse",
       },
       size: {
         default: "h-10 px-4 py-2",
