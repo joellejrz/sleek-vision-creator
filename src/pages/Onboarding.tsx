@@ -22,6 +22,7 @@ const Onboarding = () => {
   const [progress, setProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showExitPrompt, setShowExitPrompt] = useState(false);
 
   // Handle the loading stage animation timing
   useEffect(() => {
@@ -49,6 +50,24 @@ const Onboarding = () => {
       return () => clearTimeout(timer);
     }
   }, [showConfetti]);
+
+  // Exit intent detection (simplified version)
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (stage === "quiz" && !showExitPrompt) {
+        e.preventDefault();
+        e.returnValue = '';
+        setShowExitPrompt(true);
+        return '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [stage, showExitPrompt]);
 
   const handleOptionSelect = (questionId: number, optionId: string) => {
     setIsAnimating(true);
@@ -96,42 +115,81 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-primary p-4">
-      {/* Loading Screen */}
-      {stage === "loading" && <LoadingScreen />}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Immersive animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-deep-blue via-deep-teal to-deep-blue z-0">
+        {/* Animated nebula effect */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-soft-emerald/10 rounded-full filter blur-3xl opacity-30 animate-float"></div>
+          <div className="absolute top-1/3 right-1/4 w-1/3 h-1/3 bg-accent-gold/10 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-1/4 h-1/4 bg-deep-teal/20 rounded-full filter blur-3xl opacity-30 animate-float"></div>
+        </div>
+      </div>
 
-      {/* Quiz Stage */}
-      {stage === "quiz" && (
-        <QuizScreen
-          currentQuestion={currentQuestion}
-          question={quizQuestions[currentQuestion]}
-          totalQuestions={quizQuestions.length}
-          isAnimating={isAnimating}
-          onSelectOption={handleOptionSelect}
-          progress={progress}
-        />
+      <div className="relative z-10 w-full max-w-4xl">
+        {/* Loading Screen */}
+        {stage === "loading" && <LoadingScreen />}
+
+        {/* Quiz Stage */}
+        {stage === "quiz" && (
+          <QuizScreen
+            currentQuestion={currentQuestion}
+            question={quizQuestions[currentQuestion]}
+            totalQuestions={quizQuestions.length}
+            isAnimating={isAnimating}
+            onSelectOption={handleOptionSelect}
+            progress={progress}
+          />
+        )}
+
+        {/* Confirmation Stage */}
+        {stage === "confirmation" && archetype && (
+          <ConfirmationScreen 
+            archetype={archetype} 
+            onConfirm={handleConfirmResult}
+          />
+        )}
+
+        {/* Results Stage */}
+        {stage === "result" && archetype && (
+          <ResultScreen
+            archetype={archetype}
+            showConfetti={showConfetti}
+            onUpgrade={handleUpgrade}
+            onContinue={handleContinue}
+          />
+        )}
+
+        {/* Premium Stage */}
+        {stage === "premium" && <PremiumScreen />}
+      </div>
+
+      {/* Exit intent modal */}
+      {showExitPrompt && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-card rounded-lg p-6 max-w-md shadow-xl border border-accent-gold/20 animate-scale-in">
+            <h2 className="text-xl font-bold mb-2 text-white">Wait! Don't abandon your content empire</h2>
+            <p className="mb-4 text-white/80">People who finish this quiz unlock their dream creator blueprint. Don't miss out.</p>
+            <div className="flex gap-3">
+              <button 
+                className="flex-1 py-2 px-4 rounded bg-accent-gold text-deep-blue font-medium hover:brightness-110 transition-all"
+                onClick={() => setShowExitPrompt(false)}
+              >
+                Stay & Unlock Success
+              </button>
+              <button 
+                className="py-2 px-4 rounded border border-white/10 text-white/60 hover:bg-white/5 transition-all"
+                onClick={() => {
+                  setShowExitPrompt(false);
+                  navigate("/");
+                }}
+              >
+                Quit
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-
-      {/* Confirmation Stage */}
-      {stage === "confirmation" && archetype && (
-        <ConfirmationScreen 
-          archetype={archetype} 
-          onConfirm={handleConfirmResult}
-        />
-      )}
-
-      {/* Results Stage */}
-      {stage === "result" && archetype && (
-        <ResultScreen
-          archetype={archetype}
-          showConfetti={showConfetti}
-          onUpgrade={handleUpgrade}
-          onContinue={handleContinue}
-        />
-      )}
-
-      {/* Premium Stage */}
-      {stage === "premium" && <PremiumScreen />}
     </div>
   );
 };
