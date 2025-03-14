@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -24,7 +23,6 @@ const Onboarding = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showExitPrompt, setShowExitPrompt] = useState(false);
 
-  // Handle the loading stage animation timing
   useEffect(() => {
     if (stage === "loading") {
       const timer = setTimeout(() => {
@@ -34,14 +32,12 @@ const Onboarding = () => {
     }
   }, [stage]);
 
-  // Update progress when currentQuestion changes
   useEffect(() => {
     if (stage === "quiz") {
       setProgress(((currentQuestion) / quizQuestions.length) * 100);
     }
   }, [currentQuestion, stage]);
 
-  // Confetti effect timeout
   useEffect(() => {
     if (showConfetti) {
       const timer = setTimeout(() => {
@@ -51,7 +47,6 @@ const Onboarding = () => {
     }
   }, [showConfetti]);
 
-  // Exit intent detection (simplified version)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (stage === "quiz" && !showExitPrompt) {
@@ -72,18 +67,15 @@ const Onboarding = () => {
   const handleOptionSelect = (questionId: number, optionId: string) => {
     setIsAnimating(true);
     
-    // Update answers
     setAnswers({
       ...answers,
       [questionId]: optionId
     });
     
     setTimeout(() => {
-      // Move to next question or results
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
-        // Quiz completed, determine archetype and show confirmation
         const userArchetype = determineArchetype(answers);
         setArchetype(userArchetype);
         setStage("confirmation");
@@ -97,7 +89,6 @@ const Onboarding = () => {
     setStage("result");
     setShowConfetti(true);
     
-    // Show a toast notification
     toast({
       title: "Your creator archetype unlocked!",
       description: `You are a ${creatorArchetypes[archetype as ArchetypeKey]?.title || "Content Creator"}`,
@@ -110,27 +101,22 @@ const Onboarding = () => {
   };
 
   const handleContinue = () => {
-    // In a real app, you'd save the user's archetype to their profile
     navigate("/dashboard");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Immersive animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-deep-blue via-deep-teal to-deep-blue z-0">
-        {/* Animated nebula effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F25] via-[#1E1A40] to-[#401F71] z-0">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-soft-emerald/10 rounded-full filter blur-3xl opacity-30 animate-float"></div>
-          <div className="absolute top-1/3 right-1/4 w-1/3 h-1/3 bg-accent-gold/10 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-1/4 h-1/4 bg-deep-teal/20 rounded-full filter blur-3xl opacity-30 animate-float"></div>
+          <div className="absolute top-1/3 left-1/3 w-2/3 h-2/3 bg-[#401F71]/20 rounded-full filter blur-3xl opacity-40 animate-float"></div>
+          <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 bg-accent-gold/10 rounded-full filter blur-3xl opacity-30 animate-pulse-soft"></div>
+          <div className="absolute bottom-1/3 right-1/2 w-1/3 h-1/3 bg-deep-teal/15 rounded-full filter blur-3xl opacity-40 animate-float"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white/5 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
         </div>
       </div>
 
       <div className="relative z-10 w-full max-w-4xl">
-        {/* Loading Screen */}
         {stage === "loading" && <LoadingScreen />}
-
-        {/* Quiz Stage */}
         {stage === "quiz" && (
           <QuizScreen
             currentQuestion={currentQuestion}
@@ -141,16 +127,12 @@ const Onboarding = () => {
             progress={progress}
           />
         )}
-
-        {/* Confirmation Stage */}
         {stage === "confirmation" && archetype && (
           <ConfirmationScreen 
             archetype={archetype} 
             onConfirm={handleConfirmResult}
           />
         )}
-
-        {/* Results Stage */}
         {stage === "result" && archetype && (
           <ResultScreen
             archetype={archetype}
@@ -159,12 +141,9 @@ const Onboarding = () => {
             onContinue={handleContinue}
           />
         )}
-
-        {/* Premium Stage */}
         {stage === "premium" && <PremiumScreen />}
       </div>
 
-      {/* Exit intent modal */}
       {showExitPrompt && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-card rounded-lg p-6 max-w-md shadow-xl border border-accent-gold/20 animate-scale-in">
