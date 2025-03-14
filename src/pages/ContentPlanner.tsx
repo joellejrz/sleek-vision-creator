@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -9,9 +8,16 @@ import { Separator } from "@/components/ui/separator";
 import {
   ArrowRight,
   CalendarClock,
-  ChevronDown,
+  Camera,
+  Hash,
+  Lightbulb,
+  MessageSquare,
+  Mic,
+  Pencil,
   Plus,
   Sparkles,
+  Target,
+  Video,
   Zap,
 } from "lucide-react";
 import {
@@ -23,8 +29,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
-// Mock data
 const upcomingPosts = [
   {
     id: 1,
@@ -87,6 +104,19 @@ const aiSuggestions = [
 const ContentPlanner = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [isLoaded, setIsLoaded] = useState(false);
+  const [contentType, setContentType] = useState<string>("");
+  const [platform, setPlatform] = useState<string>("");
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const form = useForm({
+    defaultValues: {
+      title: "",
+      description: "",
+      contentType: "",
+      platform: "",
+      keywords: "",
+    },
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -94,6 +124,31 @@ const ContentPlanner = () => {
     }, 100);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleContentTypeChange = (value: string) => {
+    setContentType(value);
+  };
+
+  const handlePlatformChange = (value: string) => {
+    setPlatform(value);
+  };
+
+  const onSubmit = (data: any) => {
+    console.log("Form submitted:", data);
+    setOpenDialog(false);
+  };
+
+  const generateAIIdeas = () => {
+    console.log("Generating AI content ideas");
+  };
+
+  const generateAICaption = () => {
+    console.log("Generating AI caption");
+  };
+
+  const generateAIHashtags = () => {
+    console.log("Generating AI hashtags");
+  };
 
   return (
     <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
@@ -105,31 +160,211 @@ const ContentPlanner = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Dialog>
+          <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-primary hover:bg-primary/90">
                 <Plus className="mr-2 h-4 w-4" />
                 New Content
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Create New Content</DialogTitle>
                 <DialogDescription>
                   Plan your next content piece with AI optimization
                 </DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                {/* Form fields would go here */}
-                <div className="p-3 rounded-lg bg-muted/60 flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-accent-gold" />
-                  <p className="text-sm">AI will analyze this content and suggest the best time to post</p>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button variant="outline">Save as Draft</Button>
-                <Button>Create & Schedule</Button>
-              </DialogFooter>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-1 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="title">Content Title</Label>
+                        <Input
+                          id="title"
+                          placeholder="Enter a title for your content"
+                          {...form.register("title")}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>What Do You Want to Produce Today?</Label>
+                        <Select onValueChange={handleContentTypeChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select content type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="photo">📸 Photo Post</SelectItem>
+                            <SelectItem value="short-video">🎥 Short-Form Video (Reel/TikTok/YouTube Shorts)</SelectItem>
+                            <SelectItem value="long-video">🎬 Long-Form Video (YouTube/Podcast)</SelectItem>
+                            <SelectItem value="audio">🎤 Voiceover/Podcast Clip</SelectItem>
+                            <SelectItem value="text">📄 Text-Based Post (X/Threads/LinkedIn)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>On Which Platform Will You Post This?</Label>
+                        <Select onValueChange={handlePlatformChange}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select platform" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="instagram">🟣 Instagram</SelectItem>
+                            <SelectItem value="tiktok">🎵 TikTok</SelectItem>
+                            <SelectItem value="youtube">🔴 YouTube</SelectItem>
+                            <SelectItem value="twitter">🟠 X/Threads</SelectItem>
+                            <SelectItem value="linkedin">📊 LinkedIn</SelectItem>
+                            <SelectItem value="pinterest">📌 Pinterest</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="description">Content Description</Label>
+                        <Textarea
+                          id="description"
+                          placeholder="Describe your content idea or outline"
+                          className="min-h-[100px]"
+                          {...form.register("description")}
+                        />
+                        <div className="flex justify-end">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="sm"
+                            onClick={generateAIIdeas}
+                            className="flex items-center gap-1"
+                          >
+                            <Lightbulb className="h-4 w-4 text-yellow-500" />
+                            <span>Generate AI Ideas</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="caption">Caption</Label>
+                        <Textarea
+                          id="caption"
+                          placeholder="Write your caption here"
+                          className="min-h-[80px]"
+                        />
+                        <div className="flex justify-end">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="sm"
+                            onClick={generateAICaption}
+                            className="flex items-center gap-1"
+                          >
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            <span>Generate AI Caption</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="hashtags">Hashtags</Label>
+                        <Textarea
+                          id="hashtags"
+                          placeholder="#trending #viral #content"
+                          className="min-h-[60px]"
+                        />
+                        <div className="flex justify-end">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            size="sm"
+                            onClick={generateAIHashtags}
+                            className="flex items-center gap-1"
+                          >
+                            <Hash className="h-4 w-4 text-primary" />
+                            <span>Generate AI Hashtags</span>
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>What Resources Do You Need?</Label>
+                        <div className="grid grid-cols-2 gap-3 mt-2">
+                          <Button variant="outline" className="justify-start" type="button">
+                            <Camera className="mr-2 h-4 w-4" /> Camera Setup
+                          </Button>
+                          <Button variant="outline" className="justify-start" type="button">
+                            <Mic className="mr-2 h-4 w-4" /> Microphone
+                          </Button>
+                          <Button variant="outline" className="justify-start" type="button">
+                            <Pencil className="mr-2 h-4 w-4" /> Editing Software
+                          </Button>
+                          <Button variant="outline" className="justify-start" type="button">
+                            <Video className="mr-2 h-4 w-4" /> Lighting
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>What's Your Goal for This Post?</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a goal" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="monetization">💰 Monetization</SelectItem>
+                            <SelectItem value="engagement">📈 Engagement Growth</SelectItem>
+                            <SelectItem value="branding">🎭 Personal Branding</SelectItem>
+                            <SelectItem value="community">🔄 Community Building</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 flex items-center gap-3 border border-purple-200 dark:border-purple-900">
+                        <div className="flex-shrink-0">
+                          <Zap className="h-10 w-10 text-accent-gold" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">AI Content Optimization</h3>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            AI will analyze your content and suggest the best time to post for maximum engagement
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-green-500/10 border border-blue-200 dark:border-blue-900">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Sparkles className="h-5 w-5 text-accent-gold" />
+                          <h3 className="font-medium">Content Manifestation</h3>
+                        </div>
+                        <div className="text-sm italic text-muted-foreground mt-1">
+                          "Your content is magnetic. The right people will find and love it. This post is high-energy, high-impact, and will reach the perfect audience."
+                        </div>
+                      </div>
+
+                      <div className="p-4 rounded-lg bg-muted">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Target className="h-5 w-5 text-primary" />
+                          <h3 className="font-medium">Engagement Prediction</h3>
+                        </div>
+                        <div className="mt-2 flex items-center gap-2">
+                          <div className="w-full bg-muted-foreground/20 rounded-full h-2.5">
+                            <div className="bg-green-500 h-2.5 rounded-full" style={{ width: '70%' }}></div>
+                          </div>
+                          <span className="text-sm font-medium text-green-500">High</span>
+                        </div>
+                        <p className="text-sm mt-2">This post has high viral potential! Best time to post: Tomorrow at 6:00 PM</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <DialogFooter className="flex flex-col sm:flex-row gap-2">
+                    <Button variant="outline" type="button" onClick={() => setOpenDialog(false)}>
+                      Save as Draft
+                    </Button>
+                    <Button type="submit" className="bg-gradient-primary">
+                      Create & Schedule
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </Form>
             </DialogContent>
           </Dialog>
         </div>
