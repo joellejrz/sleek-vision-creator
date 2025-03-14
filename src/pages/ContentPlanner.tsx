@@ -19,6 +19,7 @@ import {
   Target,
   Video,
   Zap,
+  Clock,
 } from "lucide-react";
 import {
   Dialog,
@@ -42,6 +43,13 @@ import {
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { TopicSelector } from "@/components/content-planner/TopicSelector";
+import { format } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "sonner";
 
 const upcomingPosts = [
   {
@@ -111,6 +119,9 @@ const ContentPlanner = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [showTopicSelector, setShowTopicSelector] = useState(true);
   const [showContentForm, setShowContentForm] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState<Date | undefined>(new Date());
+  const [scheduledTime, setScheduledTime] = useState<string>("12:00");
+  const [scheduledPosts, setScheduledPosts] = useState<any[]>(upcomingPosts);
 
   const form = useForm({
     defaultValues: {
@@ -120,6 +131,8 @@ const ContentPlanner = () => {
       platform: "",
       keywords: "",
       topic: "",
+      scheduledDate: new Date(),
+      scheduledTime: "12:00",
     },
   });
 
@@ -154,6 +167,26 @@ const ContentPlanner = () => {
 
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
+    
+    // Create a new scheduled post
+    const newPost = {
+      id: scheduledPosts.length + 1,
+      title: data.title || `New ${selectedTopic} Content`,
+      platform: data.platform || platform || "Instagram",
+      date: scheduledDate ? format(scheduledDate, "MMM dd") : "Today",
+      time: scheduledTime || "12:00 PM",
+      status: "scheduled",
+      aiScore: Math.floor(Math.random() * 30) + 70, // Random score between 70-99
+    };
+    
+    // Add the new post to scheduled posts
+    setScheduledPosts([...scheduledPosts, newPost]);
+    
+    // Show success toast
+    toast.success("Content scheduled successfully!", {
+      description: `Your ${selectedTopic} content has been scheduled for ${newPost.date} at ${newPost.time}.`
+    });
+    
     setOpenDialog(false);
     resetDialog();
   };
@@ -367,6 +400,88 @@ const ContentPlanner = () => {
                           </Select>
                         </div>
 
+                        {/* New Date and Time Selection */}
+                        <div className="space-y-2">
+                          <Label>When Do You Want to Post This Content?</Label>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                            <div className="space-y-2">
+                              <Label htmlFor="date" className="text-sm text-muted-foreground">Date</Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="w-full justify-start text-left font-normal"
+                                  >
+                                    <CalendarClock className="mr-2 h-4 w-4" />
+                                    {scheduledDate ? format(scheduledDate, "PPP") : <span>Pick a date</span>}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0" align="start">
+                                  <Calendar
+                                    mode="single"
+                                    selected={scheduledDate}
+                                    onSelect={(date) => {
+                                      setScheduledDate(date);
+                                      form.setValue("scheduledDate", date as Date);
+                                    }}
+                                    initialFocus
+                                    className="pointer-events-auto"
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="time" className="text-sm text-muted-foreground">Time</Label>
+                              <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4 text-muted-foreground" />
+                                <Input
+                                  id="time"
+                                  type="time"
+                                  value={scheduledTime}
+                                  onChange={(e) => {
+                                    setScheduledTime(e.target.value);
+                                    form.setValue("scheduledTime", e.target.value);
+                                  }}
+                                  className="flex-1"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-end mt-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              className="flex items-center gap-1"
+                              onClick={() => {
+                                // Get current date
+                                const now = new Date();
+                                // Add 24 hours to current time
+                                now.setHours(now.getHours() + 24);
+                                // Set to the nearest half hour
+                                const minutes = now.getMinutes() >= 30 ? 30 : 0;
+                                now.setMinutes(minutes);
+                                
+                                // Format as HH:MM
+                                const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                                
+                                setScheduledDate(now);
+                                setScheduledTime(timeString);
+                                form.setValue("scheduledDate", now);
+                                form.setValue("scheduledTime", timeString);
+                                
+                                toast.info("AI has suggested an optimal posting time", {
+                                  description: `Based on your ${selectedTopic} audience, tomorrow at ${timeString} should get the best engagement.`
+                                });
+                              }}
+                            >
+                              <Sparkles className="h-4 w-4 text-accent-gold" />
+                              <span>Suggest Optimal Time</span>
+                            </Button>
+                          </div>
+                        </div>
+
                         <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 flex items-center gap-3 border border-purple-200 dark:border-purple-900">
                           <div className="flex-shrink-0">
                             <Zap className="h-10 w-10 text-accent-gold" />
@@ -437,7 +552,7 @@ const ContentPlanner = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingPosts.map((post) => (
+                {scheduledPosts.map((post) => (
                   <div
                     key={post.id}
                     className="border rounded-lg p-4 transition-all hover:shadow-sm"
@@ -489,6 +604,7 @@ const ContentPlanner = () => {
             </CardContent>
           </Card>
         </TabsContent>
+        
         <TabsContent value="ai-suggestions" className="space-y-4 mt-6">
           <Card className="transition-all hover:shadow-md">
             <CardHeader>
@@ -534,6 +650,7 @@ const ContentPlanner = () => {
             </CardContent>
           </Card>
         </TabsContent>
+        
         <TabsContent value="calendar" className="space-y-4 mt-6">
           <Card className="transition-all hover:shadow-md">
             <CardHeader>
@@ -549,7 +666,7 @@ const ContentPlanner = () => {
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="border rounded-md"
+                    className="border rounded-md pointer-events-auto"
                   />
                 </div>
                 <div className="flex-1">
@@ -569,12 +686,51 @@ const ContentPlanner = () => {
                     </div>
                     <Separator className="my-2" />
                     <div className="mt-4 space-y-4">
-                      <div className="text-center text-muted-foreground py-8">
-                        <p>No content scheduled for this day.</p>
-                        <Button variant="link" className="mt-2">
-                          Add new content
-                        </Button>
-                      </div>
+                      {scheduledPosts.filter(post => {
+                        if (!date) return false;
+                        const postDate = new Date();
+                        const [month, day] = post.date.split(' ');
+                        postDate.setMonth(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(month));
+                        postDate.setDate(parseInt(day, 10));
+                        
+                        return postDate.getDate() === date.getDate() && 
+                               postDate.getMonth() === date.getMonth();
+                      }).length > 0 ? (
+                        scheduledPosts.filter(post => {
+                          if (!date) return false;
+                          const postDate = new Date();
+                          const [month, day] = post.date.split(' ');
+                          postDate.setMonth(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].indexOf(month));
+                          postDate.setDate(parseInt(day, 10));
+                          
+                          return postDate.getDate() === date.getDate() && 
+                                postDate.getMonth() === date.getMonth();
+                        }).map(post => (
+                          <div key={post.id} className="border p-3 rounded-md">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <div className={`h-5 w-5 rounded-full ${(platformColors as any)[post.platform]} flex items-center justify-center text-white text-xs`}>
+                                    {post.platform.charAt(0)}
+                                  </div>
+                                  <span className="font-medium">{post.title}</span>
+                                </div>
+                                <div className="text-sm text-muted-foreground mt-1">
+                                  {post.time}
+                                </div>
+                              </div>
+                              <Button size="sm" variant="ghost">Edit</Button>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center text-muted-foreground py-8">
+                          <p>No content scheduled for this day.</p>
+                          <Button variant="link" className="mt-2" onClick={() => setOpenDialog(true)}>
+                            Add new content
+                          </Button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
