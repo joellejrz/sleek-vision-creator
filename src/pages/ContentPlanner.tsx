@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { TopicSelector } from "@/components/content-planner/TopicSelector";
 
 const upcomingPosts = [
   {
@@ -106,7 +107,10 @@ const ContentPlanner = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [contentType, setContentType] = useState<string>("");
   const [platform, setPlatform] = useState<string>("");
+  const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [showTopicSelector, setShowTopicSelector] = useState(true);
+  const [showContentForm, setShowContentForm] = useState(false);
 
   const form = useForm({
     defaultValues: {
@@ -115,6 +119,7 @@ const ContentPlanner = () => {
       contentType: "",
       platform: "",
       keywords: "",
+      topic: "",
     },
   });
 
@@ -133,9 +138,24 @@ const ContentPlanner = () => {
     setPlatform(value);
   };
 
+  const handleTopicSelect = (topic: string) => {
+    setSelectedTopic(topic);
+    form.setValue("topic", topic);
+    setShowTopicSelector(false);
+    setShowContentForm(true);
+  };
+
+  const resetDialog = () => {
+    setShowTopicSelector(true);
+    setShowContentForm(false);
+    setSelectedTopic("");
+    form.reset();
+  };
+
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
     setOpenDialog(false);
+    resetDialog();
   };
 
   const generateAIIdeas = () => {
@@ -160,7 +180,10 @@ const ContentPlanner = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+          <Dialog open={openDialog} onOpenChange={(open) => {
+            setOpenDialog(open);
+            if (!open) resetDialog();
+          }}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-primary hover:bg-primary/90">
                 <Plus className="mr-2 h-4 w-4" />
@@ -174,197 +197,225 @@ const ContentPlanner = () => {
                   Plan your next content piece with AI optimization
                 </DialogDescription>
               </DialogHeader>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-1 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="title">Content Title</Label>
-                        <Input
-                          id="title"
-                          placeholder="Enter a title for your content"
-                          {...form.register("title")}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>What Do You Want to Produce Today?</Label>
-                        <Select onValueChange={handleContentTypeChange}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select content type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="photo">📸 Photo Post</SelectItem>
-                            <SelectItem value="short-video">🎥 Short-Form Video (Reel/TikTok/YouTube Shorts)</SelectItem>
-                            <SelectItem value="long-video">🎬 Long-Form Video (YouTube/Podcast)</SelectItem>
-                            <SelectItem value="audio">🎤 Voiceover/Podcast Clip</SelectItem>
-                            <SelectItem value="text">📄 Text-Based Post (X/Threads/LinkedIn)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>On Which Platform Will You Post This?</Label>
-                        <Select onValueChange={handlePlatformChange}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select platform" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="instagram">🟣 Instagram</SelectItem>
-                            <SelectItem value="tiktok">🎵 TikTok</SelectItem>
-                            <SelectItem value="youtube">🔴 YouTube</SelectItem>
-                            <SelectItem value="twitter">🟠 X/Threads</SelectItem>
-                            <SelectItem value="linkedin">📊 LinkedIn</SelectItem>
-                            <SelectItem value="pinterest">📌 Pinterest</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="description">Content Description</Label>
-                        <Textarea
-                          id="description"
-                          placeholder="Describe your content idea or outline"
-                          className="min-h-[100px]"
-                          {...form.register("description")}
-                        />
-                        <div className="flex justify-end">
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm"
-                            onClick={generateAIIdeas}
-                            className="flex items-center gap-1"
-                          >
-                            <Lightbulb className="h-4 w-4 text-yellow-500" />
-                            <span>Generate AI Ideas</span>
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="caption">Caption</Label>
-                        <Textarea
-                          id="caption"
-                          placeholder="Write your caption here"
-                          className="min-h-[80px]"
-                        />
-                        <div className="flex justify-end">
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm"
-                            onClick={generateAICaption}
-                            className="flex items-center gap-1"
-                          >
-                            <MessageSquare className="h-4 w-4 text-primary" />
-                            <span>Generate AI Caption</span>
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="hashtags">Hashtags</Label>
-                        <Textarea
-                          id="hashtags"
-                          placeholder="#trending #viral #content"
-                          className="min-h-[60px]"
-                        />
-                        <div className="flex justify-end">
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm"
-                            onClick={generateAIHashtags}
-                            className="flex items-center gap-1"
-                          >
-                            <Hash className="h-4 w-4 text-primary" />
-                            <span>Generate AI Hashtags</span>
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>What Resources Do You Need?</Label>
-                        <div className="grid grid-cols-2 gap-3 mt-2">
-                          <Button variant="outline" className="justify-start" type="button">
-                            <Camera className="mr-2 h-4 w-4" /> Camera Setup
-                          </Button>
-                          <Button variant="outline" className="justify-start" type="button">
-                            <Mic className="mr-2 h-4 w-4" /> Microphone
-                          </Button>
-                          <Button variant="outline" className="justify-start" type="button">
-                            <Pencil className="mr-2 h-4 w-4" /> Editing Software
-                          </Button>
-                          <Button variant="outline" className="justify-start" type="button">
-                            <Video className="mr-2 h-4 w-4" /> Lighting
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>What's Your Goal for This Post?</Label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a goal" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="monetization">💰 Monetization</SelectItem>
-                            <SelectItem value="engagement">📈 Engagement Growth</SelectItem>
-                            <SelectItem value="branding">🎭 Personal Branding</SelectItem>
-                            <SelectItem value="community">🔄 Community Building</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 flex items-center gap-3 border border-purple-200 dark:border-purple-900">
-                        <div className="flex-shrink-0">
-                          <Zap className="h-10 w-10 text-accent-gold" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">AI Content Optimization</h3>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            AI will analyze your content and suggest the best time to post for maximum engagement
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-green-500/10 border border-blue-200 dark:border-blue-900">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Sparkles className="h-5 w-5 text-accent-gold" />
-                          <h3 className="font-medium">Content Manifestation</h3>
-                        </div>
-                        <div className="text-sm italic text-muted-foreground mt-1">
-                          "Your content is magnetic. The right people will find and love it. This post is high-energy, high-impact, and will reach the perfect audience."
-                        </div>
-                      </div>
-
-                      <div className="p-4 rounded-lg bg-muted">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Target className="h-5 w-5 text-primary" />
-                          <h3 className="font-medium">Engagement Prediction</h3>
-                        </div>
-                        <div className="mt-2 flex items-center gap-2">
-                          <div className="w-full bg-muted-foreground/20 rounded-full h-2.5">
-                            <div className="bg-green-500 h-2.5 rounded-full" style={{ width: '70%' }}></div>
+              
+              {showTopicSelector && (
+                <TopicSelector onTopicSelect={handleTopicSelect} />
+              )}
+              
+              {showContentForm && (
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid gap-4 py-4">
+                      <div className="grid grid-cols-1 gap-6">
+                        <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-200 dark:border-purple-900">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles className="h-5 w-5 text-accent-gold" />
+                            <h3 className="font-medium">Selected Topic: {selectedTopic}</h3>
                           </div>
-                          <span className="text-sm font-medium text-green-500">High</span>
+                          <p className="text-sm text-muted-foreground">
+                            AI suggestions will be tailored to your {selectedTopic} niche
+                          </p>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="mt-2" 
+                            onClick={() => {
+                              setShowTopicSelector(true);
+                              setShowContentForm(false);
+                            }}
+                          >
+                            Change Topic
+                          </Button>
                         </div>
-                        <p className="text-sm mt-2">This post has high viral potential! Best time to post: Tomorrow at 6:00 PM</p>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="title">Content Title</Label>
+                          <Input
+                            id="title"
+                            placeholder="Enter a title for your content"
+                            {...form.register("title")}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>What Do You Want to Produce Today?</Label>
+                          <Select onValueChange={handleContentTypeChange}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select content type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="photo">📸 Photo Post</SelectItem>
+                              <SelectItem value="short-video">🎥 Short-Form Video (Reel/TikTok/YouTube Shorts)</SelectItem>
+                              <SelectItem value="long-video">🎬 Long-Form Video (YouTube/Podcast)</SelectItem>
+                              <SelectItem value="audio">🎤 Voiceover/Podcast Clip</SelectItem>
+                              <SelectItem value="text">📄 Text-Based Post (X/Threads/LinkedIn)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>On Which Platform Will You Post This?</Label>
+                          <Select onValueChange={handlePlatformChange}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select platform" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="instagram">🟣 Instagram</SelectItem>
+                              <SelectItem value="tiktok">🎵 TikTok</SelectItem>
+                              <SelectItem value="youtube">🔴 YouTube</SelectItem>
+                              <SelectItem value="twitter">🟠 X/Threads</SelectItem>
+                              <SelectItem value="linkedin">📊 LinkedIn</SelectItem>
+                              <SelectItem value="pinterest">📌 Pinterest</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="description">Content Description</Label>
+                          <Textarea
+                            id="description"
+                            placeholder="Describe your content idea or outline"
+                            className="min-h-[100px]"
+                            {...form.register("description")}
+                          />
+                          <div className="flex justify-end">
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm"
+                              onClick={generateAIIdeas}
+                              className="flex items-center gap-1"
+                            >
+                              <Lightbulb className="h-4 w-4 text-yellow-500" />
+                              <span>Generate AI Ideas</span>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="caption">Caption</Label>
+                          <Textarea
+                            id="caption"
+                            placeholder="Write your caption here"
+                            className="min-h-[80px]"
+                          />
+                          <div className="flex justify-end">
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm"
+                              onClick={generateAICaption}
+                              className="flex items-center gap-1"
+                            >
+                              <MessageSquare className="h-4 w-4 text-primary" />
+                              <span>Generate AI Caption</span>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="hashtags">Hashtags</Label>
+                          <Textarea
+                            id="hashtags"
+                            placeholder="#trending #viral #content"
+                            className="min-h-[60px]"
+                          />
+                          <div className="flex justify-end">
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm"
+                              onClick={generateAIHashtags}
+                              className="flex items-center gap-1"
+                            >
+                              <Hash className="h-4 w-4 text-primary" />
+                              <span>Generate AI Hashtags</span>
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>What Resources Do You Need?</Label>
+                          <div className="grid grid-cols-2 gap-3 mt-2">
+                            <Button variant="outline" className="justify-start" type="button">
+                              <Camera className="mr-2 h-4 w-4" /> Camera Setup
+                            </Button>
+                            <Button variant="outline" className="justify-start" type="button">
+                              <Mic className="mr-2 h-4 w-4" /> Microphone
+                            </Button>
+                            <Button variant="outline" className="justify-start" type="button">
+                              <Pencil className="mr-2 h-4 w-4" /> Editing Software
+                            </Button>
+                            <Button variant="outline" className="justify-start" type="button">
+                              <Video className="mr-2 h-4 w-4" /> Lighting
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>What's Your Goal for This Post?</Label>
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a goal" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="monetization">💰 Monetization</SelectItem>
+                              <SelectItem value="engagement">📈 Engagement Growth</SelectItem>
+                              <SelectItem value="branding">🎭 Personal Branding</SelectItem>
+                              <SelectItem value="community">🔄 Community Building</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 flex items-center gap-3 border border-purple-200 dark:border-purple-900">
+                          <div className="flex-shrink-0">
+                            <Zap className="h-10 w-10 text-accent-gold" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">AI Content Optimization</h3>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              AI will analyze your {selectedTopic} content and suggest the best time to post for maximum engagement
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-green-500/10 border border-blue-200 dark:border-blue-900">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles className="h-5 w-5 text-accent-gold" />
+                            <h3 className="font-medium">Content Manifestation</h3>
+                          </div>
+                          <div className="text-sm italic text-muted-foreground mt-1">
+                            "Your {selectedTopic} content is magnetic. The right people will find and love it. This post is high-energy, high-impact, and will reach the perfect audience."
+                          </div>
+                        </div>
+
+                        <div className="p-4 rounded-lg bg-muted">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Target className="h-5 w-5 text-primary" />
+                            <h3 className="font-medium">Engagement Prediction</h3>
+                          </div>
+                          <div className="mt-2 flex items-center gap-2">
+                            <div className="w-full bg-muted-foreground/20 rounded-full h-2.5">
+                              <div className="bg-green-500 h-2.5 rounded-full" style={{ width: '70%' }}></div>
+                            </div>
+                            <span className="text-sm font-medium text-green-500">High</span>
+                          </div>
+                          <p className="text-sm mt-2">This {selectedTopic} post has high viral potential! Best time to post: Tomorrow at 6:00 PM</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <DialogFooter className="flex flex-col sm:flex-row gap-2">
-                    <Button variant="outline" type="button" onClick={() => setOpenDialog(false)}>
-                      Save as Draft
-                    </Button>
-                    <Button type="submit" className="bg-gradient-primary">
-                      Create & Schedule
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </Form>
+                    <DialogFooter className="flex flex-col sm:flex-row gap-2">
+                      <Button variant="outline" type="button" onClick={() => setOpenDialog(false)}>
+                        Save as Draft
+                      </Button>
+                      <Button type="submit" className="bg-gradient-primary">
+                        Create & Schedule
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </Form>
+              )}
             </DialogContent>
           </Dialog>
         </div>
