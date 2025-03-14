@@ -31,8 +31,8 @@ const QuizScreen: React.FC<QuizScreenProps> = ({
   progress
 }) => {
   return (
-    <div className="w-full max-w-3xl">
-      <div className="mb-2 text-center animate-fade-in">
+    <div className="w-full max-w-2xl animate-fade-in">
+      <div className="mb-2 text-center">
         <h3 className="text-xl font-display font-bold text-white flex items-center justify-center gap-2 tracking-wide">
           <Sparkles className="h-5 w-5 text-[#FF5EEA]" />
           <span className="text-gradient-secondary text-transparent bg-clip-text bg-gradient-to-r from-[#FF5EEA] to-[#00FFFF]">
@@ -45,7 +45,9 @@ const QuizScreen: React.FC<QuizScreenProps> = ({
         </p>
       </div>
       
-      <Card className="w-full max-w-3xl animate-scale-in overflow-hidden relative glass-dark bg-gradient-to-b from-[#1E234A]/40 to-[#401F71]/20 backdrop-blur-lg border border-[#FF5EEA]/20 shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,94,234,0.1)] rounded-xl">
+      <Card className="w-full animate-scale-in overflow-hidden relative glass-dark bg-opacity-10 backdrop-blur-xl 
+                      bg-gradient-to-b from-[#1E234A]/40 to-[#401F71]/20 border border-[#FF5EEA]/20 
+                      shadow-[0_8px_30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,94,234,0.1)] rounded-xl">
         {/* Enhanced animated background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-br from-[#FF5EEA]/5 via-[#00FFFF]/5 to-[#FF5EEA]/5 animate-pulse-soft opacity-30"></div>
@@ -66,8 +68,7 @@ const QuizScreen: React.FC<QuizScreenProps> = ({
               Question {currentQuestion + 1} of {totalQuestions}
             </div>
           </div>
-          <Progress value={progress} className="h-1.5 bg-white/10" 
-                  progressColor="from-[#FF5EEA] to-[#00FFFF]" />
+          <Progress value={progress} className="h-1.5 bg-gray-800/50" />
           
           {/* Enhanced FOMO element */}
           <div className="mt-3 mb-1 text-xs flex justify-between tracking-wide">
