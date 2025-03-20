@@ -51,28 +51,28 @@ const Layout = () => {
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className={`flex-1 p-4 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
+        <main className={`flex-1 p-2 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
           {/* Show a floating hamburger menu button when sidebar is closed */}
           {!isSidebarOpen && (
             <Button 
               variant="secondary" 
               size="icon" 
-              className="fixed bottom-6 left-6 z-50 shadow-lg rounded-full h-12 w-12 bg-gradient-primary hover:bg-primary/90" 
+              className="fixed bottom-4 left-4 z-50 shadow-lg rounded-full h-10 w-10 md:h-12 md:w-12 bg-gradient-primary hover:bg-primary/90" 
               onClick={toggleSidebar}
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
               <span className="sr-only">Open Sidebar</span>
             </Button>
           )}
           
           <div className={`max-w-7xl mx-auto ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-            {/* Quick AI assistant shortcut */}
+            {/* Quick AI assistant shortcut - smaller on mobile */}
             <Button 
               variant="outline"
-              className="fixed bottom-6 right-6 z-50 shadow-md rounded-full px-4 py-2 flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none hover:from-indigo-600 hover:to-purple-600"
+              className="fixed bottom-4 right-4 z-50 shadow-md rounded-full p-2 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none hover:from-indigo-600 hover:to-purple-600"
             >
               <Sparkles className="h-4 w-4" />
-              <span>AI Assistant</span>
+              <span className="hidden md:inline text-xs md:text-sm">AI Assistant</span>
             </Button>
             
             <Outlet />
