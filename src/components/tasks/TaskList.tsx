@@ -13,7 +13,7 @@ import {
   Image, 
   ArrowRight, 
   TrendingUp,
-  DragVertical 
+  GripVertical 
 } from "lucide-react";
 
 interface Subtask {
@@ -141,7 +141,7 @@ const TaskList = ({
                   <div 
                     className="cursor-grab p-1 text-muted-foreground hover:text-foreground mt-1"
                   >
-                    <DragVertical className="h-5 w-5" />
+                    <GripVertical className="h-5 w-5" />
                   </div>
                   
                   <div className="flex-1">
