@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -8,7 +7,7 @@ import { Sparkles, Zap } from "lucide-react";
 interface TaskSuggestion {
   title: string;
   reasoning: string;
-  priority: string;
+  priority: "high" | "medium" | "low";
 }
 
 interface TaskSuggestionsProps {
