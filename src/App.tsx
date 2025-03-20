@@ -11,6 +11,7 @@ import Dashboard from "@/pages/Dashboard";
 import ContentPlanner from "@/pages/ContentPlanner";
 import PepTalk from "@/pages/PepTalk";
 import Tasks from "@/pages/Tasks";
+import Moodboard from "@/pages/Moodboard";
 import Onboarding from "@/pages/Onboarding";
 import NotFound from "@/pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/content-planner" element={<ContentPlanner />} />
               <Route path="/pep-talk" element={<PepTalk />} />
               <Route path="/tasks" element={<Tasks />} />
+              <Route path="/moodboard" element={<Moodboard />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
