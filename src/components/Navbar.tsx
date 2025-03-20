@@ -25,8 +25,8 @@ const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
             onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
           >
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>

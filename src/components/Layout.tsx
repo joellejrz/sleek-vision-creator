@@ -5,6 +5,8 @@ import { useTheme } from "./theme-provider";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 
 const Layout = () => {
   const { theme } = useTheme();
@@ -45,6 +47,18 @@ const Layout = () => {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
         <main className={`flex-1 p-4 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}`}>
+          {/* Show a floating hamburger menu button when sidebar is closed */}
+          {!isSidebarOpen && (
+            <Button 
+              variant="secondary" 
+              size="icon" 
+              className="fixed bottom-6 left-6 z-50 shadow-lg rounded-full h-12 w-12" 
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Open Sidebar</span>
+            </Button>
+          )}
           <div className={`max-w-7xl mx-auto space-y-6 ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
             <Outlet />
           </div>

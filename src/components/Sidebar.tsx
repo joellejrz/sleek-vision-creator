@@ -1,6 +1,6 @@
 
 import { NavLink } from "react-router-dom";
-import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings } from "lucide-react";
+import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, Menu, MessagesSquare, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             Vision<span className="text-deep-teal">Creator</span>
           </h1>
         </NavLink>
-        <Button variant="ghost" size="icon" className="md:flex" onClick={toggleSidebar}>
+        <Button variant="ghost" size="icon" onClick={toggleSidebar}>
           <ChevronLeft className="h-5 w-5" />
           <span className="sr-only">Close Sidebar</span>
         </Button>
