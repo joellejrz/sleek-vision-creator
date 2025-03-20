@@ -1,22 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  CalendarClock, 
-  Check, 
-  ChevronDown, 
-  Filter, 
-  Plus, 
-  Sparkles, 
-  Trash2, 
-  Zap, 
-} from "lucide-react";
+import { Plus, Filter, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +10,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import TaskDialog from "@/components/tasks/TaskDialog";
+import TaskList from "@/components/tasks/TaskList";
+import TaskSuggestions from "@/components/tasks/TaskSuggestions";
+import ProgressTracker from "@/components/tasks/ProgressTracker";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data for tasks
 const tasksData = [
@@ -91,7 +82,9 @@ const aiSuggestedTasks = [
 const Tasks = () => {
   const [tasks, setTasks] = useState(tasksData);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -100,20 +93,12 @@ const Tasks = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleAddTask = () => {
-    if (!newTaskTitle.trim()) return;
-
-    const newTask = {
-      id: tasks.length + 1,
-      title: newTaskTitle,
-      completed: false,
-      priority: "medium",
-      due: "Today",
-      aiSuggested: false,
-    };
-
+  const handleAddTask = (newTask: any) => {
     setTasks([newTask, ...tasks]);
-    setNewTaskTitle("");
+    toast({
+      title: "Task Created",
+      description: `"${newTask.title}" has been added to your tasks.`,
+    });
   };
 
   const handleToggleComplete = (taskId: number) => {
@@ -126,11 +111,15 @@ const Tasks = () => {
 
   const handleDeleteTask = (taskId: number) => {
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    toast({
+      title: "Task Deleted",
+      description: "The task has been removed from your list.",
+    });
   };
 
   const handleAddAiTask = (task: any) => {
     const newTask = {
-      id: tasks.length + 1,
+      id: Date.now(),
       title: task.title,
       completed: false,
       priority: task.priority,
@@ -139,10 +128,41 @@ const Tasks = () => {
     };
 
     setTasks([newTask, ...tasks]);
+    toast({
+      title: "AI Task Added",
+      description: `"${task.title}" has been added to your tasks.`,
+    });
   };
 
-  const activeTasks = tasks.filter((task) => !task.completed);
-  const completedTasks = tasks.filter((task) => task.completed);
+  const handleFilterTasks = (filter: string) => {
+    setActiveFilter(activeFilter === filter ? null : filter);
+  };
+
+  const handleGenerateMoreTasks = () => {
+    toast({
+      title: "Generating New Suggestions",
+      description: "Our AI is analyzing your content strategy for new task suggestions.",
+    });
+    // In a real app, this would call an API to generate new suggestions
+  };
+
+  // Apply filters
+  const filteredTasks = tasks.filter(task => {
+    if (!activeFilter) return true;
+    if (activeFilter === 'high' || activeFilter === 'medium' || activeFilter === 'low') {
+      return task.priority === activeFilter;
+    }
+    if (activeFilter === 'aiSuggested') {
+      return task.aiSuggested;
+    }
+    if (activeFilter === 'dueToday') {
+      return task.due.toLowerCase().includes('today');
+    }
+    return true;
+  });
+
+  const activeTasks = filteredTasks.filter((task) => !task.completed);
+  const completedTasks = filteredTasks.filter((task) => task.completed);
 
   return (
     <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
@@ -158,33 +178,36 @@ const Tasks = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
                 <Filter className="mr-2 h-4 w-4" />
-                Filter
+                {activeFilter ? `Filter: ${activeFilter}` : "Filter"}
                 <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuItem>Priority: High</DropdownMenuItem>
-              <DropdownMenuItem>Priority: Medium</DropdownMenuItem>
-              <DropdownMenuItem>Priority: Low</DropdownMenuItem>
-              <DropdownMenuItem>AI Suggested</DropdownMenuItem>
-              <DropdownMenuItem>Due Today</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFilterTasks('high')}>
+                Priority: High
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFilterTasks('medium')}>
+                Priority: Medium
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFilterTasks('low')}>
+                Priority: Low
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFilterTasks('aiSuggested')}>
+                AI Suggested
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFilterTasks('dueToday')}>
+                Due Today
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
 
+      <ProgressTracker completed={completedTasks.length} total={tasks.length} />
+
       <div className="flex items-center gap-2">
-        <Input
-          placeholder="Add a new task..."
-          value={newTaskTitle}
-          onChange={(e) => setNewTaskTitle(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleAddTask();
-          }}
-          className="flex-1"
-        />
-        <Button onClick={handleAddTask} disabled={!newTaskTitle.trim()}>
+        <Button onClick={() => setIsTaskDialogOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Add Task
         </Button>
@@ -198,190 +221,42 @@ const Tasks = () => {
               <TabsTrigger value="completed">Completed ({completedTasks.length})</TabsTrigger>
             </TabsList>
             <TabsContent value="active" className="space-y-4 mt-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Active Tasks</CardTitle>
-                  <CardDescription>
-                    Tasks that need your attention, prioritized by importance
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {activeTasks.length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <Check className="mx-auto h-8 w-8 mb-2" />
-                        <p>All caught up! Add new tasks to get started.</p>
-                      </div>
-                    ) : (
-                      activeTasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="flex items-center justify-between py-2"
-                        >
-                          <div className="flex items-start gap-3">
-                            <Checkbox
-                              checked={task.completed}
-                              onCheckedChange={() => handleToggleComplete(task.id)}
-                              className="mt-1"
-                              id={`task-${task.id}`}
-                            />
-                            <div className="space-y-1">
-                              <label
-                                htmlFor={`task-${task.id}`}
-                                className="font-medium"
-                              >
-                                {task.title}
-                                {task.aiSuggested && (
-                                  <Badge variant="outline" className="ml-2">
-                                    <Sparkles className="mr-1 h-3 w-3 text-accent-gold" />
-                                    AI Suggested
-                                  </Badge>
-                                )}
-                              </label>
-                              <div className="flex items-center text-xs text-muted-foreground">
-                                <CalendarClock className="mr-1 h-3 w-3" />
-                                {task.due}
-                                <Badge
-                                  variant={
-                                    task.priority === "high"
-                                      ? "destructive"
-                                      : task.priority === "medium"
-                                      ? "default"
-                                      : "secondary"
-                                  }
-                                  className="ml-2 capitalize"
-                                >
-                                  {task.priority}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteTask(task.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">Delete task</span>
-                          </Button>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <TaskList 
+                tasks={activeTasks} 
+                title="Active Tasks"
+                description="Tasks that need your attention, prioritized by importance"
+                onToggleComplete={handleToggleComplete}
+                onDeleteTask={handleDeleteTask}
+                emptyMessage="All caught up! Add new tasks to get started."
+              />
             </TabsContent>
             <TabsContent value="completed" className="space-y-4 mt-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle>Completed Tasks</CardTitle>
-                  <CardDescription>
-                    Tasks you've successfully completed
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {completedTasks.length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <p>No completed tasks yet.</p>
-                      </div>
-                    ) : (
-                      completedTasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="flex items-center justify-between py-2"
-                        >
-                          <div className="flex items-start gap-3">
-                            <Checkbox
-                              checked={task.completed}
-                              onCheckedChange={() => handleToggleComplete(task.id)}
-                              className="mt-1"
-                              id={`task-${task.id}`}
-                            />
-                            <div className="space-y-1">
-                              <label
-                                htmlFor={`task-${task.id}`}
-                                className="font-medium line-through text-muted-foreground"
-                              >
-                                {task.title}
-                              </label>
-                              <div className="flex items-center text-xs text-muted-foreground">
-                                <CalendarClock className="mr-1 h-3 w-3" />
-                                {task.due}
-                              </div>
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteTask(task.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">Delete task</span>
-                          </Button>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <TaskList 
+                tasks={completedTasks} 
+                title="Completed Tasks"
+                description="Tasks you've successfully completed"
+                onToggleComplete={handleToggleComplete}
+                onDeleteTask={handleDeleteTask}
+                emptyMessage="No completed tasks yet."
+              />
             </TabsContent>
           </Tabs>
         </div>
 
         <div>
-          <Card className="transition-all hover:shadow-md h-full">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center">
-                  <Zap className="mr-2 h-5 w-5 text-accent-gold" />
-                  AI Task Suggestions
-                </CardTitle>
-              </div>
-              <CardDescription>
-                AI-recommended tasks based on your content strategy
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {aiSuggestedTasks.map((task, index) => (
-                  <div key={index} className="glass-card p-4 rounded-lg">
-                    <div className="flex flex-col space-y-2">
-                      <h3 className="font-medium">{task.title}</h3>
-                      <p className="text-xs text-muted-foreground">
-                        <Sparkles className="inline-block mr-1 h-3 w-3 text-accent-gold" />
-                        {task.reasoning}
-                      </p>
-                      <div className="flex justify-between items-center mt-2">
-                        <Badge
-                          variant={
-                            task.priority === "high"
-                              ? "destructive"
-                              : task.priority === "medium"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className="capitalize"
-                        >
-                          {task.priority} priority
-                        </Badge>
-                        <Button size="sm" onClick={() => handleAddAiTask(task)}>
-                          Add Task
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <Separator />
-                <Button variant="outline" className="w-full">
-                  <Zap className="mr-2 h-4 w-4 text-accent-gold" />
-                  Generate More Tasks
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <TaskSuggestions 
+            suggestions={aiSuggestedTasks}
+            onAddTask={handleAddAiTask}
+            onGenerateMore={handleGenerateMoreTasks}
+          />
         </div>
       </div>
+
+      <TaskDialog 
+        open={isTaskDialogOpen} 
+        onOpenChange={setIsTaskDialogOpen} 
+        onAddTask={handleAddTask} 
+      />
     </div>
   );
 };
