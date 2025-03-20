@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import CreatorMetricsOverview from "@/components/CreatorMetricsOverview";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const data = [
   { name: "Mon", engagement: 1000, reach: 4000 },
@@ -52,6 +53,7 @@ const contentIdeas = [
 
 const Dashboard = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,27 +63,29 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div className={`space-y-4 md:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 md:gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-sm md:text-base text-muted-foreground">
             Welcome back! Here's an overview of your content performance.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-1">
-            <CalendarDays className="h-4 w-4" />
+          <Button variant="outline" size="sm" className="gap-1 text-xs">
+            <CalendarDays className="h-3 w-3 md:h-4 md:w-4" />
             Last 7 days
           </Button>
-          <Button className="bg-gradient-primary hover:bg-primary/90">
-            <Zap className="mr-2 h-4 w-4" />
-            AI Insights
+          <Button className="bg-gradient-primary hover:bg-primary/90 text-xs p-2 h-8">
+            <Zap className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
+            <span className="hidden md:inline">AI Insights</span>
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <CreatorMetricsOverview />
+
+      <div className={`grid gap-4 md:gap-6 ${isMobile ? 'hidden' : 'md:grid-cols-2 lg:grid-cols-4'}`}>
         {[
           {
             title: "Total Engagement",
@@ -140,31 +144,31 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-7">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-7">
         <Card className="md:col-span-4 transition-all hover:shadow-md">
-          <CardHeader>
+          <CardHeader className="pb-2 md:pb-6">
             <div className="flex items-center justify-between">
-              <CardTitle>Content Performance</CardTitle>
+              <CardTitle className="text-lg md:text-2xl">Content Performance</CardTitle>
               <TooltipProvider>
                 <UITooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Info className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-7 w-7 md:h-auto md:w-auto">
+                      <Info className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="sr-only">Info</span>
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Engagement and reach metrics for the past week</p>
+                    <p className="text-xs md:text-sm">Engagement and reach metrics for the past week</p>
                   </TooltipContent>
                 </UITooltip>
               </TooltipProvider>
             </div>
-            <CardDescription>
+            <CardDescription className="text-xs md:text-sm">
               Engagement and reach metrics for the past week
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-80">
+            <div className="h-60 md:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={data}
@@ -202,24 +206,24 @@ const Dashboard = () => {
         </Card>
 
         <Card className="md:col-span-3 transition-all hover:shadow-md">
-          <CardHeader>
-            <CardTitle>AI-Suggested Content Ideas</CardTitle>
-            <CardDescription>
+          <CardHeader className="pb-2 md:pb-6">
+            <CardTitle className="text-lg md:text-2xl">AI-Suggested Content Ideas</CardTitle>
+            <CardDescription className="text-xs md:text-sm">
               Based on your audience's engagement and trending topics
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               {contentIdeas.map((idea, index) => (
                 <div
                   key={index}
-                  className="p-3 bg-muted/60 rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                  className="p-2 md:p-3 bg-muted/60 rounded-lg hover:bg-muted transition-colors cursor-pointer text-xs md:text-sm"
                 >
-                  <p className="text-sm">{idea}</p>
+                  <p>{idea}</p>
                 </div>
               ))}
-              <Button variant="outline" className="w-full">
-                <Zap className="mr-2 h-4 w-4 text-accent-gold" />
+              <Button variant="outline" className="w-full text-xs md:text-sm">
+                <Zap className="mr-1 md:mr-2 h-3 w-3 md:h-4 md:w-4 text-accent-gold" />
                 Generate More Ideas
               </Button>
             </div>
@@ -228,34 +232,34 @@ const Dashboard = () => {
       </div>
 
       <Card className="transition-all hover:shadow-md">
-        <CardHeader>
+        <CardHeader className="pb-2 md:pb-6">
           <div className="flex items-center justify-between">
-            <CardTitle>Upcoming Content Tasks</CardTitle>
-            <Button variant="outline" size="sm">
+            <CardTitle className="text-lg md:text-2xl">Upcoming Content Tasks</CardTitle>
+            <Button variant="outline" size="sm" className="text-xs">
               View All
             </Button>
           </div>
-          <CardDescription>
+          <CardDescription className="text-xs md:text-sm">
             Prioritized tasks based on your content calendar
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {upcomingTasks.map((task) => (
               <div
                 key={task.id}
-                className="flex items-center justify-between p-4 border rounded-lg transition-all hover:shadow-sm"
+                className="flex items-center justify-between p-2 md:p-4 border rounded-lg transition-all hover:shadow-sm"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-2 md:gap-4">
                   <div className="flex flex-col">
-                    <span className="font-medium">{task.title}</span>
-                    <span className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                    <span className="font-medium text-xs md:text-sm">{task.title}</span>
+                    <span className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5 md:mt-1">
                       <Clock className="h-3 w-3" />
                       {task.time}
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 md:gap-2">
                   <Badge
                     variant={
                       task.priority === "high"
@@ -264,11 +268,11 @@ const Dashboard = () => {
                         ? "default"
                         : "secondary"
                     }
-                    className="capitalize"
+                    className="capitalize text-[10px] md:text-xs px-1.5 py-0 h-4 md:h-5"
                   >
                     {task.priority}
                   </Badge>
-                  <Button size="sm" variant="ghost">
+                  <Button size="sm" variant="ghost" className="h-6 text-[10px] md:text-xs">
                     Complete
                   </Button>
                 </div>
