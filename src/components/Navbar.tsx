@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Bell, Calendar, MessageCircle, Moon, Sun, User } from "lucide-react";
+import { Bell, Calendar, Menu, MessageCircle, Moon, Sun, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./theme-provider";
 import {
@@ -10,17 +9,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const Navbar = () => {
+interface NavbarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+const Navbar = ({ isSidebarOpen, toggleSidebar }: NavbarProps) => {
   const { theme, setTheme } = useTheme();
 
   return (
     <nav className="sticky top-0 z-40 w-full border-b backdrop-blur-lg bg-background/80 transition-colors duration-300">
       <div className="flex h-16 items-center px-4 justify-between">
         <div className="flex items-center gap-2">
-          <Link to="/dashboard" className="flex items-center gap-2 md:hidden">
-            <h1 className="text-xl font-display font-bold text-gradient-primary tracking-tight">
-              Vision<span className="text-deep-teal">Creator</span>
-            </h1>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
+          >
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+          <Link to="/dashboard" className="flex items-center gap-2">
+            <div className="hidden md:block">
+              <h1 className="text-xl font-display font-bold text-gradient-primary tracking-tight">
+                Vision<span className="text-deep-teal">Creator</span>
+              </h1>
+            </div>
           </Link>
         </div>
         <div className="flex items-center gap-2">
