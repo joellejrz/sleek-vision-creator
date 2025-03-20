@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
     >
       <div className="flex items-center justify-between h-10 md:h-16 px-2 md:px-4 border-b">
         <NavLink to="/dashboard" className="flex items-center gap-1 md:gap-2">
-          <h1 className="text-base md:text-xl font-display font-bold text-gradient-primary tracking-tight">
+          <h1 className="text-base md:text-2xl font-display font-bold text-gradient-primary tracking-tight">
             Vision<span className="text-deep-teal">Creator</span>
           </h1>
         </NavLink>
@@ -36,7 +36,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/dashboard"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -50,7 +50,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/content-planner"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -64,7 +64,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/moodboard"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -78,7 +78,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/creator-articles"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/pep-talk"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -108,7 +108,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
               to="/tasks"
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                  "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                   isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                 )
               }
@@ -126,7 +126,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 to="/settings"
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center gap-1.5 md:gap-2 rounded-lg px-1.5 py-1 md:px-3 md:py-2 transition-colors hover:bg-muted text-[10px] md:text-sm",
+                    "flex items-center gap-1.5 md:gap-3 rounded-lg px-1.5 py-1 md:px-3 md:py-2.5 transition-colors hover:bg-muted text-[10px] md:text-sm",
                     isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
                   )
                 }
