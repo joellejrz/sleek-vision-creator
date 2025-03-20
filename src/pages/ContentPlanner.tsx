@@ -43,6 +43,7 @@ import {
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { TopicSelector } from "@/components/content-planner/TopicSelector";
+import TrendingSounds from "@/components/content-planner/TrendingSounds";
 import { format } from "date-fns";
 import {
   Popover,
@@ -168,7 +169,6 @@ const ContentPlanner = () => {
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
     
-    // Create a new scheduled post
     const newPost = {
       id: scheduledPosts.length + 1,
       title: data.title || `New ${selectedTopic} Content`,
@@ -176,13 +176,11 @@ const ContentPlanner = () => {
       date: scheduledDate ? format(scheduledDate, "MMM dd") : "Today",
       time: scheduledTime || "12:00 PM",
       status: "scheduled",
-      aiScore: Math.floor(Math.random() * 30) + 70, // Random score between 70-99
+      aiScore: Math.floor(Math.random() * 30) + 70,
     };
     
-    // Add the new post to scheduled posts
     setScheduledPosts([...scheduledPosts, newPost]);
     
-    // Show success toast
     toast.success("Content scheduled successfully!", {
       description: `Your ${selectedTopic} content has been scheduled for ${newPost.date} at ${newPost.time}.`
     });
@@ -400,7 +398,6 @@ const ContentPlanner = () => {
                           </Select>
                         </div>
 
-                        {/* New Date and Time Selection */}
                         <div className="space-y-2">
                           <Label>When Do You Want to Post This Content?</Label>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -455,15 +452,11 @@ const ContentPlanner = () => {
                               size="sm"
                               className="flex items-center gap-1"
                               onClick={() => {
-                                // Get current date
                                 const now = new Date();
-                                // Add 24 hours to current time
                                 now.setHours(now.getHours() + 24);
-                                // Set to the nearest half hour
                                 const minutes = now.getMinutes() >= 30 ? 30 : 0;
                                 now.setMinutes(minutes);
                                 
-                                // Format as HH:MM
                                 const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
                                 
                                 setScheduledDate(now);
@@ -739,6 +732,10 @@ const ContentPlanner = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      <div className="pt-2">
+        <TrendingSounds />
+      </div>
     </div>
   );
 };
