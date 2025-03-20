@@ -11,6 +11,7 @@ import quizQuestions from "@/data/quizQuestions";
 import creatorArchetypes from "@/data/creatorArchetypes";
 import { determineArchetype } from "@/utils/archetypeUtils";
 import { ArchetypeKey } from "@/data/creatorArchetypes";
+import { WavyBackground } from "@/components/WavyBackground";
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -106,16 +107,16 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F25] via-[#1E1A40] to-[#401F71] z-0">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-          <div className="absolute top-1/3 left-1/3 w-2/3 h-2/3 bg-[#401F71]/30 rounded-full filter blur-3xl opacity-50 animate-float"></div>
-          <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 bg-[#FF5EEA]/10 rounded-full filter blur-3xl opacity-30 animate-pulse-soft"></div>
-          <div className="absolute bottom-1/3 right-1/2 w-1/3 h-1/3 bg-[#00FFFF]/15 rounded-full filter blur-3xl opacity-40 animate-float"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-white/5 rounded-full filter blur-3xl opacity-20 animate-pulse-soft"></div>
-        </div>
-      </div>
-
+    <WavyBackground 
+      colors={["#401F71", "#FF5EEA", "#00FFFF", "#6F4CD5", "#FF8FB0"]} 
+      backgroundFill="#0A0F25"
+      waveWidth={30}
+      blur={15}
+      speed="slow"
+      waveOpacity={0.35}
+      containerClassName="min-h-screen w-full"
+      className="w-full max-w-4xl"
+    >
       <div className="relative z-10 w-full max-w-4xl">
         {stage === "loading" && <LoadingScreen />}
         {stage === "quiz" && (
@@ -170,7 +171,7 @@ const Onboarding = () => {
           </div>
         </div>
       )}
-    </div>
+    </WavyBackground>
   );
 };
 
