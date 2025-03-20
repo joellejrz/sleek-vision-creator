@@ -1,6 +1,6 @@
 
 import { NavLink } from "react-router-dom";
-import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings, Image } from "lucide-react";
+import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings, Image, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -71,6 +71,21 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
             >
               <Image className="h-4 w-4 md:h-5 md:w-5" />
               <span>Moodboard</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/creator-articles"
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center gap-2 rounded-lg px-2 py-1.5 md:px-3 md:py-2 transition-colors hover:bg-muted text-xs md:text-sm",
+                  isActive ? "bg-muted font-medium text-primary" : "text-foreground/70"
+                )
+              }
+            >
+              <Newspaper className="h-4 w-4 md:h-5 md:w-5" />
+              <span>Articles</span>
+              <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-gold" />
             </NavLink>
           </li>
           <li>

@@ -14,6 +14,7 @@ import Tasks from "@/pages/Tasks";
 import Moodboard from "@/pages/Moodboard";
 import Onboarding from "@/pages/Onboarding";
 import NotFound from "@/pages/NotFound";
+import CreatorArticles from "@/pages/CreatorArticles";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/pep-talk" element={<PepTalk />} />
               <Route path="/tasks" element={<Tasks />} />
               <Route path="/moodboard" element={<Moodboard />} />
+              <Route path="/creator-articles" element={<CreatorArticles />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
