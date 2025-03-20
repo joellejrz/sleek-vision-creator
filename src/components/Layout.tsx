@@ -14,6 +14,11 @@ const Layout = () => {
   const { toast } = useToast();
   const [isPageLoaded, setIsPageLoaded] = useState(false);
 
+  // Handle sidebar toggle
+  const toggleSidebar = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
+
   useEffect(() => {
     // Simulate loading delay for animation purposes
     const timer = setTimeout(() => {
@@ -43,9 +48,9 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className={`flex-1 p-4 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}`}>
           {/* Show a floating hamburger menu button when sidebar is closed */}
           {!isSidebarOpen && (
@@ -53,7 +58,7 @@ const Layout = () => {
               variant="secondary" 
               size="icon" 
               className="fixed bottom-6 left-6 z-50 shadow-lg rounded-full h-12 w-12" 
-              onClick={() => setIsSidebarOpen(true)}
+              onClick={toggleSidebar}
             >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Open Sidebar</span>

@@ -1,6 +1,6 @@
 
 import { NavLink } from "react-router-dom";
-import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, Menu, MessagesSquare, Settings } from "lucide-react";
+import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
