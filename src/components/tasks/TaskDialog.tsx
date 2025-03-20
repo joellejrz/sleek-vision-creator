@@ -1,7 +1,6 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { X, Bell, Plus, Trash2 } from "lucide-react";
+import { X, Bell, Plus, Trash2, Sparkles } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,59 @@ interface TaskDialogProps {
   onOpenChange: (open: boolean) => void;
   onAddTask: (task: any) => void;
 }
+
+const taskSuggestionsByNiche: Record<string, string[]> = {
+  default: [
+    "Create social media post",
+    "Schedule content for next week",
+    "Research trending topics",
+    "Engage with followers",
+    "Update content calendar",
+    "Brainstorm content ideas",
+    "Plan next month's content strategy",
+    "Record podcast episode",
+  ],
+  fitness: [
+    "Film gym workout routine",
+    "Create protein shake recipe post",
+    "Plan weekly workout schedule post",
+    "Film form technique tutorial",
+    "Create before/after transformation post",
+    "Record meal prep video",
+    "Share supplement review",
+    "Film HIIT workout sequence",
+  ],
+  beauty: [
+    "Film GRWM makeup tutorial",
+    "Create skincare routine video",
+    "Record product review",
+    "Film hairstyle tutorial",
+    "Create seasonal makeup look",
+    "Share favorite products roundup",
+    "Film beauty hack tutorial",
+    "Create trending makeup challenge",
+  ],
+  tech: [
+    "Record product unboxing",
+    "Create software tutorial",
+    "Film gadget review",
+    "Share tech news update",
+    "Create comparison video",
+    "Film troubleshooting guide",
+    "Record setup tour",
+    "Create tech tip tutorial",
+  ],
+  food: [
+    "Film recipe tutorial",
+    "Create restaurant review",
+    "Record cooking technique video",
+    "Share meal prep guide",
+    "Create food photography tips",
+    "Film taste test video",
+    "Share kitchen gadget review",
+    "Create recipe ebook",
+  ],
+};
 
 const TaskDialog = ({ open, onOpenChange, onAddTask }: TaskDialogProps) => {
   const [title, setTitle] = useState("");
@@ -35,31 +87,37 @@ const TaskDialog = ({ open, onOpenChange, onAddTask }: TaskDialogProps) => {
   const [newSubtask, setNewSubtask] = useState<string>("");
   const [showTaskSuggestions, setShowTaskSuggestions] = useState<boolean>(false);
   const [taskSuggestions, setTaskSuggestions] = useState<string[]>([]);
+  const [creatorNiche, setCreatorNiche] = useState<string>("default");
 
-  // Task suggestions based on input
-  const generateTaskSuggestions = (input: string) => {
-    // This would ideally be more sophisticated based on user's niche
-    const contentSuggestions = [
-      "Film Instagram Reel about latest trends",
-      "Create TikTok tutorial on popular topic",
-      "Write blog post about industry insights",
-      "Record podcast episode with guest expert",
-      "Plan content calendar for next week",
-      "Film product review video",
-      "Create carousel post for Instagram",
-      "Schedule social media posts for the week",
-    ];
-
-    if (input.length > 2) {
-      setShowTaskSuggestions(true);
-      setTaskSuggestions(
-        contentSuggestions.filter((suggestion) =>
-          suggestion.toLowerCase().includes(input.toLowerCase())
-        )
-      );
-    } else {
+  useEffect(() => {
+    if (open) {
       setShowTaskSuggestions(false);
+      setTaskSuggestions([]);
     }
+  }, [open]);
+
+  const generateTaskSuggestions = (input: string) => {
+    if (input.length < 2) {
+      setShowTaskSuggestions(false);
+      return;
+    }
+
+    const nicheSuggestions = taskSuggestionsByNiche[creatorNiche] || taskSuggestionsByNiche.default;
+    
+    let matchedSuggestions = nicheSuggestions.filter(suggestion => 
+      suggestion.toLowerCase().includes(input.toLowerCase())
+    );
+    
+    if (matchedSuggestions.length < 3) {
+      const defaultMatches = taskSuggestionsByNiche.default.filter(suggestion => 
+        suggestion.toLowerCase().includes(input.toLowerCase()) &&
+        !matchedSuggestions.includes(suggestion)
+      );
+      matchedSuggestions = [...matchedSuggestions, ...defaultMatches.slice(0, 3 - matchedSuggestions.length)];
+    }
+
+    setTaskSuggestions(matchedSuggestions.slice(0, 5));
+    setShowTaskSuggestions(matchedSuggestions.length > 0);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +128,13 @@ const TaskDialog = ({ open, onOpenChange, onAddTask }: TaskDialogProps) => {
   const handleSelectSuggestion = (suggestion: string) => {
     setTitle(suggestion);
     setShowTaskSuggestions(false);
+  };
+
+  const handleChangeNiche = (niche: string) => {
+    setCreatorNiche(niche);
+    if (title.length >= 2) {
+      generateTaskSuggestions(title);
+    }
   };
 
   const handleAddSubtask = () => {
@@ -187,21 +252,43 @@ const TaskDialog = ({ open, onOpenChange, onAddTask }: TaskDialogProps) => {
                 />
               </div>
               
-              {showTaskSuggestions && taskSuggestions.length > 0 && (
+              {showTaskSuggestions && (
                 <div className="absolute z-10 w-full mt-1 bg-background border rounded-md shadow-lg">
-                  <ul className="py-1">
+                  <div className="py-1 px-3 bg-muted/50 text-xs flex items-center border-b">
+                    <Sparkles className="h-3 w-3 text-accent-gold mr-1" />
+                    <span>Suggested tasks for your niche</span>
+                  </div>
+                  <ul className="py-1 max-h-60 overflow-y-auto">
                     {taskSuggestions.map((suggestion, index) => (
                       <li
                         key={index}
-                        className="px-4 py-2 hover:bg-muted cursor-pointer"
+                        className="px-4 py-2 hover:bg-muted cursor-pointer flex items-center text-sm"
                         onClick={() => handleSelectSuggestion(suggestion)}
                       >
+                        <Sparkles className="h-3 w-3 text-accent-gold mr-2" />
                         {suggestion}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
+            </div>
+            
+            <div className="flex flex-wrap gap-2 mt-1">
+              <div className="text-xs text-muted-foreground mb-1 w-full">Demo: Select your niche</div>
+              {Object.keys(taskSuggestionsByNiche).map(niche => (
+                niche !== 'default' && (
+                  <Button 
+                    key={niche} 
+                    size="sm" 
+                    variant={creatorNiche === niche ? "default" : "outline"}
+                    className="text-xs py-1 h-6"
+                    onClick={() => handleChangeNiche(niche)}
+                  >
+                    {niche.charAt(0).toUpperCase() + niche.slice(1)}
+                  </Button>
+                )
+              ))}
             </div>
             
             <Textarea
