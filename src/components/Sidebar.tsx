@@ -1,6 +1,6 @@
 
 import { NavLink } from "react-router-dom";
-import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings, Image, Newspaper } from "lucide-react";
+import { CalendarDays, ChevronLeft, LayoutDashboard, ListTodo, MessagesSquare, Settings, Image, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -83,8 +83,8 @@ const Sidebar = ({ isOpen, toggleSidebar }: SidebarProps) => {
                 )
               }
             >
-              <Newspaper className="h-4 w-4 md:h-5 md:w-5" />
-              <span>Articles</span>
+              <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
+              <span>Creator Knowledge Hub</span>
               <span className="ml-auto h-1.5 w-1.5 rounded-full bg-accent-gold" />
             </NavLink>
           </li>
