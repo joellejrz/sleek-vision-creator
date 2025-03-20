@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, Pause, Headphones, Volume2, RefreshCw, Music, Download } from "lucide-react";
+import { Play, Pause, Headphones, RefreshCw, Music, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 // Mock data for trending sounds
@@ -116,82 +116,82 @@ const TrendingSounds = () => {
   
   return (
     <Card className="transition-all hover:shadow-md">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl flex items-center gap-2">
-              <Music className="h-5 w-5 text-primary" />
+            <CardTitle className="text-lg flex items-center gap-1.5">
+              <Music className="h-4 w-4 text-primary" />
               Trending Sounds
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Popular audio tracks for your next viral content
             </CardDescription>
           </div>
-          <Button variant="outline" size="icon" onClick={refreshSounds} title="Refresh sounds">
-            <RefreshCw className="h-4 w-4" />
+          <Button variant="outline" size="icon" onClick={refreshSounds} title="Refresh sounds" className="h-7 w-7">
+            <RefreshCw className="h-3.5 w-3.5" />
           </Button>
         </div>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="tiktok">TikTok</TabsTrigger>
-            <TabsTrigger value="reels">Reels</TabsTrigger>
-            <TabsTrigger value="popular">Popular</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-3 h-8">
+            <TabsTrigger value="tiktok" className="text-xs">TikTok</TabsTrigger>
+            <TabsTrigger value="reels" className="text-xs">Reels</TabsTrigger>
+            <TabsTrigger value="popular" className="text-xs">Popular</TabsTrigger>
           </TabsList>
           
           {Object.keys(trendingSounds).map((platform) => (
-            <TabsContent key={platform} value={platform} className="space-y-3">
+            <TabsContent key={platform} value={platform} className="space-y-2">
               {trendingSounds[platform as keyof typeof trendingSounds].map((sound) => (
                 <div 
                   key={sound.id} 
-                  className="flex items-center justify-between p-3 rounded-lg border hover:bg-accent/10 transition-colors"
+                  className="flex items-center justify-between p-2 rounded-lg border hover:bg-accent/10 transition-colors"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-8 w-8 rounded-full bg-primary/10 hover:bg-primary/20"
+                      className="h-7 w-7 rounded-full bg-primary/10 hover:bg-primary/20"
                       onClick={() => handlePlaySound(sound.id)}
                     >
                       {playingSound === sound.id ? (
-                        <Pause className="h-4 w-4" />
+                        <Pause className="h-3.5 w-3.5" />
                       ) : (
-                        <Play className="h-4 w-4" />
+                        <Play className="h-3.5 w-3.5" />
                       )}
                     </Button>
                     
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium text-sm line-clamp-1">{sound.title}</h4>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="font-medium text-xs line-clamp-1">{sound.title}</h4>
                         {sound.isNew && (
-                          <Badge variant="outline" className="text-xs bg-green-500/10 text-green-600 border-green-200 font-normal">
+                          <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 bg-green-500/10 text-green-600 border-green-200 font-normal">
                             New
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center text-xs text-muted-foreground gap-2">
+                      <div className="flex items-center text-[10px] text-muted-foreground gap-1.5">
                         <span>{sound.artist}</span>
-                        <span className="text-xs">•</span>
+                        <span className="text-[10px]">•</span>
                         <span>{sound.duration}</span>
-                        <span className="text-xs">•</span>
+                        <span className="text-[10px]">•</span>
                         <span>{sound.uses} uses</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" title="Preview with headphones">
-                      <Headphones className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-6 w-6" title="Preview with headphones">
+                      <Headphones className="h-3 w-3" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8" title="Save sound">
-                      <Download className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="h-6 w-6" title="Save sound">
+                      <Download className="h-3 w-3" />
                     </Button>
                   </div>
                 </div>
               ))}
               
-              <Button variant="outline" className="w-full mt-2">
+              <Button variant="outline" className="w-full mt-2 h-7 text-xs">
                 View More {platform === "tiktok" ? "TikTok" : platform === "reels" ? "Reels" : "Popular"} Sounds
               </Button>
             </TabsContent>
