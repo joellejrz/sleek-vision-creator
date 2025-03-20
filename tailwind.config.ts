@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,20 +62,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))"
         },
-        // Custom colors based on the design spec
+        // Custom colors - updated for light modern aesthetic
         deep: {
-          blue: "#1E3A5F",
-          teal: "#197278",
+          blue: "#4A80F0", // Updated to a lighter blue
+          teal: "#4CC1B0", // More vibrant teal
         },
         soft: {
-          emerald: "#6ECBA4",
-          dark: "#2D937D",
-          teal: "#3AB0A2",
+          emerald: "#63DBC1", // Lighter emerald
+          dark: "#4DB6A1", // Softer dark variant
+          teal: "#5AC4B9", // Lighter teal
         },
         accent: {
-          gold: "#F5C16C",
-          neon: "#00FF99",
-          dark: "#121212",
+          gold: "#F5CE6C", // Brighter gold
+          neon: "#7DE9C3", // Softer neon
+          dark: "#404040", // Lighter dark
         },
       },
       fontFamily: {
@@ -86,7 +85,9 @@ export default {
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)"
+        sm: "calc(var(--radius) - 4px)",
+        xl: "1.2rem",
+        "2xl": "1.5rem",
       },
       keyframes: {
         "accordion-down": {
@@ -150,9 +151,9 @@ export default {
         "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out"
       },
       backgroundImage: {
-        'gradient-primary': 'linear-gradient(to right, #1E3A5F, #197278)',
-        'gradient-secondary': 'linear-gradient(to right, #6ECBA4, #2D937D)',
-        'gradient-accent': 'linear-gradient(to right, #197278, #3AB0A2)',
+        'gradient-primary': 'linear-gradient(to right, #4A80F0, #4CC1B0)',
+        'gradient-secondary': 'linear-gradient(to right, #63DBC1, #4DB6A1)',
+        'gradient-accent': 'linear-gradient(to right, #4CC1B0, #5AC4B9)',
       }
     }
   },
