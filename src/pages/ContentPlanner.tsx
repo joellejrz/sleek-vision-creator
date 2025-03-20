@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -537,26 +538,26 @@ const ContentPlanner = () => {
         </TabsList>
         <TabsContent value="upcoming" className="space-y-4 mt-6">
           <Card className="transition-all hover:shadow-md">
-            <CardHeader>
-              <CardTitle>Upcoming Content</CardTitle>
-              <CardDescription>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Upcoming Content</CardTitle>
+              <CardDescription className="text-xs">
                 View and manage your scheduled and draft content
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {scheduledPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="border rounded-lg p-4 transition-all hover:shadow-sm"
+                    className="border rounded-lg p-2 md:p-3 transition-all hover:shadow-sm"
                   >
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <div className={`h-6 w-6 rounded-full ${(platformColors as any)[post.platform]} flex items-center justify-center text-white text-xs`}>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <div className={`h-4 w-4 md:h-5 md:w-5 rounded-full ${(platformColors as any)[post.platform]} flex items-center justify-center text-white text-[8px] md:text-xs`}>
                             {post.platform.charAt(0)}
                           </div>
-                          <span className="text-sm font-medium">{post.platform}</span>
+                          <span className="text-xs font-medium">{post.platform}</span>
                           <Badge
                             variant={
                               post.status === "scheduled"
@@ -565,28 +566,28 @@ const ContentPlanner = () => {
                                 ? "secondary"
                                 : "outline"
                             }
-                            className="capitalize"
+                            className="capitalize text-[8px] px-1.5 py-0"
                           >
                             {post.status}
                           </Badge>
                         </div>
-                        <h3 className="font-medium">{post.title}</h3>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <CalendarClock className="mr-1 h-4 w-4" />
+                        <h3 className="font-medium text-xs md:text-sm">{post.title}</h3>
+                        <div className="flex items-center text-[9px] md:text-xs text-muted-foreground">
+                          <CalendarClock className="mr-1 h-3 w-3" />
                           {post.date} at {post.time}
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-3">
                         <div className="flex flex-col items-center">
-                          <div className="text-sm font-medium">AI Score</div>
+                          <div className="text-[9px] md:text-xs font-medium">AI Score</div>
                           <div className="flex items-center">
-                            <Sparkles className="mr-1 h-4 w-4 text-accent-gold" />
-                            <span className={post.aiScore >= 85 ? "text-green-500" : post.aiScore >= 70 ? "text-yellow-500" : "text-red-500"}>
+                            <Sparkles className="mr-1 h-3 w-3 text-accent-gold" />
+                            <span className={`text-[10px] md:text-xs ${post.aiScore >= 85 ? "text-green-500" : post.aiScore >= 70 ? "text-yellow-500" : "text-red-500"}`}>
                               {post.aiScore}%
                             </span>
                           </div>
                         </div>
-                        <Button size="sm" variant="ghost">
+                        <Button size="sm" variant="ghost" className="h-6 text-[10px]">
                           Edit
                         </Button>
                       </div>
