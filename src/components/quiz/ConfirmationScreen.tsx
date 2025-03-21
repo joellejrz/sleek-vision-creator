@@ -20,9 +20,9 @@ interface ConfirmationScreenProps {
 const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({ archetype, onConfirm }) => {
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-      <Card className="w-full max-w-lg animate-scale-in">
+      <Card className="w-full max-w-lg animate-scale-in rounded-3xl border border-gray-100/50 bg-white/90 backdrop-blur-md">
         <CardHeader className="text-center">
-          <div className="mx-auto bg-accent/10 p-4 rounded-full mb-4">
+          <div className="mx-auto bg-accent/10 p-4 rounded-full mb-4 flex items-center justify-center">
             <Sparkles className="h-8 w-8 text-accent" />
           </div>
           <CardTitle className="text-2xl font-display mb-2">
@@ -32,10 +32,10 @@ const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({ archetype, onCo
             This is your moment. You're about to unlock a career path that fits your energy, skills & dream lifestyle.
           </CardDescription>
         </CardHeader>
-        <CardContent className="text-center pt-0">
+        <CardContent className="text-center pt-0 pb-6">
           <Button 
             size="lg" 
-            className="bg-gradient-primary mt-4" 
+            className="bg-gradient-to-r from-primary to-deep-blue text-white mt-4 rounded-full px-8 h-12 font-medium" 
             onClick={onConfirm}
           >
             Yes, unlock my {creatorArchetypes[archetype as ArchetypeKey]?.title || "Creator"} path!

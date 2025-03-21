@@ -148,18 +148,18 @@ const Onboarding = () => {
 
       {showExitPrompt && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-gradient-to-b from-[#1E234A]/90 to-[#401F71]/80 rounded-xl p-6 max-w-md shadow-xl border border-[#FF5EEA]/20 animate-scale-in backdrop-blur-lg">
+          <div className="bg-gradient-to-b from-[#1E234A]/90 to-[#401F71]/80 rounded-2xl p-6 max-w-md shadow-xl border border-[#FF5EEA]/20 animate-scale-in backdrop-blur-lg">
             <h2 className="text-xl font-bold mb-2 text-white tracking-wide">Wait! Don't abandon your content empire</h2>
             <p className="mb-4 text-white/80 tracking-wide">People who finish this quiz unlock their dream creator blueprint. Don't miss out.</p>
             <div className="flex gap-3">
               <button 
-                className="flex-1 py-2 px-4 rounded-lg bg-gradient-to-r from-[#FF5EEA] to-[#00FFFF] text-white font-medium hover:brightness-110 transition-all shadow-[0_0_15px_rgba(255,94,234,0.4)]"
+                className="flex-1 py-2 px-4 rounded-full bg-gradient-to-r from-[#FF5EEA] to-[#00FFFF] text-white font-medium hover:brightness-110 transition-all shadow-[0_0_15px_rgba(255,94,234,0.4)]"
                 onClick={() => setShowExitPrompt(false)}
               >
                 Stay & Unlock Success
               </button>
               <button 
-                className="py-2 px-4 rounded-lg border border-white/10 text-white/60 hover:bg-white/5 transition-all"
+                className="py-2 px-4 rounded-full border border-white/10 text-white/60 hover:bg-white/5 transition-all"
                 onClick={() => {
                   setShowExitPrompt(false);
                   navigate("/");

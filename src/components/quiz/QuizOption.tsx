@@ -11,14 +11,13 @@ interface QuizOptionProps {
 const QuizOption: React.FC<QuizOptionProps> = ({ option, onClick }) => {
   return (
     <div
-      className="w-full flex items-center space-x-4 p-4 bg-white rounded-2xl border border-gray-100
-                transition-all duration-300 hover:shadow-md cursor-pointer
-                transform hover:translate-y-[-2px] active:scale-[0.98] group"
+      className="w-full flex items-center space-x-4 p-3.5 bg-white rounded-2xl border border-gray-100/60
+                transition-all duration-300 hover:shadow-sm cursor-pointer
+                transform hover:translate-y-[-1px] active:scale-[0.98] group"
       onClick={onClick}
     >
-      <div className="flex-shrink-0 bg-primary/10 rounded-xl p-3 
-                     border border-primary/10 group-hover:border-primary/20 transition-colors duration-300
-                     shadow-sm">
+      <div className="flex-shrink-0 bg-primary/5 rounded-xl p-2.5 
+                     border border-primary/5 group-hover:border-primary/20 transition-colors duration-300">
         {option.icon || <Sparkles className="h-5 w-5 text-primary" />}
       </div>
       <div>
@@ -27,7 +26,7 @@ const QuizOption: React.FC<QuizOptionProps> = ({ option, onClick }) => {
           <p className="text-sm text-gray-600 font-medium tracking-wide">{option.description}</p>
         )}
         {option.subtext && (
-          <p className="text-xs text-gray-500 mt-1 font-medium tracking-wide">{option.subtext}</p>
+          <p className="text-xs text-gray-500 mt-0.5 font-medium tracking-wide">{option.subtext}</p>
         )}
       </div>
     </div>

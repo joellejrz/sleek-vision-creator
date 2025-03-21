@@ -30,7 +30,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
   const archetypeData = creatorArchetypes[archetype as ArchetypeKey];
 
   return (
-    <Card className="w-full max-w-3xl animate-scale-in relative overflow-hidden">
+    <Card className="w-full max-w-3xl animate-scale-in relative overflow-hidden rounded-3xl border border-gray-100/50 bg-white/90 backdrop-blur-md">
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4">
@@ -48,8 +48,8 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       )}
       
-      <CardHeader className="text-center pb-4 bg-gradient-to-r from-deep-teal to-soft-emerald rounded-b-3xl">
-        <div className="mx-auto bg-white/20 backdrop-blur-sm p-5 rounded-full mb-4 shadow-glow">
+      <CardHeader className="text-center pb-4 bg-gradient-to-r from-deep-teal to-soft-emerald rounded-b-[2rem]">
+        <div className="mx-auto bg-white/20 backdrop-blur-sm p-5 rounded-full mb-4 shadow-glow flex items-center justify-center">
           {archetypeData?.icon || <Sparkles className="h-10 w-10 text-white" />}
         </div>
         <CardTitle className="text-4xl font-display font-bold text-white mb-2">
@@ -64,7 +64,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       </CardHeader>
 
       <CardContent className="space-y-6 px-6 pt-6 pb-2">
-        <div className="bg-muted/30 border border-primary/10 rounded-xl p-5 shadow-glow-subtle">
+        <div className="bg-muted/20 border border-primary/5 rounded-xl p-5 shadow-glow-subtle">
           <h3 className="font-medium mb-2 text-lg text-gradient-primary">AI-Generated Insight</h3>
           <p className="text-muted-foreground">
             {archetypeData?.description || "You have a unique voice in the content creation world. Your authentic perspective matters."}
@@ -72,9 +72,9 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
         
         <Tabs defaultValue="roadmap" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="roadmap">Roadmap Preview</TabsTrigger>
-            <TabsTrigger value="share">Share Result</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 rounded-full bg-gray-100/80 p-0.5">
+            <TabsTrigger value="roadmap" className="rounded-full">Roadmap Preview</TabsTrigger>
+            <TabsTrigger value="share" className="rounded-full">Share Result</TabsTrigger>
           </TabsList>
           <TabsContent value="roadmap" className="mt-4">
             <div className="bg-gradient-to-br from-deep-blue/90 to-deep-teal/90 p-6 rounded-xl text-white">
@@ -102,7 +102,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
               </div>
               
               <Button 
-                className="w-full bg-gradient-to-r from-accent to-primary hover:opacity-90 transition-all shadow-glow-button"
+                className="w-full bg-gradient-to-r from-accent to-primary hover:opacity-90 transition-all shadow-glow-button rounded-full h-11"
                 onClick={onUpgrade}
               >
                 Unlock Your Full Roadmap
@@ -111,7 +111,7 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
           </TabsContent>
           
           <TabsContent value="share" className="mt-4">
-            <div className="bg-muted/30 p-6 rounded-xl border border-muted">
+            <div className="bg-muted/20 p-6 rounded-xl border border-muted/50">
               <h3 className="font-medium mb-4 text-lg flex items-center gap-2">
                 <Share2 className="h-5 w-5 text-primary" /> Share Your Creator Archetype
               </h3>
@@ -139,7 +139,11 @@ const ResultScreen: React.FC<ResultScreenProps> = ({
       </CardContent>
       
       <CardFooter className="flex justify-center pt-2 pb-6">
-        <Button variant="outline" onClick={onContinue} className="hover:bg-muted transition-colors">
+        <Button 
+          variant="outline" 
+          onClick={onContinue} 
+          className="hover:bg-muted transition-colors rounded-full px-6"
+        >
           Continue with Free Plan
         </Button>
       </CardFooter>
