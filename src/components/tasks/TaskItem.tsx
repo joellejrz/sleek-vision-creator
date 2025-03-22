@@ -75,7 +75,7 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
     <div 
       className={`rounded-lg p-4 mb-2 hover:shadow-md transition-all cursor-pointer ${
         expanded ? 'shadow-md' : ''
-      } ${task.completed ? 'bg-slate-100 text-slate-500' : 'bg-white'}`}
+      } ${task.completed ? 'bg-muted text-muted-foreground' : 'bg-card text-card-foreground dark:bg-card dark:text-card-foreground'}`}
       onClick={toggleExpand}
     >
       <div className="flex items-start gap-3">

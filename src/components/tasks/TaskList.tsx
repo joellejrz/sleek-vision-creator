@@ -23,7 +23,7 @@ const TaskList = ({
   viewMode = "feed",
 }: TaskListProps) => {
   return (
-    <Card>
+    <Card className="border dark:border-slate-700">
       <CardHeader className="pb-3">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
