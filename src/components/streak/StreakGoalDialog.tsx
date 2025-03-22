@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Flame, Rocket, Lock, CheckCircle2 } from "lucide-react";
+import { Sparkles, Brain, Zap, Wave, Rocket, Lock, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface StreakGoalDialogProps {
@@ -47,25 +47,41 @@ const StreakGoalDialog = ({
     {
       days: 7,
       name: "7-Day Spark",
-      description: "Perfect for a quick boost!",
+      description: "Your first streak, let's get you hooked!",
       icon: <Sparkles className="h-4 w-4 text-accent-gold" />,
       requiredStreak: 0,
-      detailedDescription: "Short, achievable intro goal. Motivates quick wins to build initial momentum."
+      detailedDescription: "Initial quick win to get momentum rolling. Perfect for building initial confidence."
     },
     {
       days: 21,
       name: "21-Day Habit Builder",
-      description: "Rewire your brain!",
-      icon: <Flame className="h-4 w-4 text-orange-400" />,
+      description: "Make consistency second nature.",
+      icon: <Brain className="h-4 w-4 text-orange-400" />,
       requiredStreak: 7,
       detailedDescription: "21 days creates a new habit by literally rewiring your brain. Based on neuroscientific research, this period helps solidify neural pathways."
     },
     {
+      days: 30,
+      name: "30-Day Power Streak",
+      description: "One month down, unstoppable creativity ahead!",
+      icon: <Zap className="h-4 w-4 text-yellow-500" />,
+      requiredStreak: 21,
+      detailedDescription: "Solidifies habit after the initial 21-day milestone. A full month of consistent action builds tremendous confidence."
+    },
+    {
+      days: 60,
+      name: "60-Day Deep Dive",
+      description: "Two months strong—you're killing it!",
+      icon: <Wave className="h-4 w-4 text-blue-500" />,
+      requiredStreak: 30,
+      detailedDescription: "Sustained consistency for deeper habit integration. At this point, your habit is becoming deeply ingrained in your daily routine."
+    },
+    {
       days: 90,
       name: "90-Day Lifestyle Lock",
-      description: "Make it second nature!",
+      description: "Officially part of your lifestyle now!",
       icon: <Rocket className="h-4 w-4 text-primary" />,
-      requiredStreak: 21,
+      requiredStreak: 60,
       detailedDescription: "90 days transforms your new habit into an automatic lifestyle. Neural pathways significantly strengthen after ~3 months of consistent behavior."
     }
   ];
@@ -96,6 +112,8 @@ const StreakGoalDialog = ({
           title: `Unlocked: ${selectedGoalOption.name}!`,
           description: `🎉 You've set a ${selectedGoal}-day streak goal. ${
             selectedGoal === 21 ? "Time to rewire your brain!" : 
+            selectedGoal === 30 ? "A full month of consistency ahead!" :
+            selectedGoal === 60 ? "Going deep with your habit!" :
             selectedGoal === 90 ? "Transform this habit into your lifestyle!" : 
             "Let's build some momentum!"
           }`,
@@ -180,7 +198,7 @@ const StreakGoalDialog = ({
 
           <div className="rounded-lg bg-muted p-3">
             <div className="flex items-center gap-2">
-              <Flame className="h-4 w-4 text-orange-400" />
+              <Sparkles className="h-4 w-4 text-orange-400" />
               <span className="text-sm font-medium">Current streak: {currentStreak} days</span>
             </div>
           </div>

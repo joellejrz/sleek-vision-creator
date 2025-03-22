@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   progressColor?: string;
-  goalType?: "spark" | "habit" | "lifestyle" | "custom";
+  goalType?: "spark" | "habit" | "power" | "deep" | "lifestyle" | "custom";
 }
 
 const Progress = React.forwardRef<
@@ -23,6 +23,12 @@ const Progress = React.forwardRef<
         break;
       case "habit":
         colorClass = "from-orange-400 to-red-500";
+        break;
+      case "power":
+        colorClass = "from-yellow-400 to-yellow-600";
+        break;
+      case "deep":
+        colorClass = "from-blue-400 to-blue-600";
         break;
       case "lifestyle":
         colorClass = "from-primary to-indigo-500";
