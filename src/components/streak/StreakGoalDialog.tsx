@@ -62,6 +62,16 @@ const StreakGoalDialog = ({
     return "Streak Goals";
   };
 
+  // Get the progress message based on current streak
+  const getProgressMessage = () => {
+    if (currentStreak >= 90) return "You've mastered the lifestyle change!";
+    if (currentStreak >= 60) return `Just ${90 - currentStreak} more days to reach the 90-Day Lifestyle Lock!`;
+    if (currentStreak >= 30) return `Just ${60 - currentStreak} more days to reach the 60-Day Deep Dive!`;
+    if (currentStreak >= 21) return `Just ${30 - currentStreak} more days to reach the 30-Day Power Streak!`;
+    if (currentStreak >= 7) return `Just ${21 - currentStreak} more days to reach the 21-Day Habit Builder!`;
+    return `${7 - currentStreak} more days to reach the 7-Day Spark!`;
+  };
+
   useEffect(() => {
     // Reset selected goal when dialog opens
     if (open) {
@@ -126,7 +136,10 @@ const StreakGoalDialog = ({
           </div>
         </div>
 
-        <CurrentStreakIndicator currentStreak={currentStreak} />
+        <CurrentStreakIndicator 
+          currentStreak={currentStreak} 
+          progressMessage={getProgressMessage()}
+        />
       </div>
     </>
   );
