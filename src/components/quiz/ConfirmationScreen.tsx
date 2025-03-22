@@ -19,7 +19,7 @@ interface ConfirmationScreenProps {
 
 const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({ archetype, onConfirm }) => {
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+    <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
       <Card className="w-full max-w-lg animate-scale-in rounded-3xl border border-gray-100/50 bg-white/90 backdrop-blur-md">
         <CardHeader className="text-center">
           <div className="mx-auto bg-accent/10 p-4 rounded-full mb-4 flex items-center justify-center">
