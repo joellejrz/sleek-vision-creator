@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useTheme } from "./theme-provider";
@@ -6,8 +7,9 @@ import Sidebar from "./Sidebar";
 import MobileNavigation from "./MobileNavigation";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Menu, Sparkles } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import QuickAddDrawer from "./QuickAddDrawer";
 
 const Layout = () => {
   const { theme } = useTheme();
@@ -77,20 +79,14 @@ const Layout = () => {
           )}
           
           <div className={`max-w-7xl mx-auto ${isPageLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-            {/* Quick AI assistant shortcut - smaller on mobile */}
-            <Button 
-              variant="outline"
-              className="fixed bottom-20 md:bottom-4 right-4 z-50 shadow-md rounded-full p-1.5 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none hover:from-indigo-600 hover:to-purple-600"
-            >
-              <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4" />
-              <span className="hidden md:inline text-xs md:text-sm">AI Assistant</span>
-            </Button>
-            
             <Outlet />
           </div>
         </main>
       </div>
       <MobileNavigation />
+      
+      {/* Quick Add Drawer - accessible on all pages */}
+      <QuickAddDrawer />
     </div>
   );
 };

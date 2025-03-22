@@ -14,13 +14,14 @@ import {
 import { toast } from "sonner";
 import { format } from "date-fns";
 
-// Import our new components
+// Import our components
 import UpcomingContent from "@/components/content-planner/UpcomingContent";
 import AISuggestions from "@/components/content-planner/AISuggestions";
 import ContentCalendar from "@/components/content-planner/ContentCalendar";
 import TrendingSounds from "@/components/content-planner/TrendingSounds";
 import { TopicSelector } from "@/components/content-planner/TopicSelector";
 import ContentCreationForm from "@/components/content-planner/ContentCreationForm";
+import { getContentIdeas } from "@/components/QuickAddDrawer";
 
 // Constants and data
 const upcomingPosts = [
@@ -91,12 +92,20 @@ const ContentPlanner = () => {
   const [showTopicSelector, setShowTopicSelector] = useState(true);
   const [showContentForm, setShowContentForm] = useState(false);
   const [scheduledPosts, setScheduledPosts] = useState<any[]>(upcomingPosts);
+  const [quickIdeas, setQuickIdeas] = useState<any[]>([]);
+  const [showQuickIdeasDialog, setShowQuickIdeasDialog] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoaded(true);
     }, 100);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Load quick ideas when component mounts
+  useEffect(() => {
+    const ideas = getContentIdeas();
+    setQuickIdeas(ideas);
   }, []);
 
   const handleContentTypeChange = (value: string) => {
@@ -152,6 +161,14 @@ const ContentPlanner = () => {
     setOpenDialog(true);
   };
 
+  const handleQuickIdeaSelect = (idea: any) => {
+    setSelectedTopic(idea.title);
+    setShowTopicSelector(false);
+    setShowContentForm(true);
+    setShowQuickIdeasDialog(false);
+    setOpenDialog(true);
+  };
+
   return (
     <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -180,6 +197,18 @@ const ContentPlanner = () => {
                 </DialogDescription>
               </DialogHeader>
               
+              {quickIdeas.length > 0 && showTopicSelector && (
+                <div className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 dark:border-blue-900">
+                  <h3 className="font-medium mb-2">Quick Ideas Available</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    You have {quickIdeas.length} quick ideas saved. Would you like to use one of them?
+                  </p>
+                  <Button variant="outline" onClick={() => setShowQuickIdeasDialog(true)}>
+                    View Saved Ideas
+                  </Button>
+                </div>
+              )}
+              
               {showTopicSelector && (
                 <TopicSelector onTopicSelect={handleTopicSelect} />
               )}
@@ -195,6 +224,45 @@ const ContentPlanner = () => {
                   }}
                 />
               )}
+            </DialogContent>
+          </Dialog>
+          
+          {/* Dialog for quick ideas */}
+          <Dialog open={showQuickIdeasDialog} onOpenChange={setShowQuickIdeasDialog}>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle>Your Quick Ideas</DialogTitle>
+                <DialogDescription>
+                  Select an idea to start creating content
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-3 py-2 max-h-[50vh] overflow-y-auto">
+                {quickIdeas.map((idea) => (
+                  <div 
+                    key={idea.id} 
+                    className="p-3 border rounded-lg hover:bg-accent/50 cursor-pointer transition-colors"
+                    onClick={() => handleQuickIdeaSelect(idea)}
+                  >
+                    <h4 className="font-medium">{idea.title}</h4>
+                    {idea.description && (
+                      <p className="text-sm text-muted-foreground mt-1">{idea.description}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Added on {new Date(idea.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+                
+                {quickIdeas.length === 0 && (
+                  <div className="text-center p-6">
+                    <p className="text-muted-foreground">No quick ideas saved yet.</p>
+                    <p className="text-sm mt-2">
+                      Use the + button on any page to quickly add content ideas.
+                    </p>
+                  </div>
+                )}
+              </div>
             </DialogContent>
           </Dialog>
         </div>
