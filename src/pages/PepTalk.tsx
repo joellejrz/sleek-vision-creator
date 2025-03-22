@@ -107,6 +107,21 @@ const PepTalk = () => {
     return "Start Your Streak";
   };
 
+  const getNextStreakTarget = () => {
+    if (streakData.current < 7) return 7;
+    if (streakData.current < 21) return 21;
+    if (streakData.current < 30) return 30;
+    if (streakData.current < 60) return 60;
+    if (streakData.current < 90) return 90;
+    return 90; // Already at max
+  };
+
+  const getStreakProgressMessage = () => {
+    const nextTarget = getNextStreakTarget();
+    if (streakData.current >= 90) return "You've mastered the lifestyle change!";
+    return `${nextTarget - streakData.current} more days to ${nextTarget}-Day milestone`;
+  };
+
   const handleSetStreakGoal = (days: number) => {
     setStreakData(prev => ({
       ...prev,
@@ -273,9 +288,12 @@ const PepTalk = () => {
                   <div className="flex-1">
                     <div className="flex justify-between mb-1">
                       <span className="text-sm font-medium">Current Streak</span>
-                      <span className="text-sm">{streakData.current}/{streakData.target} days</span>
+                      <span className="text-sm">{streakData.current}/{getNextStreakTarget()} days</span>
                     </div>
-                    <Progress value={streakData.percentage} className="h-2.5" />
+                    <Progress 
+                      value={(streakData.current / getNextStreakTarget()) * 100} 
+                      className="h-2.5" 
+                    />
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
@@ -283,7 +301,7 @@ const PepTalk = () => {
                     <Zap className="mr-2 h-5 w-5 text-accent-gold" />
                     <span className="font-medium">{streakData.current} Day Streak</span>
                   </div>
-                  <Badge variant="outline">Keep Going!</Badge>
+                  <Badge variant="outline">{getStreakProgressMessage()}</Badge>
                 </div>
                 <Button 
                   variant="outline" 

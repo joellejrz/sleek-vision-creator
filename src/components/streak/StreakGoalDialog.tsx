@@ -52,6 +52,16 @@ const StreakGoalDialog = ({
     locked: goal.requiredStreak > currentStreak
   }));
 
+  // Get the next target based on current streak
+  const getNextStreakTarget = () => {
+    if (currentStreak < 7) return 7;
+    if (currentStreak < 21) return 21;
+    if (currentStreak < 30) return 30;
+    if (currentStreak < 60) return 60;
+    if (currentStreak < 90) return 90;
+    return 90; // Already at max
+  };
+
   // Get the title based on current streak
   const getStreakTitle = () => {
     if (currentStreak >= 90) return "90 Day Lifestyle Change";
@@ -64,6 +74,7 @@ const StreakGoalDialog = ({
 
   // Get the progress message based on current streak
   const getProgressMessage = () => {
+    const nextTarget = getNextStreakTarget();
     if (currentStreak >= 90) return "You've mastered the lifestyle change!";
     if (currentStreak >= 60) return `Just ${90 - currentStreak} more days to reach the 90-Day Lifestyle Lock!`;
     if (currentStreak >= 30) return `Just ${60 - currentStreak} more days to reach the 60-Day Deep Habit!`;
