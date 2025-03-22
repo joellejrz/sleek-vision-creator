@@ -11,6 +11,7 @@ import {
   Image,
   TrendingUp
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Subtask {
   text: string;
@@ -48,6 +49,7 @@ interface TaskItemProps {
 
 const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
   const [expanded, setExpanded] = useState(false);
+  const isMobile = useIsMobile();
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -56,16 +58,16 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
   const priorityToIcon = (priority: string) => {
     switch(priority) {
       case "high":
-        return <Badge variant="destructive" className="capitalize flex items-center gap-1">
-          <TrendingUp className="h-3 w-3" />
+        return <Badge variant="destructive" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
+          <TrendingUp className={`${isMobile ? 'h-2 w-2' : 'h-3 w-3'} mr-0.5`} />
           {priority}
         </Badge>;
       case "medium":
-        return <Badge variant="default" className="capitalize flex items-center gap-1">
+        return <Badge variant="default" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
           {priority}
         </Badge>;
       default:
-        return <Badge variant="secondary" className="capitalize flex items-center gap-1">
+        return <Badge variant="secondary" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
           {priority}
         </Badge>;
     }
@@ -73,74 +75,75 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
 
   return (
     <div 
-      className={`rounded-lg p-4 mb-2 hover:shadow-md transition-all cursor-pointer ${
+      className={`rounded-lg p-2 sm:p-4 mb-2 hover:shadow-md transition-all cursor-pointer ${
         expanded ? 'shadow-md' : ''
       } ${task.completed ? 'bg-muted text-muted-foreground' : 'bg-card text-card-foreground dark:bg-card dark:text-card-foreground'}`}
       onClick={toggleExpand}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2 sm:gap-3">
         <div className="mt-1" onClick={(e) => e.stopPropagation()}>
           <Checkbox
             checked={task.completed}
             onCheckedChange={() => onToggleComplete(task.id)}
             id={`task-${task.id}`}
+            className="w-3.5 h-3.5 sm:w-4 sm:h-4"
           />
         </div>
         
-        <div className="space-y-1 flex-1">
+        <div className="space-y-0.5 sm:space-y-1 flex-1 min-w-0">
           <div className="flex items-center justify-between">
             <label
               htmlFor={`task-${task.id}`}
-              className={`font-medium text-base ${task.completed ? 'line-through text-muted-foreground' : ''}`}
+              className={`font-medium text-sm sm:text-base truncate ${task.completed ? 'line-through text-muted-foreground' : ''}`}
             >
               {task.title}
               {task.aiSuggested && (
-                <Badge variant="outline" className="ml-2">
-                  <Sparkles className="mr-1 h-3 w-3 text-amber-400" />
+                <Badge variant="outline" className="ml-1 text-[0.6rem] sm:text-xs px-1 sm:px-2 py-0">
+                  <Sparkles className="mr-0.5 h-2 w-2 sm:h-3 sm:w-3 text-amber-400" />
                   AI
                 </Badge>
               )}
             </label>
             
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 shrink-0 ml-1">
               {priorityToIcon(task.priority)}
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className="h-6 w-6 sm:h-8 sm:w-8 p-0"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDeleteTask(task.id);
                 }}
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="sr-only">Delete task</span>
               </Button>
             </div>
           </div>
           
           {task.description && (
-            <p className="text-sm text-muted-foreground">{task.description}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{task.description}</p>
           )}
           
           {task.imageSrc && expanded && (
-            <div className="rounded-md overflow-hidden my-2">
+            <div className="rounded-md overflow-hidden my-1 sm:my-2">
               <img 
                 src={task.imageSrc} 
                 alt={`${task.title} preview`} 
-                className="w-full h-32 object-cover"
+                className="w-full h-20 sm:h-32 object-cover"
               />
             </div>
           )}
           
           {expanded && (
-            <div className="flex gap-2 mt-2">
-              <Button variant="outline" size="sm" className="text-xs">
-                <MessageCircle className="h-3 w-3 mr-1" />
+            <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2">
+              <Button variant="outline" size="sm" className="text-[0.65rem] sm:text-xs h-6 sm:h-8 px-2">
+                <MessageCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                 Add Comment
               </Button>
-              <Button variant="outline" size="sm" className="text-xs">
-                <Image className="h-3 w-3 mr-1" />
+              <Button variant="outline" size="sm" className="text-[0.65rem] sm:text-xs h-6 sm:h-8 px-2">
+                <Image className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                 Add Image
               </Button>
             </div>

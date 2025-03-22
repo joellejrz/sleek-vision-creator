@@ -24,13 +24,13 @@ const TaskList = ({
 }: TaskListProps) => {
   return (
     <Card className="border dark:border-slate-700">
-      <CardHeader className="pb-3">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+      <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
+        <CardTitle className="text-lg sm:text-2xl">{title}</CardTitle>
+        <CardDescription className="text-xs sm:text-sm">{description}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3 sm:p-6 pt-0">
         {tasks.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-4 sm:py-8 text-muted-foreground text-sm">
             <p>{emptyMessage}</p>
           </div>
         ) : (
