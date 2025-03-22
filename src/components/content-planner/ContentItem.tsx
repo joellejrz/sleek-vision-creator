@@ -64,13 +64,13 @@ const ContentItem = ({ post, platformColors, onEditClick, onDeleteClick }: Conte
               Edit
             </Button>
             <Button 
-              size="sm" 
+              size="icon" 
               variant="ghost" 
-              className="h-6 text-[10px] text-destructive hover:text-destructive hover:bg-destructive/10"
+              className="h-6 w-6 text-destructive hover:text-destructive hover:bg-destructive/10"
               onClick={() => onDeleteClick(post.id)}
+              title="Delete content"
             >
-              <Trash2 className="mr-1 h-3 w-3" />
-              Delete
+              <Trash2 className="h-3 w-3" />
             </Button>
           </div>
         </div>
