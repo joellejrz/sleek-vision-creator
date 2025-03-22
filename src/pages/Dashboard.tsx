@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import CreatorMetricsOverview from "@/components/CreatorMetricsOverview";
 import { useIsMobile } from "@/hooks/use-mobile";
+import PinterestSuggestions from "@/components/dashboard/PinterestSuggestions";
 
 const data = [
   { name: "Mon", engagement: 1000, reach: 4000 },
@@ -230,6 +231,8 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      <PinterestSuggestions />
 
       <Card className="transition-all hover:shadow-md">
         <CardHeader className="pb-2 md:pb-6">
