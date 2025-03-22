@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -44,6 +43,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { DialogFooter } from "@/components/ui/dialog";
+import { SocialMediaIcon } from "./SocialMediaIcons";
 
 interface ContentCreationFormProps {
   selectedTopic: string;
@@ -149,12 +149,42 @@ const ContentCreationForm = ({
                   <SelectValue placeholder="Select platform" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="instagram">🟣 Instagram</SelectItem>
-                  <SelectItem value="tiktok">🎵 TikTok</SelectItem>
-                  <SelectItem value="youtube">🔴 YouTube</SelectItem>
-                  <SelectItem value="twitter">🟠 X/Threads</SelectItem>
-                  <SelectItem value="linkedin">📊 LinkedIn</SelectItem>
-                  <SelectItem value="pinterest">📌 Pinterest</SelectItem>
+                  <SelectItem value="instagram" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <SocialMediaIcon platform="Instagram" className="h-4 w-4 text-pink-600" />
+                      <span>Instagram</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="tiktok" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <SocialMediaIcon platform="TikTok" className="h-4 w-4" />
+                      <span>TikTok</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="youtube" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-red-600">🔴</span>
+                      <span>YouTube</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="twitter" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <SocialMediaIcon platform="X" className="h-4 w-4" />
+                      <span>X (Twitter)</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="linkedin" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-blue-600">📊</span>
+                      <span>LinkedIn</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="pinterest" className="flex items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <SocialMediaIcon platform="Pinterest" className="h-4 w-4 text-red-600" />
+                      <span>Pinterest</span>
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>

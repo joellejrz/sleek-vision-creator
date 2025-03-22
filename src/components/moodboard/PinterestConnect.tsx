@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { ExternalLink, Pin, Share, LinkIcon, ImagePlus } from "lucide-react";
+import { ExternalLink, Share, LinkIcon, ImagePlus } from "lucide-react";
+import { SocialMediaIcon } from "../content-planner/SocialMediaIcons";
 
 const PinterestConnect = () => {
   const [isConnected, setIsConnected] = useState(false);
@@ -86,7 +87,7 @@ const PinterestConnect = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-green-50 dark:bg-green-950 rounded-md border border-green-200 dark:border-green-900">
                 <div className="flex items-center gap-3">
-                  <Pin className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <SocialMediaIcon platform="Pinterest" className="h-5 w-5 text-green-600 dark:text-green-400" />
                   <div>
                     <p className="font-medium">Connected to Pinterest</p>
                     <p className="text-sm text-muted-foreground">{pinterestUrl}</p>
@@ -125,14 +126,14 @@ const PinterestConnect = () => {
                     Share to Board
                   </Button>
                   <Button variant="outline" className="gap-2">
-                    <Pin className="h-4 w-4" />
+                    <SocialMediaIcon platform="Pinterest" className="h-4 w-4" />
                     Create Pin
                   </Button>
                 </div>
               </>
             ) : (
               <div className="flex flex-col items-center justify-center p-6 text-center">
-                <Pin className="h-10 w-10 text-muted-foreground mb-4" />
+                <SocialMediaIcon platform="Pinterest" className="h-10 w-10 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">Connect to Share</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Connect your Pinterest account to enable sharing capabilities.

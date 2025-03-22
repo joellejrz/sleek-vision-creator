@@ -6,6 +6,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { format } from "date-fns";
+import { SocialMediaIcon, getPlatformColorClass } from "./SocialMediaIcons";
 
 interface Post {
   id: number;
@@ -86,7 +87,7 @@ const ContentCalendar = ({ scheduledPosts, platformColors, onAddContent }: Conte
                         <div>
                           <div className="flex items-center gap-2">
                             <div className={`h-5 w-5 rounded-full ${platformColors[post.platform]} flex items-center justify-center text-white text-xs`}>
-                              {post.platform.charAt(0)}
+                              <SocialMediaIcon platform={post.platform} className="w-3.5 h-3.5" />
                             </div>
                             <span className="font-medium">{post.title}</span>
                           </div>

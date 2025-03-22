@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Instagram, Pin, Share2, ArrowRight } from "lucide-react";
+import { Instagram, Share2, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { 
   Carousel, 
@@ -10,6 +10,7 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from "@/components/ui/carousel";
+import { SocialMediaIcon } from "../content-planner/SocialMediaIcons";
 
 interface PinterestSuggestion {
   id: string;
@@ -86,7 +87,7 @@ const PinterestSuggestions = () => {
                       className="w-full h-full object-cover transition-transform hover:scale-105"
                     />
                     <div className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm p-1 rounded-full">
-                      <Pin className="h-3 w-3 text-rose-500" />
+                      <SocialMediaIcon platform="Pinterest" className="h-3 w-3 text-rose-500" />
                     </div>
                   </div>
                   <div className="p-3">

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { SocialMediaIcon, getPlatformColorClass } from "./SocialMediaIcons";
 
 interface Post {
   id: number;
@@ -23,9 +24,10 @@ interface Post {
 interface UpcomingContentProps {
   posts: Post[];
   platformColors: Record<string, string>;
+  onAddContent: () => void;
 }
 
-const UpcomingContent = ({ posts, platformColors }: UpcomingContentProps) => {
+const UpcomingContent = ({ posts, platformColors, onAddContent }: UpcomingContentProps) => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
@@ -77,7 +79,7 @@ const UpcomingContent = ({ posts, platformColors }: UpcomingContentProps) => {
                   <div className="space-y-1">
                     <div className="flex items-center gap-1.5">
                       <div className={`h-4 w-4 md:h-5 md:w-5 rounded-full ${platformColors[post.platform]} flex items-center justify-center text-white text-[8px] md:text-xs`}>
-                        {post.platform.charAt(0)}
+                        <SocialMediaIcon platform={post.platform} className="w-3 h-3 md:w-3.5 md:h-3.5" />
                       </div>
                       <span className="text-xs font-medium">{post.platform}</span>
                       <Badge
@@ -157,8 +159,9 @@ const UpcomingContent = ({ posts, platformColors }: UpcomingContentProps) => {
                   <SelectItem value="Instagram">Instagram</SelectItem>
                   <SelectItem value="LinkedIn">LinkedIn</SelectItem>
                   <SelectItem value="TikTok">TikTok</SelectItem>
-                  <SelectItem value="Twitter">Twitter</SelectItem>
+                  <SelectItem value="Twitter">X (Twitter)</SelectItem>
                   <SelectItem value="Facebook">Facebook</SelectItem>
+                  <SelectItem value="Pinterest">Pinterest</SelectItem>
                 </SelectContent>
               </Select>
             </div>
