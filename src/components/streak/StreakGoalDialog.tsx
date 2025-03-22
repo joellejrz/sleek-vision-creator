@@ -14,6 +14,15 @@ import { useToast } from "@/hooks/use-toast";
 import { GoalCard } from "./GoalCard";
 import { CurrentStreakIndicator } from "./CurrentStreakIndicator";
 import { useStreakGoalOptions } from "./useStreakGoalOptions";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { 
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 
 interface StreakGoalDialogProps {
   open: boolean;
@@ -32,6 +41,7 @@ const StreakGoalDialog = ({
 }: StreakGoalDialogProps) => {
   const { toast } = useToast();
   const [selectedGoal, setSelectedGoal] = useState<number | null>(null);
+  const isMobile = useIsMobile();
   
   // Import goal options from hook
   const goalOptions = useStreakGoalOptions();
@@ -88,9 +98,61 @@ const StreakGoalDialog = ({
     setSelectedGoal(days);
   };
 
+  const GoalContent = () => (
+    <>
+      <div className="space-y-4 py-2">
+        <div className="space-y-2">
+          <Label className="text-sm text-muted-foreground">Goal Levels</Label>
+          <div className="grid grid-cols-1 gap-3 max-h-[60vh] overflow-y-auto pr-1">
+            {processedGoalOptions.map((goal) => (
+              <GoalCard
+                key={goal.days}
+                goal={goal}
+                isSelected={selectedGoal === goal.days}
+                isCurrentGoal={currentGoal === goal.days}
+                onSelect={() => handleSelectGoal(goal.days, goal.locked)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <CurrentStreakIndicator currentStreak={currentStreak} />
+      </div>
+    </>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent className="px-4 pb-6">
+          <DrawerHeader className="px-0">
+            <DrawerTitle className="flex items-center gap-2 text-xl">
+              <span className="text-accent-gold">🏆</span>
+              Set Your Streak Goal!
+            </DrawerTitle>
+            <DrawerDescription>
+              Start with a 7-day goal, then unlock more challenging levels as you progress!
+            </DrawerDescription>
+          </DrawerHeader>
+          
+          <GoalContent />
+
+          <DrawerFooter className="px-0 gap-2">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSetGoal} disabled={!selectedGoal}>
+              Set Goal
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[450px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <span className="text-accent-gold">🏆</span>
@@ -101,26 +163,9 @@ const StreakGoalDialog = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-4 py-2">
-          <div className="space-y-2">
-            <Label className="text-sm text-muted-foreground">Goal Levels</Label>
-            <div className="grid grid-cols-1 gap-3">
-              {processedGoalOptions.map((goal) => (
-                <GoalCard
-                  key={goal.days}
-                  goal={goal}
-                  isSelected={selectedGoal === goal.days}
-                  isCurrentGoal={currentGoal === goal.days}
-                  onSelect={() => handleSelectGoal(goal.days, goal.locked)}
-                />
-              ))}
-            </div>
-          </div>
+        <GoalContent />
 
-          <CurrentStreakIndicator currentStreak={currentStreak} />
-        </div>
-
-        <DialogFooter className="gap-2 sm:gap-0">
+        <DialogFooter className="gap-2 sm:gap-0 mt-4">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
