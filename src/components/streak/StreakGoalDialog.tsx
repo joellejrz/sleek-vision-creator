@@ -9,11 +9,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { GoalCard } from "./GoalCard";
-import { CurrentStreakIndicator } from "./CurrentStreakIndicator";
-import { useStreakGoalOptions } from "./useStreakGoalOptions";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   Drawer,
@@ -23,6 +19,9 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
+import { GoalCardsContainer } from "./GoalCardsContainer";
+import { CurrentStreakIndicator } from "./CurrentStreakIndicator";
+import { useStreakTitles } from "./useStreakTitles";
 
 interface StreakGoalDialogProps {
   open: boolean;
@@ -43,57 +42,11 @@ const StreakGoalDialog = ({
   const [selectedGoal, setSelectedGoal] = useState<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Import goal options from hook
-  const goalOptions = useStreakGoalOptions();
-  
-  // Check which goals should be locked based on current streak
-  const processedGoalOptions = goalOptions.map(goal => ({
-    ...goal,
-    locked: goal.requiredStreak > currentStreak
-  }));
-
-  // Get the next target based on current streak
-  const getNextStreakTarget = () => {
-    if (currentStreak < 7) return 7;
-    if (currentStreak < 21) return 21;
-    if (currentStreak < 30) return 30;
-    if (currentStreak < 60) return 60;
-    if (currentStreak < 90) return 90;
-    return 90; // Already at max
-  };
-
-  // Get the title based on current streak
-  const getStreakTitle = () => {
-    if (currentStreak >= 90) return "90 Day Lifestyle Change";
-    if (currentStreak >= 60) return "60 Day Deep Habit";
-    if (currentStreak >= 30) return "30 Day Challenge";
-    if (currentStreak >= 21) return "21 Day Habit Builder";
-    if (currentStreak >= 7) return "7 Day Spark";
-    return "Building Your Streak";
-  };
-
-  // Get the progress message based on current streak
-  const getProgressMessage = () => {
-    const nextTarget = getNextStreakTarget();
-    
-    if (currentStreak >= 90) return "You've mastered the lifestyle change!";
-    if (currentStreak >= 60) return `Building towards 90-Day Lifestyle (${90 - currentStreak} more days)`;
-    if (currentStreak >= 30) return `Building towards 60-Day Deep Dive (${60 - currentStreak} more days)`;
-    if (currentStreak >= 21) return `Building towards 30-Day Power Streak (${30 - currentStreak} more days)`;
-    if (currentStreak >= 7) return `Building towards 21-Day Habit Builder (${21 - currentStreak} more days)`;
-    return `Building towards 7-Day Spark (${7 - currentStreak} more days)`;
-  };
-
-  // Get the current streak status message
-  const getStreakStatusMessage = () => {
-    if (currentStreak >= 90) return "90-Day Lifestyle Change";
-    if (currentStreak >= 60) return "60-Day Deep Habit";
-    if (currentStreak >= 30) return "30-Day Challenge";
-    if (currentStreak >= 21) return "21-Day Habit Builder";
-    if (currentStreak >= 7) return "7-Day Spark";
-    if (currentStreak > 0) return `Building towards 7-Day Spark`;
-    return "Start Your Streak";
-  };
+  const { 
+    getStreakTitle, 
+    getProgressMessage, 
+    getStreakStatusMessage 
+  } = useStreakTitles(currentStreak);
 
   useEffect(() => {
     // Reset selected goal when dialog opens
@@ -104,67 +57,24 @@ const StreakGoalDialog = ({
 
   const handleSetGoal = () => {
     if (selectedGoal) {
-      // Predefined goal
       onSetGoal(selectedGoal);
       onOpenChange(false);
-
-      // Show celebration toast based on goal level
-      const selectedGoalOption = goalOptions.find(g => g.days === selectedGoal);
-      if (selectedGoalOption) {
-        toast({
-          title: `Unlocked: ${selectedGoalOption.name}!`,
-          description: `🎉 You've set a ${selectedGoal}-day streak goal. ${
-            selectedGoal === 21 ? "Time to rewire your brain!" : 
-            selectedGoal === 30 ? "A full month of consistency ahead!" :
-            selectedGoal === 60 ? "Going deep with your habit!" :
-            selectedGoal === 90 ? "Transform this habit into your lifestyle!" : 
-            "Let's build some momentum!"
-          }`,
-        });
-      }
     }
-  };
-
-  const handleSelectGoal = (days: number, locked: boolean | undefined) => {
-    if (locked) {
-      // Show a toast explaining why the goal is locked
-      const goal = processedGoalOptions.find(g => g.days === days);
-      if (goal) {
-        toast({
-          title: `Goal Locked`,
-          description: `Complete a ${goal.requiredStreak}-day streak first to unlock this level!`,
-          variant: "destructive",
-        });
-      }
-      return;
-    }
-    setSelectedGoal(days);
   };
 
   const GoalContent = () => (
-    <>
-      <div className="space-y-4 py-2">
-        <div className="space-y-2">
-          <Label className="text-sm text-muted-foreground">Goal Levels</Label>
-          <div className="grid grid-cols-1 gap-3 max-h-[60vh] overflow-y-auto pr-1">
-            {processedGoalOptions.map((goal) => (
-              <GoalCard
-                key={goal.days}
-                goal={goal}
-                isSelected={selectedGoal === goal.days}
-                isCurrentGoal={currentGoal === goal.days}
-                onSelect={() => handleSelectGoal(goal.days, goal.locked)}
-              />
-            ))}
-          </div>
-        </div>
-
-        <CurrentStreakIndicator 
-          currentStreak={currentStreak} 
-          progressMessage={getProgressMessage()}
-        />
-      </div>
-    </>
+    <div className="space-y-4 py-2">
+      <GoalCardsContainer 
+        currentStreak={currentStreak}
+        currentGoal={currentGoal}
+        selectedGoal={selectedGoal}
+        onSelectGoal={setSelectedGoal}
+      />
+      <CurrentStreakIndicator 
+        currentStreak={currentStreak} 
+        progressMessage={getProgressMessage()}
+      />
+    </div>
   );
 
   if (isMobile) {
