@@ -15,7 +15,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Sparkles, Plus } from "lucide-react";
+import { Sparkles, Plus, Link as LinkIcon } from "lucide-react";
 
 const STORAGE_KEY = "quick-content-ideas";
 
@@ -23,6 +23,7 @@ interface ContentIdea {
   id: string;
   title: string;
   description: string;
+  referenceLinks: string;
   createdAt: string;
 }
 
@@ -56,6 +57,7 @@ export const getContentIdeas = (): ContentIdea[] => {
 const QuickAddDrawer = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [referenceLinks, setReferenceLinks] = useState("");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -67,11 +69,12 @@ const QuickAddDrawer = () => {
     }
 
     // Save the idea
-    const savedIdea = saveContentIdea({ title, description });
+    const savedIdea = saveContentIdea({ title, description, referenceLinks });
     
     // Reset form and close drawer
     setTitle("");
     setDescription("");
+    setReferenceLinks("");
     setOpen(false);
     
     // Show success message
@@ -119,6 +122,17 @@ const QuickAddDrawer = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   className="min-h-[100px] w-full"
+                />
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <LinkIcon className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <Input
+                  placeholder="Reference links (TikTok, Instagram, etc.)"
+                  value={referenceLinks}
+                  onChange={(e) => setReferenceLinks(e.target.value)}
+                  className="pl-10 w-full"
                 />
               </div>
               <div className="bg-accent/50 p-3 rounded-lg">
