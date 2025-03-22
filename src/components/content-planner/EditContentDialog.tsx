@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Trash2 } from "lucide-react";
 import { Post } from "./types";
 
 interface EditContentDialogProps {
@@ -11,9 +12,10 @@ interface EditContentDialogProps {
   onOpenChange: (open: boolean) => void;
   post: Post | null;
   onSave: (postId: number, updatedPost: Partial<Post>) => void;
+  onDelete: (postId: number) => void;
 }
 
-const EditContentDialog = ({ open, onOpenChange, post, onSave }: EditContentDialogProps) => {
+const EditContentDialog = ({ open, onOpenChange, post, onSave, onDelete }: EditContentDialogProps) => {
   const [editTitle, setEditTitle] = useState("");
   const [editPlatform, setEditPlatform] = useState("");
   const [editDate, setEditDate] = useState("");
@@ -42,6 +44,12 @@ const EditContentDialog = ({ open, onOpenChange, post, onSave }: EditContentDial
     };
     
     onSave(post.id, updatedPost);
+    onOpenChange(false);
+  };
+
+  const handleDelete = () => {
+    if (!post) return;
+    onDelete(post.id);
     onOpenChange(false);
   };
 
@@ -119,9 +127,20 @@ const EditContentDialog = ({ open, onOpenChange, post, onSave }: EditContentDial
           </div>
         </div>
         
-        <div className="flex justify-end space-x-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={handleSaveEdit}>Save Changes</Button>
+        <div className="flex justify-between space-x-4">
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            onClick={handleDelete}
+            className="flex items-center"
+          >
+            <Trash2 className="mr-1 h-4 w-4" />
+            Delete
+          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button onClick={handleSaveEdit}>Save Changes</Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

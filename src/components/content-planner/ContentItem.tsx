@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CalendarClock, Sparkles, Edit2, Trash2 } from "lucide-react";
+import { CalendarClock, Sparkles, Edit2 } from "lucide-react";
 import { SocialMediaIcon } from "./SocialMediaIcons";
 import { Post } from "./types";
 
@@ -62,15 +62,6 @@ const ContentItem = ({ post, platformColors, onEditClick, onDeleteClick }: Conte
             >
               <Edit2 className="mr-1 h-3 w-3" />
               Edit
-            </Button>
-            <Button 
-              size="icon" 
-              variant="ghost" 
-              className="h-6 w-6 text-destructive hover:text-destructive hover:bg-destructive/10"
-              onClick={() => onDeleteClick(post.id)}
-              title="Delete content"
-            >
-              <Trash2 className="h-3 w-3" />
             </Button>
           </div>
         </div>

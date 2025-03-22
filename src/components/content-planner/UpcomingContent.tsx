@@ -76,6 +76,7 @@ const UpcomingContent = ({ posts, platformColors, onAddContent, onDeleteContent,
         onOpenChange={setEditDialogOpen}
         post={editingPost}
         onSave={handleSaveEdit}
+        onDelete={handleDeleteClick}
       />
     </>
   );
