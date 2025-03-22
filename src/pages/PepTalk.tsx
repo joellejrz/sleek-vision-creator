@@ -118,8 +118,13 @@ const PepTalk = () => {
 
   const getStreakProgressMessage = () => {
     const nextTarget = getNextStreakTarget();
-    if (streakData.current >= 90) return "You've mastered the lifestyle change!";
-    return `${nextTarget - streakData.current} more days to ${nextTarget}-Day milestone`;
+    
+    if (streakData.current >= 90) return "Unlimited streak achieved!";
+    if (streakData.current >= 60) return `Building towards 90-Day Lifestyle`;
+    if (streakData.current >= 30) return `Building towards 60-Day Deep Dive`;
+    if (streakData.current >= 21) return `Building towards 30-Day Power Streak`;
+    if (streakData.current >= 7) return `Building towards 21-Day Habit Builder`;
+    return `Building towards 7-Day Spark`;
   };
 
   const handleSetStreakGoal = (days: number) => {

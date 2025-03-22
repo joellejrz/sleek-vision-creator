@@ -75,12 +75,13 @@ const StreakGoalDialog = ({
   // Get the progress message based on current streak
   const getProgressMessage = () => {
     const nextTarget = getNextStreakTarget();
+    
     if (currentStreak >= 90) return "You've mastered the lifestyle change!";
-    if (currentStreak >= 60) return `Just ${90 - currentStreak} more days to reach the 90-Day Lifestyle Lock!`;
-    if (currentStreak >= 30) return `Just ${60 - currentStreak} more days to reach the 60-Day Deep Habit!`;
-    if (currentStreak >= 21) return `Just ${30 - currentStreak} more days to reach the 30-Day Challenge!`;
-    if (currentStreak >= 7) return `Just ${21 - currentStreak} more days to reach the 21-Day Habit Builder!`;
-    return `${7 - currentStreak} more days to reach the 7-Day Spark!`;
+    if (currentStreak >= 60) return `Building towards 90-Day Lifestyle (${90 - currentStreak} more days)`;
+    if (currentStreak >= 30) return `Building towards 60-Day Deep Dive (${60 - currentStreak} more days)`;
+    if (currentStreak >= 21) return `Building towards 30-Day Power Streak (${30 - currentStreak} more days)`;
+    if (currentStreak >= 7) return `Building towards 21-Day Habit Builder (${21 - currentStreak} more days)`;
+    return `Building towards 7-Day Spark (${7 - currentStreak} more days)`;
   };
 
   // Get the current streak status message

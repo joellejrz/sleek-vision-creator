@@ -21,6 +21,16 @@ export const CurrentStreakIndicator = ({
     return 90; // Already at max
   };
 
+  // Get the appropriate milestone message
+  const getMilestoneMessage = () => {
+    if (currentStreak >= 90) return "Unlimited streak achieved!";
+    if (currentStreak >= 60) return "Building towards 90-Day Lifestyle";
+    if (currentStreak >= 30) return "Building towards 60-Day Deep Dive";
+    if (currentStreak >= 21) return "Building towards 30-Day Power Streak";
+    if (currentStreak >= 7) return "Building towards 21-Day Habit Builder";
+    return "Building towards 7-Day Spark";
+  };
+
   return (
     <div className="rounded-lg bg-muted p-4 space-y-2 border border-muted-foreground/20 shadow-sm">
       <div className="flex items-center gap-2">
@@ -29,9 +39,13 @@ export const CurrentStreakIndicator = ({
           Current streak: {currentStreak}/{getNextStreakTarget()} days
         </span>
       </div>
-      {progressMessage && (
+      {progressMessage ? (
         <p className="text-xs text-muted-foreground pl-6">
           {progressMessage}
+        </p>
+      ) : (
+        <p className="text-xs text-muted-foreground pl-6">
+          {getMilestoneMessage()}
         </p>
       )}
     </div>
