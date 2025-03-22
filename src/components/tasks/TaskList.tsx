@@ -4,16 +4,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { 
   CalendarClock, 
   Sparkles, 
   Trash2, 
   Clock, 
   MessageCircle, 
-  Image, 
-  ArrowRight, 
+  Image,
   TrendingUp,
-  GripVertical 
+  GraduationCap,
+  Bed,
+  SunMedium,
+  Coffee,
+  Brush,
+  FileText,
+  Zap
 } from "lucide-react";
 
 interface Subtask {
@@ -64,7 +70,6 @@ const TaskList = ({
   viewMode = "feed",
 }: TaskListProps) => {
   const [expandedTask, setExpandedTask] = useState<number | null>(null);
-  const [draggingId, setDraggingId] = useState<number | null>(null);
 
   const toggleExpand = (taskId: number) => {
     setExpandedTask(expandedTask === taskId ? null : taskId);
@@ -103,13 +108,71 @@ const TaskList = ({
     }
   };
 
-  const handleDragStart = (e: React.DragEvent, taskId: number) => {
-    e.dataTransfer.setData("text/plain", taskId.toString());
-    setDraggingId(taskId);
+  // Sort tasks by their start time if available, otherwise by due date
+  const sortedTasks = [...tasks].sort((a, b) => {
+    // Extract times for sorting
+    const aTime = a.startTime || a.due;
+    const bTime = b.startTime || b.due;
+    return aTime.localeCompare(bTime);
+  });
+
+  // Generate icon based on title or category
+  const getTaskIcon = (task: Task) => {
+    const title = task.title.toLowerCase();
+    const category = task.category?.toLowerCase() || '';
+    
+    if (title.includes("gratitude") || title.includes("meditation"))
+      return <SunMedium className="h-5 w-5 text-white" />;
+    if (title.includes("stretch") || title.includes("workout") || title.includes("exercise"))
+      return <Zap className="h-5 w-5 text-white" />;
+    if (title.includes("skin") || title.includes("hair") || title.includes("care") || title.includes("massage"))
+      return <Brush className="h-5 w-5 text-white" />;
+    if (title.includes("uni") || title.includes("class") || title.includes("study") || title.includes("school"))
+      return <GraduationCap className="h-5 w-5 text-white" />;
+    if (title.includes("break") || title.includes("rest") || title.includes("nap"))
+      return <Bed className="h-5 w-5 text-white" />;
+    if (title.includes("coffee") || title.includes("breakfast") || title.includes("lunch") || title.includes("dinner"))
+      return <Coffee className="h-5 w-5 text-white" />;
+    if (title.includes("post") || title.includes("content") || title.includes("video"))
+      return <FileText className="h-5 w-5 text-white" />;
+      
+    // Fall back to category or default
+    if (category.includes("education"))
+      return <GraduationCap className="h-5 w-5 text-white" />;
+    if (category.includes("wellness"))
+      return <SunMedium className="h-5 w-5 text-white" />;
+      
+    // Default icon
+    return <Clock className="h-5 w-5 text-white" />;
   };
 
-  const handleDragEnd = () => {
-    setDraggingId(null);
+  // Helper to calculate breaks between tasks
+  const calculateBreakTime = (currentTask: Task, nextTask: Task) => {
+    // Using start/end times if available, otherwise using due dates as approximation
+    const currentEndTime = currentTask.endTime || currentTask.due;
+    const nextStartTime = nextTask.startTime || nextTask.due;
+    
+    // Simple format check (this could be more sophisticated with proper date parsing)
+    if (currentEndTime && nextStartTime) {
+      // Extract hour value for simple comparison
+      const currentHour = currentEndTime.match(/(\d+):(\d+)/);
+      const nextHour = nextStartTime.match(/(\d+):(\d+)/);
+      
+      if (currentHour && nextHour) {
+        const currentTimeMinutes = parseInt(currentHour[1]) * 60 + parseInt(currentHour[2]);
+        const nextTimeMinutes = parseInt(nextHour[1]) * 60 + parseInt(nextHour[2]);
+        
+        // Calculate difference in minutes
+        const diffMinutes = nextTimeMinutes - currentTimeMinutes;
+        
+        // Only show break if there's a meaningful gap (e.g., more than 15 minutes)
+        if (diffMinutes > 15) {
+          return `${Math.floor(diffMinutes / 60)}hr ${diffMinutes % 60}min break`;
+        }
+      }
+    }
+    
+    return null;
   };
 
   return (
@@ -119,34 +182,60 @@ const TaskList = ({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {tasks.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>{emptyMessage}</p>
+        {tasks.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <p>{emptyMessage}</p>
+          </div>
+        ) : (
+          <div className="relative">
+            {/* Left sidebar with times */}
+            <div className="absolute left-0 top-0 w-14 bottom-0 border-r border-slate-200 flex flex-col items-center">
+              {sortedTasks.map((task, index) => (
+                <div 
+                  key={`time-${task.id}`}
+                  className="text-xs text-slate-500 py-10 first:pt-0"
+                >
+                  {task.startTime || task.due.split(',')[0]}
+                </div>
+              ))}
             </div>
-          ) : (
-            tasks.map((task) => (
-              <div 
-                key={task.id} 
-                className={`rounded-lg border p-4 transition-all duration-200 ${
-                  expandedTask === task.id ? 'shadow-md' : ''
-                } ${task.color ? colorToClass(task.color) : ''} ${
-                  draggingId === task.id ? 'opacity-50' : ''
-                } ${viewMode === "feed" ? "hover:shadow-md hover:translate-y-[-2px]" : ""}`}
-                draggable
-                onDragStart={(e) => handleDragStart(e, task.id)}
-                onDragEnd={handleDragEnd}
-              >
-                <div className="flex items-start gap-2">
+            
+            {/* Timeline content */}
+            <div className="ml-14 pl-10 relative">
+              {/* Vertical timeline line */}
+              <div className="absolute left-5 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+              
+              {/* Tasks with timeline nodes */}
+              {sortedTasks.map((task, index) => (
+                <div key={task.id} className="relative mb-8">
+                  {/* Timeline node */}
                   <div 
-                    className="cursor-grab p-1 text-muted-foreground hover:text-foreground mt-1"
+                    className={`absolute left-5 w-10 h-10 rounded-full -translate-x-1/2 flex items-center justify-center ${task.color ? `bg-${task.color}-500` : 'bg-green-500'}`}
                   >
-                    <GripVertical className="h-5 w-5" />
+                    {getTaskIcon(task)}
                   </div>
                   
-                  <div className="flex-1">
+                  {/* Task content */}
+                  <div className="ml-10 pt-1">
+                    <div className="text-xs text-slate-500 mb-1">
+                      {task.startTime && task.endTime ? (
+                        <>
+                          {task.startTime} — {task.endTime}
+                          {task.duration && ` (${task.duration})`}
+                        </>
+                      ) : (
+                        <>{task.due}</>
+                      )}
+                      <span className="ml-2 inline-flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {task.duration || "10 min"}
+                      </span>
+                    </div>
+                    
                     <div 
-                      className="flex items-start justify-between cursor-pointer"
+                      className={`rounded-lg p-4 mb-2 hover:shadow-md transition-all cursor-pointer ${
+                        expandedTask === task.id ? 'shadow-md' : ''
+                      } ${task.completed ? 'bg-slate-100 text-slate-500' : 'bg-white'}`}
                       onClick={() => toggleExpand(task.id)}
                     >
                       <div className="flex items-start gap-3">
@@ -158,8 +247,8 @@ const TaskList = ({
                           />
                         </div>
                         
-                        <div className="space-y-2 flex-1">
-                          <div>
+                        <div className="space-y-1 flex-1">
+                          <div className="flex items-center justify-between">
                             <label
                               htmlFor={`task-${task.id}`}
                               className={`font-medium text-base ${task.completed ? 'line-through text-muted-foreground' : ''}`}
@@ -167,14 +256,34 @@ const TaskList = ({
                               {task.title}
                               {task.aiSuggested && (
                                 <Badge variant="outline" className="ml-2">
-                                  <Sparkles className="mr-1 h-3 w-3 text-accent-gold" />
+                                  <Sparkles className="mr-1 h-3 w-3 text-amber-400" />
                                   AI
                                 </Badge>
                               )}
                             </label>
+                            
+                            <div className="flex space-x-1">
+                              {priorityToIcon(task.priority)}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  onDeleteTask(task.id);
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Delete task</span>
+                              </Button>
+                            </div>
                           </div>
                           
-                          {viewMode === "feed" && task.imageSrc && (
+                          {task.description && (
+                            <p className="text-sm text-muted-foreground">{task.description}</p>
+                          )}
+                          
+                          {task.imageSrc && expandedTask === task.id && (
                             <div className="rounded-md overflow-hidden my-2">
                               <img 
                                 src={task.imageSrc} 
@@ -184,96 +293,41 @@ const TaskList = ({
                             </div>
                           )}
                           
-                          {task.description && (
-                            <p className="text-sm text-muted-foreground">{task.description}</p>
-                          )}
-                          
-                          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <CalendarClock className="h-3 w-3" />
-                              <span>{task.due}</span>
+                          {expandedTask === task.id && (
+                            <div className="flex gap-2 mt-2">
+                              <Button variant="outline" size="sm" className="text-xs">
+                                <MessageCircle className="h-3 w-3 mr-1" />
+                                Add Comment
+                              </Button>
+                              <Button variant="outline" size="sm" className="text-xs">
+                                <Image className="h-3 w-3 mr-1" />
+                                Add Image
+                              </Button>
                             </div>
-                            
-                            {task.duration && (
-                              <div className="flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                <span className="px-1.5 py-0.5 bg-gray-100 rounded text-xs">
-                                  {task.duration}
-                                </span>
-                              </div>
-                            )}
-                            
-                            {task.frequency && task.frequency !== "once" && (
-                              <span className="px-1.5 py-0.5 bg-gray-100 rounded text-xs capitalize">
-                                {task.frequency}
-                              </span>
-                            )}
-                            
-                            {priorityToIcon(task.priority)}
-                          </div>
+                          )}
                         </div>
-                      </div>
-                      
-                      <div className="flex gap-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          <MessageCircle className="h-4 w-4" />
-                          <span className="sr-only">Comment</span>
-                        </Button>
-                        
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          <Image className="h-4 w-4" />
-                          <span className="sr-only">Add image</span>
-                        </Button>
-                        
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDeleteTask(task.id);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Delete task</span>
-                        </Button>
                       </div>
                     </div>
                     
-                    {expandedTask === task.id && task.subtasks && task.subtasks.length > 0 && (
-                      <div className="mt-4 pl-10 space-y-2">
-                        <h4 className="text-sm font-medium">Subtasks:</h4>
-                        {task.subtasks.map((subtask, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-sm">
-                            <Checkbox id={`subtask-${task.id}-${idx}`} />
-                            <label htmlFor={`subtask-${task.id}-${idx}`}>{subtask.text}</label>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    
-                    {expandedTask === task.id && (
-                      <div className="mt-4 flex justify-end">
-                        <Button variant="outline" size="sm" className="gap-1">
-                          <ArrowRight className="h-3 w-3" />
-                          Move to Next Stage
-                        </Button>
-                      </div>
+                    {/* Break time indicator */}
+                    {index < sortedTasks.length - 1 && (
+                      calculateBreakTime(task, sortedTasks[index + 1]) && (
+                        <div className="pl-7 py-4 text-sm text-slate-500 flex items-center">
+                          <div className="w-7 h-0.5 bg-amber-300 mr-4 flex-shrink-0"></div>
+                          <Bed className="h-4 w-4 mr-2 text-amber-500" />
+                          <span>A well-deserved break.</span>
+                          <span className="ml-2 text-xs opacity-70">
+                            {calculateBreakTime(task, sortedTasks[index + 1])}
+                          </span>
+                        </div>
+                      )
                     )}
                   </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
