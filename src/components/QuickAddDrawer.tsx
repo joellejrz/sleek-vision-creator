@@ -16,6 +16,13 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Sparkles, Plus, Link as LinkIcon } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const STORAGE_KEY = "quick-content-ideas";
 
@@ -24,6 +31,7 @@ interface ContentIdea {
   title: string;
   description: string;
   referenceLinks: string;
+  contentType: string;
   createdAt: string;
 }
 
@@ -58,6 +66,7 @@ const QuickAddDrawer = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [referenceLinks, setReferenceLinks] = useState("");
+  const [contentType, setContentType] = useState("short-video");
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -69,12 +78,18 @@ const QuickAddDrawer = () => {
     }
 
     // Save the idea
-    const savedIdea = saveContentIdea({ title, description, referenceLinks });
+    const savedIdea = saveContentIdea({ 
+      title, 
+      description, 
+      referenceLinks, 
+      contentType 
+    });
     
     // Reset form and close drawer
     setTitle("");
     setDescription("");
     setReferenceLinks("");
+    setContentType("short-video");
     setOpen(false);
     
     // Show success message
@@ -115,6 +130,18 @@ const QuickAddDrawer = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full"
                 />
+              </div>
+              <div>
+                <Select value={contentType} onValueChange={setContentType}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select content type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="short-video">Short Video</SelectItem>
+                    <SelectItem value="photo-post">Photo Post</SelectItem>
+                    <SelectItem value="carousel-post">Carousel Post</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Textarea
