@@ -52,7 +52,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className={`space-y-2 sm:space-y-8 px-3 sm:px-5 md:px-8 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-4 sm:space-y-8 px-4 sm:px-6 md:px-10 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       {/* Tasks header with user greeting and view mode toggle */}
       <TasksHeader 
         userName={userName} 
@@ -73,7 +73,7 @@ const Tasks = () => {
       {/* Progress tracker */}
       <ProgressTracker completed={completedTasks.length} total={activeTasks.length + completedTasks.length} />
 
-      <div className="grid gap-3 sm:gap-8 md:grid-cols-3">
+      <div className="grid gap-4 sm:gap-10 md:grid-cols-3">
         <div className="md:col-span-2">
           {/* Tasks tabs for active/completed tasks */}
           <TaskTabs 
@@ -106,7 +106,7 @@ const Tasks = () => {
       
       {/* Show AI task suggestions at the bottom for mobile */}
       {isMobile && (
-        <div className="mt-3">
+        <div className="mt-6">
           <TaskSuggestions 
             suggestions={aiSuggestedTasks}
             onAddTask={handleAddAiTask}

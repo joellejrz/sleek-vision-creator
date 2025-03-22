@@ -64,7 +64,7 @@ const Layout = () => {
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className={`flex-1 p-1 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'} pb-12 md:pb-6`}>
+        <main className={`flex-1 p-2 md:p-8 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'} pb-16 md:pb-8`}>
           {/* Show a floating hamburger menu button when sidebar is closed */}
           {!isSidebarOpen && (
             <Button 
