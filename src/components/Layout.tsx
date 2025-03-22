@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useTheme } from "./theme-provider";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import MobileNavigation from "./MobileNavigation";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Menu, Sparkles } from "lucide-react";
@@ -62,7 +62,7 @@ const Layout = () => {
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main className={`flex-1 p-2 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'}`}>
+        <main className={`flex-1 p-2 md:p-6 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'ml-0'} pb-16 md:pb-6`}>
           {/* Show a floating hamburger menu button when sidebar is closed */}
           {!isSidebarOpen && (
             <Button 
@@ -80,7 +80,7 @@ const Layout = () => {
             {/* Quick AI assistant shortcut - smaller on mobile */}
             <Button 
               variant="outline"
-              className="fixed bottom-4 right-4 z-50 shadow-md rounded-full p-1.5 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none hover:from-indigo-600 hover:to-purple-600"
+              className="fixed bottom-20 md:bottom-4 right-4 z-50 shadow-md rounded-full p-1.5 md:px-4 md:py-2 flex items-center gap-1 md:gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none hover:from-indigo-600 hover:to-purple-600"
             >
               <Sparkles className="h-3.5 w-3.5 md:h-4 md:w-4" />
               <span className="hidden md:inline text-xs md:text-sm">AI Assistant</span>
@@ -90,6 +90,7 @@ const Layout = () => {
           </div>
         </main>
       </div>
+      <MobileNavigation />
     </div>
   );
 };

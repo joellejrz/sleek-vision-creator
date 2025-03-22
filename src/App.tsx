@@ -15,6 +15,7 @@ import Moodboard from "@/pages/Moodboard";
 import Onboarding from "@/pages/Onboarding";
 import NotFound from "@/pages/NotFound";
 import CreatorArticles from "@/pages/CreatorArticles";
+import Search from "@/pages/Search";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/tasks" element={<Tasks />} />
               <Route path="/moodboard" element={<Moodboard />} />
               <Route path="/creator-articles" element={<CreatorArticles />} />
+              <Route path="/search" element={<Search />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
