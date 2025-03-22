@@ -9,10 +9,9 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Flame, Rocket, Star, Trophy, Lock, CheckCircle2 } from "lucide-react";
+import { Sparkles, Flame, Rocket, Lock, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface StreakGoalDialogProps {
@@ -42,7 +41,6 @@ const StreakGoalDialog = ({
 }: StreakGoalDialogProps) => {
   const { toast } = useToast();
   const [selectedGoal, setSelectedGoal] = useState<number | null>(null);
-  const [customGoal, setCustomGoal] = useState<string>("");
   
   // Define the goal options with the new progressive approach
   const goalOptions: GoalOption[] = [
@@ -69,44 +67,24 @@ const StreakGoalDialog = ({
       icon: <Rocket className="h-4 w-4 text-primary" />,
       requiredStreak: 21,
       detailedDescription: "90 days transforms your new habit into an automatic lifestyle. Neural pathways significantly strengthen after ~3 months of consistent behavior."
-    },
-    {
-      days: 0,
-      name: "Custom Goal",
-      description: "Set your own ambitious target!",
-      icon: <Star className="h-4 w-4 text-purple-400" />,
-      requiredStreak: 0,
-      detailedDescription: "Create your own personalized streak goal that fits your unique creative journey."
-    },
+    }
   ];
 
   // Check which goals should be locked based on current streak
   const processedGoalOptions = goalOptions.map(goal => ({
     ...goal,
-    locked: goal.days !== 0 && goal.requiredStreak > currentStreak
+    locked: goal.requiredStreak > currentStreak
   }));
 
   useEffect(() => {
     // Reset selected goal when dialog opens
     if (open) {
       setSelectedGoal(null);
-      setCustomGoal("");
     }
   }, [open]);
 
   const handleSetGoal = () => {
-    if (selectedGoal === 0 && customGoal) {
-      // Custom goal
-      const days = parseInt(customGoal, 10);
-      if (!isNaN(days) && days > 0) {
-        onSetGoal(days);
-        onOpenChange(false);
-        toast({
-          title: "Custom Goal Set!",
-          description: `You've set a ${days}-day streak goal. Keep up the momentum!`,
-        });
-      }
-    } else if (selectedGoal) {
+    if (selectedGoal) {
       // Predefined goal
       onSetGoal(selectedGoal);
       onOpenChange(false);
@@ -147,7 +125,7 @@ const StreakGoalDialog = ({
       <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
-            <Trophy className="h-5 w-5 text-accent-gold" />
+            <span className="text-accent-gold">🏆</span>
             Set Your Streak Goal!
           </DialogTitle>
           <DialogDescription>
@@ -200,20 +178,6 @@ const StreakGoalDialog = ({
             </div>
           </div>
 
-          {selectedGoal === 0 && (
-            <div className="space-y-2">
-              <Label htmlFor="custom-goal">Custom Goal (days):</Label>
-              <Input 
-                id="custom-goal"
-                type="number" 
-                placeholder="Enter number of days"
-                min="1"
-                value={customGoal}
-                onChange={(e) => setCustomGoal(e.target.value)}
-              />
-            </div>
-          )}
-
           <div className="rounded-lg bg-muted p-3">
             <div className="flex items-center gap-2">
               <Flame className="h-4 w-4 text-orange-400" />
@@ -226,7 +190,7 @@ const StreakGoalDialog = ({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSetGoal} disabled={!selectedGoal || (selectedGoal === 0 && !customGoal)}>
+          <Button onClick={handleSetGoal} disabled={!selectedGoal}>
             Set Goal
           </Button>
         </DialogFooter>

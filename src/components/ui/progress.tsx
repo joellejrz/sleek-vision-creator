@@ -27,9 +27,6 @@ const Progress = React.forwardRef<
       case "lifestyle":
         colorClass = "from-primary to-indigo-500";
         break;
-      case "custom":
-        colorClass = "from-purple-400 to-pink-500";
-        break;
       default:
         colorClass = "from-primary to-primary/70";
     }
