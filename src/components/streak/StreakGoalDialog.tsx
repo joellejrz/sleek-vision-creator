@@ -59,17 +59,28 @@ const StreakGoalDialog = ({
     if (currentStreak >= 30) return "30 Day Challenge";
     if (currentStreak >= 21) return "21 Day Habit Builder";
     if (currentStreak >= 7) return "7 Day Spark";
-    return "Streak Goals";
+    return "Building Your Streak";
   };
 
   // Get the progress message based on current streak
   const getProgressMessage = () => {
     if (currentStreak >= 90) return "You've mastered the lifestyle change!";
     if (currentStreak >= 60) return `Just ${90 - currentStreak} more days to reach the 90-Day Lifestyle Lock!`;
-    if (currentStreak >= 30) return `Just ${60 - currentStreak} more days to reach the 60-Day Deep Dive!`;
-    if (currentStreak >= 21) return `Just ${30 - currentStreak} more days to reach the 30-Day Power Streak!`;
+    if (currentStreak >= 30) return `Just ${60 - currentStreak} more days to reach the 60-Day Deep Habit!`;
+    if (currentStreak >= 21) return `Just ${30 - currentStreak} more days to reach the 30-Day Challenge!`;
     if (currentStreak >= 7) return `Just ${21 - currentStreak} more days to reach the 21-Day Habit Builder!`;
     return `${7 - currentStreak} more days to reach the 7-Day Spark!`;
+  };
+
+  // Get the current streak status message
+  const getStreakStatusMessage = () => {
+    if (currentStreak >= 90) return "90-Day Lifestyle Change";
+    if (currentStreak >= 60) return "60-Day Deep Habit";
+    if (currentStreak >= 30) return "30-Day Challenge";
+    if (currentStreak >= 21) return "21-Day Habit Builder";
+    if (currentStreak >= 7) return "7-Day Spark";
+    if (currentStreak > 0) return `Building towards 7-Day Spark`;
+    return "Start Your Streak";
   };
 
   useEffect(() => {
@@ -154,7 +165,7 @@ const StreakGoalDialog = ({
               {getStreakTitle()}
             </DrawerTitle>
             <DrawerDescription>
-              Start with a 7-day goal, then unlock more challenging levels as you progress!
+              Current: {getStreakStatusMessage()} ({currentStreak} days)
             </DrawerDescription>
           </DrawerHeader>
           
@@ -182,7 +193,7 @@ const StreakGoalDialog = ({
             {getStreakTitle()}
           </DialogTitle>
           <DialogDescription>
-            Start with a 7-day goal, then unlock more challenging levels as you progress!
+            Current: {getStreakStatusMessage()} ({currentStreak} days)
           </DialogDescription>
         </DialogHeader>
         

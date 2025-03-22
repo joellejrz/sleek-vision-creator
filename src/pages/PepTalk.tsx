@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,6 +95,16 @@ const PepTalk = () => {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const getStreakStatusMessage = () => {
+    if (streakData.current >= 90) return "90-Day Lifestyle Change";
+    if (streakData.current >= 60) return "60-Day Deep Habit";
+    if (streakData.current >= 30) return "30-Day Challenge";
+    if (streakData.current >= 21) return "21-Day Habit Builder";
+    if (streakData.current >= 7) return "7-Day Spark";
+    if (streakData.current > 0) return `Building towards 7-Day Spark`;
+    return "Start Your Streak";
   };
 
   const handleSetStreakGoal = (days: number) => {
@@ -282,7 +291,7 @@ const PepTalk = () => {
                   onClick={() => setStreakDialogOpen(true)}
                 >
                   <Target className="mr-2 h-4 w-4" />
-                  Check Your Streaks
+                  {getStreakStatusMessage()}
                 </Button>
               </div>
             </CardContent>
@@ -340,6 +349,7 @@ const PepTalk = () => {
         onOpenChange={setStreakDialogOpen}
         onSetGoal={handleSetStreakGoal}
         currentStreak={streakData.current}
+        currentGoal={streakData.target}
       />
     </div>
   );
