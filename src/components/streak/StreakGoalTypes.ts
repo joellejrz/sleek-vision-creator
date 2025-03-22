@@ -8,5 +8,7 @@ export interface StreakGoalOption {
   icon: ReactNode;
   requiredStreak: number;
   detailedDescription: string;
+  articleLink?: string;
+  articleTitle?: string;
   locked?: boolean;
 }

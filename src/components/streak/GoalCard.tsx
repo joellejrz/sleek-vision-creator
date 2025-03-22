@@ -1,8 +1,9 @@
 
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Lock, CheckCircle2 } from "lucide-react";
+import { Lock, CheckCircle2, ExternalLink } from "lucide-react";
 import { StreakGoalOption } from "./StreakGoalTypes";
+import { Link } from "react-router-dom";
 
 interface GoalCardProps {
   goal: StreakGoalOption;
@@ -39,6 +40,16 @@ export const GoalCard = ({ goal, isSelected, isCurrentGoal, onSelect }: GoalCard
         </div>
         <p className="text-xs text-muted-foreground mt-1">{goal.description}</p>
         <p className="text-xs mt-2">{goal.detailedDescription}</p>
+        {goal.articleLink && goal.articleTitle && (
+          <Link 
+            to={goal.articleLink} 
+            onClick={(e) => e.stopPropagation()}
+            className="text-xs text-primary flex items-center gap-1 mt-2 hover:underline"
+          >
+            <ExternalLink className="h-3 w-3" />
+            {goal.articleTitle}
+          </Link>
+        )}
         {goal.requiredStreak > 0 && (
           <p className="text-xs text-muted-foreground mt-1">
             <span className="italic">

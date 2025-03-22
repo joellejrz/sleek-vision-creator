@@ -20,7 +20,9 @@ export const useStreakGoalOptions = (): StreakGoalOption[] => {
       description: "Make consistency second nature.",
       icon: <Brain className="h-4 w-4 text-orange-400" />,
       requiredStreak: 7,
-      detailedDescription: "21 days creates a new habit by literally rewiring your brain. Based on neuroscientific research, this period helps solidify neural pathways."
+      detailedDescription: "21 days creates a new habit by literally rewiring your brain. Based on neuroscientific research, this period helps solidify neural pathways.",
+      articleLink: "/creator-articles",
+      articleTitle: "The Science of 21-Day Habit Formation"
     },
     {
       days: 30,
@@ -44,7 +46,9 @@ export const useStreakGoalOptions = (): StreakGoalOption[] => {
       description: "Officially part of your lifestyle now!",
       icon: <Rocket className="h-4 w-4 text-primary" />,
       requiredStreak: 60,
-      detailedDescription: "90 days transforms your new habit into an automatic lifestyle. Neural pathways significantly strengthen after ~3 months of consistent behavior."
+      detailedDescription: "90 days transforms your new habit into an automatic lifestyle. Neural pathways significantly strengthen after ~3 months of consistent behavior.",
+      articleLink: "/creator-articles",
+      articleTitle: "The 90-Day Scientific Guide to Habit Mastery"
     }
   ];
 
