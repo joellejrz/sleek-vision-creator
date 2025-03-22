@@ -2,6 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Instagram, Pin, Share2, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { 
   Carousel, 
   CarouselContent, 
@@ -61,8 +62,8 @@ const PinterestSuggestions = () => {
               Instagram post ideas based on your Pinterest saves
             </CardDescription>
           </div>
-          <Button variant="outline" size="sm" className="text-xs">
-            View All
+          <Button variant="outline" size="sm" className="text-xs" asChild>
+            <Link to="/moodboard">View All</Link>
           </Button>
         </div>
       </CardHeader>
