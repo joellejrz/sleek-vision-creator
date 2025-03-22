@@ -52,6 +52,16 @@ const StreakGoalDialog = ({
     locked: goal.requiredStreak > currentStreak
   }));
 
+  // Get the title based on current streak
+  const getStreakTitle = () => {
+    if (currentStreak >= 90) return "90 Day Lifestyle Change";
+    if (currentStreak >= 60) return "60 Day Deep Habit";
+    if (currentStreak >= 30) return "30 Day Challenge";
+    if (currentStreak >= 21) return "21 Day Habit Builder";
+    if (currentStreak >= 7) return "7 Day Spark";
+    return "Streak Goals";
+  };
+
   useEffect(() => {
     // Reset selected goal when dialog opens
     if (open) {
@@ -128,7 +138,7 @@ const StreakGoalDialog = ({
           <DrawerHeader className="px-0">
             <DrawerTitle className="flex items-center gap-2 text-xl">
               <span className="text-accent-gold">🏆</span>
-              Set Your Streak Goal!
+              {getStreakTitle()}
             </DrawerTitle>
             <DrawerDescription>
               Start with a 7-day goal, then unlock more challenging levels as you progress!
@@ -156,7 +166,7 @@ const StreakGoalDialog = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <span className="text-accent-gold">🏆</span>
-            Set Your Streak Goal!
+            {getStreakTitle()}
           </DialogTitle>
           <DialogDescription>
             Start with a 7-day goal, then unlock more challenging levels as you progress!
