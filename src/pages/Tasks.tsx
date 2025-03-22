@@ -9,12 +9,14 @@ import TaskFilters from "@/components/tasks/TaskFilters";
 import TaskTabs from "@/components/tasks/TaskTabs";
 import { useTasks } from "@/hooks/useTasks";
 import { aiSuggestedTasks } from "@/components/tasks/TaskData";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Tasks = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [viewMode, setViewMode] = useState<"feed" | "card">("feed");
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   
   // Get user's first name for personalized greeting
   const userName = "Creator"; // This would come from user profile
@@ -50,7 +52,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-2 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       {/* Tasks header with user greeting and view mode toggle */}
       <TasksHeader 
         userName={userName} 
@@ -71,7 +73,7 @@ const Tasks = () => {
       {/* Progress tracker */}
       <ProgressTracker completed={completedTasks.length} total={activeTasks.length + completedTasks.length} />
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-2 sm:gap-6 md:grid-cols-3">
         <div className="md:col-span-2">
           {/* Tasks tabs for active/completed tasks */}
           <TaskTabs 
@@ -83,14 +85,16 @@ const Tasks = () => {
           />
         </div>
 
-        <div>
-          {/* AI task suggestions */}
-          <TaskSuggestions 
-            suggestions={aiSuggestedTasks}
-            onAddTask={handleAddAiTask}
-            onGenerateMore={handleGenerateMoreTasks}
-          />
-        </div>
+        {!isMobile && (
+          <div>
+            {/* AI task suggestions */}
+            <TaskSuggestions 
+              suggestions={aiSuggestedTasks}
+              onAddTask={handleAddAiTask}
+              onGenerateMore={handleGenerateMoreTasks}
+            />
+          </div>
+        )}
       </div>
 
       {/* Task creation dialog */}
@@ -99,6 +103,17 @@ const Tasks = () => {
         onOpenChange={setIsTaskDialogOpen} 
         onAddTask={handleAddTask} 
       />
+      
+      {/* Show AI task suggestions at the bottom for mobile */}
+      {isMobile && (
+        <div className="mt-4">
+          <TaskSuggestions 
+            suggestions={aiSuggestedTasks}
+            onAddTask={handleAddAiTask}
+            onGenerateMore={handleGenerateMoreTasks}
+          />
+        </div>
+      )}
     </div>
   );
 };

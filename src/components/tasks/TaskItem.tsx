@@ -58,16 +58,16 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
   const priorityToIcon = (priority: string) => {
     switch(priority) {
       case "high":
-        return <Badge variant="destructive" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
+        return <Badge variant="destructive" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-[9px] px-1 py-0 h-4' : 'text-xs'}`}>
           <TrendingUp className={`${isMobile ? 'h-2 w-2' : 'h-3 w-3'} mr-0.5`} />
           {priority}
         </Badge>;
       case "medium":
-        return <Badge variant="default" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
+        return <Badge variant="default" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-[9px] px-1 py-0 h-4' : 'text-xs'}`}>
           {priority}
         </Badge>;
       default:
-        return <Badge variant="secondary" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-xs px-1.5 py-0' : ''}`}>
+        return <Badge variant="secondary" className={`capitalize flex items-center gap-1 ${isMobile ? 'text-[9px] px-1 py-0 h-4' : 'text-xs'}`}>
           {priority}
         </Badge>;
     }
@@ -75,18 +75,18 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
 
   return (
     <div 
-      className={`rounded-lg p-2 sm:p-4 mb-2 hover:shadow-md transition-all cursor-pointer ${
-        expanded ? 'shadow-md' : ''
-      } ${task.completed ? 'bg-muted text-muted-foreground' : 'bg-card text-card-foreground dark:bg-card dark:text-card-foreground'}`}
+      className={`rounded-lg p-1.5 sm:p-4 mb-1 sm:mb-2 hover:shadow-md transition-all cursor-pointer ${
+        expanded ? 'shadow-sm' : ''
+      } ${task.completed ? 'bg-muted text-muted-foreground' : 'bg-card text-card-foreground dark:bg-card/90 dark:text-card-foreground'}`}
       onClick={toggleExpand}
     >
-      <div className="flex items-start gap-2 sm:gap-3">
-        <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-start gap-1.5 sm:gap-3">
+        <div className="mt-0.5 sm:mt-1" onClick={(e) => e.stopPropagation()}>
           <Checkbox
             checked={task.completed}
             onCheckedChange={() => onToggleComplete(task.id)}
             id={`task-${task.id}`}
-            className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+            className="w-3 h-3 sm:w-4 sm:h-4"
           />
         </div>
         
@@ -94,7 +94,7 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
           <div className="flex items-center justify-between">
             <label
               htmlFor={`task-${task.id}`}
-              className={`font-medium text-sm sm:text-base truncate ${task.completed ? 'line-through text-muted-foreground' : ''}`}
+              className={`font-medium text-xs sm:text-base truncate ${task.completed ? 'line-through text-muted-foreground' : ''}`}
             >
               {task.title}
               {task.aiSuggested && (
@@ -110,7 +110,7 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 sm:h-8 sm:w-8 p-0"
+                className="h-5 w-5 sm:h-8 sm:w-8 p-0"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDeleteTask(task.id);
@@ -123,7 +123,7 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
           </div>
           
           {task.description && (
-            <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">{task.description}</p>
+            <p className="text-[10px] sm:text-sm text-muted-foreground line-clamp-1">{task.description}</p>
           )}
           
           {task.imageSrc && expanded && (
@@ -131,19 +131,19 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
               <img 
                 src={task.imageSrc} 
                 alt={`${task.title} preview`} 
-                className="w-full h-20 sm:h-32 object-cover"
+                className="w-full h-16 sm:h-32 object-cover"
               />
             </div>
           )}
           
           {expanded && (
             <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2">
-              <Button variant="outline" size="sm" className="text-[0.65rem] sm:text-xs h-6 sm:h-8 px-2">
-                <MessageCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
+              <Button variant="outline" size="sm" className="text-[0.6rem] sm:text-xs h-5 sm:h-8 px-1.5 sm:px-2">
+                <MessageCircle className="h-2 w-2 sm:h-3 sm:w-3 mr-1" />
                 Add Comment
               </Button>
-              <Button variant="outline" size="sm" className="text-[0.65rem] sm:text-xs h-6 sm:h-8 px-2">
-                <Image className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
+              <Button variant="outline" size="sm" className="text-[0.6rem] sm:text-xs h-5 sm:h-8 px-1.5 sm:px-2">
+                <Image className="h-2 w-2 sm:h-3 sm:w-3 mr-1" />
                 Add Image
               </Button>
             </div>
