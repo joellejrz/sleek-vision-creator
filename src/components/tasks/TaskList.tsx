@@ -28,7 +28,7 @@ const TaskList = ({
         <CardTitle className="text-base sm:text-2xl">{title}</CardTitle>
         <CardDescription className="text-[10px] sm:text-sm">{description}</CardDescription>
       </CardHeader>
-      <CardContent className="p-2 sm:p-6 pt-0">
+      <CardContent className="p-0 sm:p-6 pt-0">
         {tasks.length === 0 ? (
           <div className="text-center py-3 sm:py-8 text-muted-foreground text-xs sm:text-sm">
             <p>{emptyMessage}</p>

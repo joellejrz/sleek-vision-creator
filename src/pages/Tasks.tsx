@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import TaskDialog from "@/components/tasks/TaskDialog";
@@ -51,7 +52,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className={`space-y-1 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-0.5 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       {/* Tasks header with user greeting and view mode toggle */}
       <TasksHeader 
         userName={userName} 
@@ -105,7 +106,7 @@ const Tasks = () => {
       
       {/* Show AI task suggestions at the bottom for mobile */}
       {isMobile && (
-        <div className="mt-2">
+        <div className="mt-1">
           <TaskSuggestions 
             suggestions={aiSuggestedTasks}
             onAddTask={handleAddAiTask}

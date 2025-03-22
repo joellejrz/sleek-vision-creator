@@ -21,10 +21,10 @@ const TaskTabs = ({
   return (
     <Tabs defaultValue="active" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="active" className="text-xs sm:text-base py-1 sm:py-2">Active Tasks ({activeTasks.length})</TabsTrigger>
-        <TabsTrigger value="completed" className="text-xs sm:text-base py-1 sm:py-2">Completed ({completedTasks.length})</TabsTrigger>
+        <TabsTrigger value="active" className="text-xs sm:text-base py-0.5 sm:py-2">Active Tasks ({activeTasks.length})</TabsTrigger>
+        <TabsTrigger value="completed" className="text-xs sm:text-base py-0.5 sm:py-2">Completed ({completedTasks.length})</TabsTrigger>
       </TabsList>
-      <TabsContent value="active" className="space-y-2 sm:space-y-4 mt-2 sm:mt-6">
+      <TabsContent value="active" className="space-y-2 sm:space-y-4 mt-1 sm:mt-6">
         <TaskList 
           tasks={activeTasks} 
           title="Active Tasks"
@@ -35,7 +35,7 @@ const TaskTabs = ({
           viewMode={viewMode}
         />
       </TabsContent>
-      <TabsContent value="completed" className="space-y-2 sm:space-y-4 mt-2 sm:mt-6">
+      <TabsContent value="completed" className="space-y-2 sm:space-y-4 mt-1 sm:mt-6">
         <TaskList 
           tasks={completedTasks} 
           title="Completed Tasks"
