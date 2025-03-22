@@ -276,7 +276,10 @@ const ContentPlanner = () => {
         </TabsList>
         
         <TabsContent value="upcoming" className="space-y-4 mt-6">
-          <UpcomingContent posts={scheduledPosts} platformColors={platformColors} />
+          <UpcomingContent 
+            posts={scheduledPosts} 
+            platformColors={platformColors} 
+          />
         </TabsContent>
         
         <TabsContent value="ai-suggestions" className="space-y-4 mt-6">
