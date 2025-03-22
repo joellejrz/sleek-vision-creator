@@ -58,16 +58,16 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
   const priorityToIcon = (priority: string) => {
     switch(priority) {
       case "high":
-        return <Badge variant="destructive" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[8px] px-1 py-0 h-3' : 'text-xs'}`}>
+        return <Badge variant="destructive" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[10px] px-1 py-0 h-3.5' : 'text-xs'}`}>
           <TrendingUp className={`${isMobile ? 'h-1.5 w-1.5' : 'h-3 w-3'} mr-0.5`} />
           {priority}
         </Badge>;
       case "medium":
-        return <Badge variant="default" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[8px] px-1 py-0 h-3' : 'text-xs'}`}>
+        return <Badge variant="default" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[10px] px-1 py-0 h-3.5' : 'text-xs'}`}>
           {priority}
         </Badge>;
       default:
-        return <Badge variant="secondary" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[8px] px-1 py-0 h-3' : 'text-xs'}`}>
+        return <Badge variant="secondary" className={`capitalize flex items-center gap-0.5 ${isMobile ? 'text-[10px] px-1 py-0 h-3.5' : 'text-xs'}`}>
           {priority}
         </Badge>;
     }
@@ -86,20 +86,20 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
             checked={task.completed}
             onCheckedChange={() => onToggleComplete(task.id)}
             id={`task-${task.id}`}
-            className="w-3 h-3"
+            className="w-3.5 h-3.5"
           />
         </div>
         
         <div className="space-y-0.5 flex-1 min-w-0 pr-1">
-          <div className="flex items-start flex-wrap gap-y-1">
-            <div className="flex items-center gap-1 flex-grow min-w-0 pr-1">
+          <div className="flex items-start justify-between gap-y-1">
+            <div className="flex items-center gap-1 flex-grow min-w-0 pr-1 flex-wrap">
               <label
                 htmlFor={`task-${task.id}`}
-                className={`font-medium text-[10px] break-words ${task.completed ? 'line-through text-muted-foreground' : ''}`}
+                className={`font-medium text-[12px] break-all ${task.completed ? 'line-through text-muted-foreground' : ''}`}
               >
                 {task.title}
                 {task.aiSuggested && (
-                  <Badge variant="outline" className="ml-1 text-[0.6rem] px-1 py-0">
+                  <Badge variant="outline" className="ml-1 text-[0.65rem] px-1 py-0">
                     <Sparkles className="mr-0.5 h-2 w-2 text-amber-400" />
                     AI
                   </Badge>
@@ -118,14 +118,14 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
                   onDeleteTask(task.id);
                 }}
               >
-                <Trash2 className="h-2 w-2" />
+                <Trash2 className="h-2.5 w-2.5" />
                 <span className="sr-only">Delete task</span>
               </Button>
             </div>
           </div>
           
           {task.description && (
-            <p className="text-[8px] text-muted-foreground line-clamp-1">{task.description}</p>
+            <p className="text-[10px] text-muted-foreground line-clamp-1">{task.description}</p>
           )}
           
           {task.imageSrc && expanded && (
@@ -140,12 +140,12 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
           
           {expanded && (
             <div className="flex gap-1 mt-1">
-              <Button variant="outline" size="sm" className="text-[0.6rem] h-4 px-1">
-                <MessageCircle className="h-2 w-2 mr-0.5" />
+              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1">
+                <MessageCircle className="h-2.5 w-2.5 mr-0.5" />
                 Add Comment
               </Button>
-              <Button variant="outline" size="sm" className="text-[0.6rem] h-4 px-1">
-                <Image className="h-2 w-2 mr-0.5" />
+              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1">
+                <Image className="h-2.5 w-2.5 mr-0.5" />
                 Add Image
               </Button>
             </div>

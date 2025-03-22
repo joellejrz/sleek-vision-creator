@@ -12,12 +12,12 @@ const ProgressTracker = ({ completed, total }: ProgressTrackerProps) => {
   return (
     <div className="space-y-0.5 mb-1">
       <div className="flex justify-between items-center">
-        <h3 className="text-xs font-medium">Task Progress</h3>
-        <span className="text-[9px] text-muted-foreground">
+        <h3 className="text-sm font-medium">Task Progress</h3>
+        <span className="text-[10px] text-muted-foreground">
           {completed} of {total} tasks completed ({percentage}%)
         </span>
       </div>
-      <Progress value={percentage} className="h-1" />
+      <Progress value={percentage} className="h-1.5" />
     </div>
   );
 };
