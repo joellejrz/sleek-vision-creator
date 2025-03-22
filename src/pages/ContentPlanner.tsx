@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -102,7 +101,6 @@ const ContentPlanner = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Load quick ideas when component mounts
   useEffect(() => {
     const ideas = getContentIdeas();
     setQuickIdeas(ideas);
@@ -169,6 +167,23 @@ const ContentPlanner = () => {
     setOpenDialog(true);
   };
 
+  const handleDeleteContent = (postId: number) => {
+    setScheduledPosts(scheduledPosts.filter(post => post.id !== postId));
+    toast.success("Content deleted successfully!", {
+      description: "The content has been removed from your schedule."
+    });
+  };
+
+  const handleUpdateContent = (postId: number, updatedPost: Partial<any>) => {
+    setScheduledPosts(scheduledPosts.map(post => 
+      post.id === postId ? { ...post, ...updatedPost } : post
+    ));
+    
+    toast.success("Content updated successfully!", {
+      description: `"${updatedPost.title || 'Content'}" has been updated.`
+    });
+  };
+
   return (
     <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -227,7 +242,6 @@ const ContentPlanner = () => {
             </DialogContent>
           </Dialog>
           
-          {/* Dialog for quick ideas */}
           <Dialog open={showQuickIdeasDialog} onOpenChange={setShowQuickIdeasDialog}>
             <DialogContent className="sm:max-w-[500px]">
               <DialogHeader>
@@ -279,6 +293,9 @@ const ContentPlanner = () => {
           <UpcomingContent 
             posts={scheduledPosts} 
             platformColors={platformColors} 
+            onAddContent={handleOpenDialog}
+            onDeleteContent={handleDeleteContent}
+            onUpdateContent={handleUpdateContent}
           />
         </TabsContent>
         

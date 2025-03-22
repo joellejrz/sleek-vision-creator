@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CalendarClock, Sparkles, Edit2 } from "lucide-react";
+import { CalendarClock, Sparkles, Edit2, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,9 +25,11 @@ interface UpcomingContentProps {
   posts: Post[];
   platformColors: Record<string, string>;
   onAddContent: () => void;
+  onDeleteContent?: (postId: number) => void;
+  onUpdateContent?: (postId: number, updatedPost: Partial<Post>) => void;
 }
 
-const UpcomingContent = ({ posts, platformColors, onAddContent }: UpcomingContentProps) => {
+const UpcomingContent = ({ posts, platformColors, onAddContent, onDeleteContent, onUpdateContent }: UpcomingContentProps) => {
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
@@ -49,14 +51,31 @@ const UpcomingContent = ({ posts, platformColors, onAddContent }: UpcomingConten
   const handleSaveEdit = () => {
     if (!editingPost) return;
     
-    // In a real app, we would update this in the backend
-    // For now, we'll just display a toast message to indicate success
-    toast.success("Content updated successfully!", {
-      description: `"${editTitle}" has been updated.`
-    });
+    const updatedPost = {
+      title: editTitle,
+      platform: editPlatform,
+      date: editDate,
+      time: editTime,
+      status: editStatus,
+    };
+    
+    if (onUpdateContent) {
+      onUpdateContent(editingPost.id, updatedPost);
+    } else {
+      // Fallback for backwards compatibility
+      toast.success("Content updated successfully!", {
+        description: `"${editTitle}" has been updated.`
+      });
+    }
     
     setEditDialogOpen(false);
     setEditingPost(null);
+  };
+
+  const handleDeleteClick = (postId: number) => {
+    if (onDeleteContent) {
+      onDeleteContent(postId);
+    }
   };
 
   return (
@@ -111,19 +130,36 @@ const UpcomingContent = ({ posts, platformColors, onAddContent }: UpcomingConten
                         </span>
                       </div>
                     </div>
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      className="h-6 text-[10px]"
-                      onClick={() => handleEditClick(post)}
-                    >
-                      <Edit2 className="mr-1 h-3 w-3" />
-                      Edit
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="h-6 text-[10px]"
+                        onClick={() => handleEditClick(post)}
+                      >
+                        <Edit2 className="mr-1 h-3 w-3" />
+                        Edit
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="h-6 text-[10px] text-destructive hover:text-destructive hover:bg-destructive/10"
+                        onClick={() => handleDeleteClick(post.id)}
+                      >
+                        <Trash2 className="mr-1 h-3 w-3" />
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
+            {posts.length === 0 && (
+              <div className="text-center py-6 text-muted-foreground">
+                <p className="mb-2">No content scheduled yet</p>
+                <Button size="sm" onClick={onAddContent}>Add Content</Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
