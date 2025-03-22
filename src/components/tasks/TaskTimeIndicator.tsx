@@ -13,7 +13,7 @@ const TaskTimeIndicator = ({ startTime, endTime, due, duration }: TaskTimeIndica
   const isMobile = useIsMobile();
   
   return (
-    <div className="text-[8px] sm:text-xs text-slate-500 mb-0.5 sm:mb-1 flex flex-wrap items-center">
+    <div className="text-[8px] sm:text-xs text-slate-500 mb-0 sm:mb-1 flex flex-wrap items-center">
       <span className="inline-block mr-1 sm:mr-2">
         {startTime && endTime ? (
           <>

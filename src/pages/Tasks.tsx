@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import TaskDialog from "@/components/tasks/TaskDialog";
@@ -52,7 +51,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className={`space-y-2 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-1 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       {/* Tasks header with user greeting and view mode toggle */}
       <TasksHeader 
         userName={userName} 
@@ -73,7 +72,7 @@ const Tasks = () => {
       {/* Progress tracker */}
       <ProgressTracker completed={completedTasks.length} total={activeTasks.length + completedTasks.length} />
 
-      <div className="grid gap-2 sm:gap-6 md:grid-cols-3">
+      <div className="grid gap-1 sm:gap-6 md:grid-cols-3">
         <div className="md:col-span-2">
           {/* Tasks tabs for active/completed tasks */}
           <TaskTabs 
@@ -106,7 +105,7 @@ const Tasks = () => {
       
       {/* Show AI task suggestions at the bottom for mobile */}
       {isMobile && (
-        <div className="mt-4">
+        <div className="mt-2">
           <TaskSuggestions 
             suggestions={aiSuggestedTasks}
             onAddTask={handleAddAiTask}
