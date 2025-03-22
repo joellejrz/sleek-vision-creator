@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { ArrowUp, BarChart2, MessageCircle, Mic, Send, Sparkles, Target, Trophy, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -14,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import StreakGoalDialog from "@/components/streak/StreakGoalDialog";
 
 const messageData = [
   {
@@ -24,18 +27,18 @@ const messageData = [
   },
 ];
 
-const streakData = {
-  current: 12,
-  target: 30,
-  percentage: 40,
-};
-
 const PepTalk = () => {
   const [messages, setMessages] = useState(messageData);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [streakData, setStreakData] = useState({
+    current: 12,
+    target: 30,
+    percentage: 40,
+  });
+  const [streakDialogOpen, setStreakDialogOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,8 +98,20 @@ const PepTalk = () => {
     }
   };
 
+  const handleSetStreakGoal = (days: number) => {
+    setStreakData(prev => ({
+      ...prev,
+      target: days,
+      percentage: Math.round((prev.current / days) * 100)
+    }));
+    
+    toast.success(`New streak goal set: ${days} days!`, {
+      description: "Keep up the momentum to reach your goal!",
+    });
+  };
+
   return (
-    <div className={`space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-6 px-4 py-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">AI Pep-Talk Coach</h1>
@@ -251,7 +266,7 @@ const PepTalk = () => {
                       <span className="text-sm font-medium">Current Streak</span>
                       <span className="text-sm">{streakData.current}/{streakData.target} days</span>
                     </div>
-                    <Progress value={streakData.percentage} className="h-2" />
+                    <Progress value={streakData.percentage} className="h-2.5" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
@@ -261,7 +276,11 @@ const PepTalk = () => {
                   </div>
                   <Badge variant="outline">Keep Going!</Badge>
                 </div>
-                <Button variant="outline" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => setStreakDialogOpen(true)}
+                >
                   <Target className="mr-2 h-4 w-4" />
                   Set New Streak Goal
                 </Button>
@@ -315,6 +334,13 @@ const PepTalk = () => {
           </Card>
         </div>
       </div>
+      
+      <StreakGoalDialog 
+        open={streakDialogOpen}
+        onOpenChange={setStreakDialogOpen}
+        onSetGoal={handleSetStreakGoal}
+        currentStreak={streakData.current}
+      />
     </div>
   );
 };
