@@ -52,7 +52,7 @@ const Tasks = () => {
   };
 
   return (
-    <div className={`space-y-0.5 sm:space-y-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
+    <div className={`space-y-0.5 sm:space-y-6 px-2 sm:px-4 md:px-6 ${isLoaded ? "animate-fade-in" : "opacity-0"}`}>
       {/* Tasks header with user greeting and view mode toggle */}
       <TasksHeader 
         userName={userName} 

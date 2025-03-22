@@ -18,7 +18,7 @@ const TaskTimeline = ({ tasks, onToggleComplete, onDeleteTask }: TaskTimelinePro
   const isMobile = useIsMobile();
   
   return (
-    <div className="relative">
+    <div className="relative pb-2">
       {/* Left sidebar with times */}
       <div className="absolute left-0 top-0 w-4 bottom-0 border-r border-slate-200 dark:border-slate-700 flex flex-col items-center">
         {sortedTasks.map((task) => (
@@ -32,14 +32,14 @@ const TaskTimeline = ({ tasks, onToggleComplete, onDeleteTask }: TaskTimelinePro
       </div>
       
       {/* Timeline content */}
-      <div className="ml-4 pl-1 relative">
+      <div className="ml-4 pl-1.5 pr-1.5 relative">
         {/* Vertical timeline line */}
         <div className="absolute left-0.5 top-0 bottom-0 w-0.5 bg-slate-200 dark:bg-slate-700"></div>
         
         {/* Tasks with timeline nodes */}
         {sortedTasks.map((task, index) => (
           <Fragment key={task.id}>
-            <div className="relative mb-1">
+            <div className="relative mb-2">
               {/* Timeline node */}
               <div 
                 className={`absolute left-0.5 w-2 h-2 rounded-full -translate-x-1/2 flex items-center justify-center ${task.color ? `bg-${task.color}-500` : 'bg-green-500'}`}

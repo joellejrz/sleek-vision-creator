@@ -24,11 +24,11 @@ const TaskList = ({
 }: TaskListProps) => {
   return (
     <Card className="border dark:border-slate-700">
-      <CardHeader className="pb-1 p-2">
+      <CardHeader className="pb-1 p-3">
         <CardTitle className="text-base">{title}</CardTitle>
         <CardDescription className="text-[10px]">{description}</CardDescription>
       </CardHeader>
-      <CardContent className="p-0 pt-0">
+      <CardContent className="p-0 pt-0 px-2">
         {tasks.length === 0 ? (
           <div className="text-center py-3 text-muted-foreground text-xs">
             <p>{emptyMessage}</p>

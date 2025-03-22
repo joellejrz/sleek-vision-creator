@@ -70,7 +70,7 @@ const Layout = () => {
             <Button 
               variant="secondary" 
               size="icon" 
-              className="fixed bottom-14 left-2 z-50 shadow-lg rounded-full h-8 w-8 md:h-12 md:w-12 bg-gradient-primary hover:bg-primary/90" 
+              className="fixed bottom-14 left-3 z-50 shadow-lg rounded-full h-8 w-8 md:h-12 md:w-12 bg-gradient-primary hover:bg-primary/90" 
               onClick={toggleSidebar}
             >
               <Menu className="h-4 w-4 md:h-5 md:w-5" />
