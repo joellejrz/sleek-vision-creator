@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import keepCalmContent from "@/data/keepCalmContent";
 import { ArchetypeKey } from "@/data/creatorArchetypes";
-import { Crown, Lips } from "lucide-react";
+import { Crown, Sparkles } from "lucide-react";
 
 interface SplashScreenProps {
   archetype: ArchetypeKey;
@@ -29,7 +29,7 @@ const SplashScreen = ({ archetype, onFinished }: SplashScreenProps) => {
       return <Crown className="h-16 w-16 text-white" />;
     }
     if (archetype === "entertainment") {
-      return <Lips className="h-16 w-16 text-white" />;
+      return <Sparkles className="h-16 w-16 text-white" />;
     }
     return <div className="text-4xl">{content.icon}</div>;
   };
