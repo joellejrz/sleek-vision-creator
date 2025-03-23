@@ -50,7 +50,7 @@ const CreatorStreakCard = ({ streakData, onOpenStreakDialog }: CreatorStreakCard
   };
 
   return (
-    <Card className="transition-all hover:shadow-md">
+    <Card className="transition-all hover:shadow-md bg-gradient-to-br from-white to-accent-gold/10 dark:from-deep-blue/60 dark:to-accent-gold/5">
       <CardHeader>
         <CardTitle className="text-lg flex items-center">
           <Trophy className="mr-2 h-5 w-5 text-accent-gold" />
@@ -74,7 +74,7 @@ const CreatorStreakCard = ({ streakData, onOpenStreakDialog }: CreatorStreakCard
               />
             </div>
           </div>
-          <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+          <div className="flex items-center justify-between p-3 glass-card rounded-lg">
             <div className="flex items-center">
               <Zap className="mr-2 h-5 w-5 text-accent-gold" />
               <span className="font-medium">{streakData.current} Day Streak</span>
@@ -83,7 +83,7 @@ const CreatorStreakCard = ({ streakData, onOpenStreakDialog }: CreatorStreakCard
           </div>
           <Button 
             variant="outline" 
-            className="w-full"
+            className="w-full shadow-glow-button"
             onClick={onOpenStreakDialog}
           >
             <Target className="mr-2 h-4 w-4" />

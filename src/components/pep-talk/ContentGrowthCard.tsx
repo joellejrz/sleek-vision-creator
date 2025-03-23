@@ -5,7 +5,7 @@ import { ArrowUp, BarChart2, Sparkles } from "lucide-react";
 
 const ContentGrowthCard = () => {
   return (
-    <Card className="transition-all hover:shadow-md">
+    <Card className="transition-all hover:shadow-md bg-gradient-to-br from-white to-soft-blue/30 dark:from-deep-blue/60 dark:to-primary/10">
       <CardHeader>
         <CardTitle className="text-lg flex items-center">
           <BarChart2 className="mr-2 h-5 w-5 text-primary" />
@@ -17,7 +17,7 @@ const ContentGrowthCard = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <div className="p-3 bg-muted/60 rounded-lg">
+          <div className="p-3 glass-card rounded-lg">
             <div className="flex items-center gap-2">
               <ArrowUp className="h-4 w-4 text-green-500" />
               <span className="font-medium text-sm">Engagement Up 23%</span>
