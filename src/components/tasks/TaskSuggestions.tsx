@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -19,7 +18,7 @@ interface TaskSuggestionsProps {
 
 const TaskSuggestions = ({ suggestions, onAddTask, onGenerateMore }: TaskSuggestionsProps) => {
   return (
-    <Card className="transition-all hover:shadow-md h-full bg-gradient-to-br from-white to-blue-50 dark:from-deep-blue/60 dark:to-primary/5">
+    <Card className="transition-all hover:shadow-md h-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center">
@@ -54,7 +53,7 @@ const TaskSuggestions = ({ suggestions, onAddTask, onGenerateMore }: TaskSuggest
                   >
                     {task.priority} priority
                   </Badge>
-                  <Button size="sm" onClick={() => onAddTask(task)} className="shadow-glow-subtle">
+                  <Button size="sm" onClick={() => onAddTask(task)}>
                     Add Task
                   </Button>
                 </div>
@@ -62,7 +61,7 @@ const TaskSuggestions = ({ suggestions, onAddTask, onGenerateMore }: TaskSuggest
             </div>
           ))}
           <Separator />
-          <Button variant="outline" className="w-full shadow-glow-button" onClick={onGenerateMore}>
+          <Button variant="outline" className="w-full" onClick={onGenerateMore}>
             <Zap className="mr-2 h-4 w-4 text-accent-gold" />
             Generate More Tasks
           </Button>

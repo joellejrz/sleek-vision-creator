@@ -77,7 +77,7 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
     <div 
       className={`rounded-lg p-1 mb-1 hover:shadow-md transition-all cursor-pointer ${
         expanded ? 'shadow-sm' : ''
-      } ${task.completed ? 'bg-muted text-muted-foreground' : 'glass-card'}`}
+      } ${task.completed ? 'bg-muted text-muted-foreground' : 'bg-card text-card-foreground dark:bg-card/90 dark:text-card-foreground'}`}
       onClick={toggleExpand}
     >
       <div className="flex items-start gap-1">
@@ -140,11 +140,11 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
           
           {expanded && (
             <div className="flex gap-1 mt-1">
-              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1 shadow-glow-subtle">
+              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1">
                 <MessageCircle className="h-2.5 w-2.5 mr-0.5" />
                 Add Comment
               </Button>
-              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1 shadow-glow-subtle">
+              <Button variant="outline" size="sm" className="text-[0.7rem] h-5 px-1">
                 <Image className="h-2.5 w-2.5 mr-0.5" />
                 Add Image
               </Button>

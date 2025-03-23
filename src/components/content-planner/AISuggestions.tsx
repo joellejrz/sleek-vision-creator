@@ -16,7 +16,7 @@ interface AISuggestionsProps {
 
 const AISuggestions = ({ suggestions }: AISuggestionsProps) => {
   return (
-    <Card className="transition-all hover:shadow-md bg-gradient-to-br from-white to-soft-emerald/20 dark:from-deep-blue/60 dark:to-soft-emerald/10">
+    <Card className="transition-all hover:shadow-md">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg">AI Content Suggestions</CardTitle>
         <CardDescription className="text-sm">
@@ -44,7 +44,7 @@ const AISuggestions = ({ suggestions }: AISuggestionsProps) => {
                     {suggestion.reasoning}
                   </p>
                 </div>
-                <Button variant="outline" size="sm" className="min-w-[90px] h-8 text-xs shadow-glow-button">
+                <Button variant="outline" size="sm" className="min-w-[90px] h-8 text-xs">
                   Use Idea
                   <ArrowRight className="ml-1.5 h-3 w-3" />
                 </Button>
@@ -52,7 +52,7 @@ const AISuggestions = ({ suggestions }: AISuggestionsProps) => {
             </div>
           ))}
 
-          <Button variant="outline" className="w-full h-8 text-xs shadow-glow-button">
+          <Button variant="outline" className="w-full h-8 text-xs">
             <Zap className="mr-1.5 h-3.5 w-3.5 text-accent-gold" />
             Generate More Ideas
           </Button>

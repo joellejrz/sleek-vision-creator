@@ -22,7 +22,7 @@ const ProgressTracker = ({ completed, total, progressColor, goalType }: Progress
   }
   
   return (
-    <div className="space-y-4 mb-4 px-6 py-6 rounded-lg glass bg-gradient-to-br from-white/80 to-gray-50/90 dark:from-deep-blue/40 dark:to-slate-900/30 shadow-sm">
+    <div className="space-y-4 mb-4 px-6 py-6 rounded-lg bg-background/60 backdrop-blur-sm shadow-sm">
       <div className="flex justify-between items-center">
         <h3 className="text-base font-medium">Task Progress</h3>
         <span className="text-sm text-muted-foreground">
