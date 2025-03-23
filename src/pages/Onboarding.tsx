@@ -91,6 +91,12 @@ const Onboarding = () => {
     setStage("result");
     setShowConfetti(true);
     
+    // Store the user's archetype in localStorage
+    localStorage.setItem('userArchetype', archetype);
+    
+    // Reset splash screen flag so it shows on next visit
+    localStorage.removeItem('hasSeenSplash');
+    
     toast({
       title: "Your creator archetype unlocked!",
       description: `You are a ${creatorArchetypes[archetype as ArchetypeKey]?.title || "Content Creator"}`,

@@ -13,6 +13,7 @@ import {
 import CreatorMetricsOverview from "@/components/CreatorMetricsOverview";
 import { useIsMobile } from "@/hooks/use-mobile";
 import PinterestSuggestions from "@/components/dashboard/PinterestSuggestions";
+import ArchetypeSwitcher from "@/components/splash/ArchetypeSwitcher";
 
 const data = [
   { name: "Mon", engagement: 1000, reach: 4000 },
@@ -284,6 +285,11 @@ const Dashboard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Archetype Switcher for testing splash screen */}
+      <div className="mt-6">
+        <ArchetypeSwitcher />
+      </div>
     </div>
   );
 };

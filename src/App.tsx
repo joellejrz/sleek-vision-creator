@@ -16,15 +16,20 @@ import Onboarding from "@/pages/Onboarding";
 import NotFound from "@/pages/NotFound";
 import CreatorArticles from "@/pages/CreatorArticles";
 import Search from "@/pages/Search";
+import SplashScreen from "@/components/splash/SplashScreen";
+import { useSplashScreen } from "@/hooks/useSplashScreen";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const AppContent = () => {
+  const { showSplash, archetype, hideSplash } = useSplashScreen();
+  
+  return (
     <ThemeProvider defaultTheme="light" storageKey="vision-creator-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        {showSplash && <SplashScreen archetype={archetype} onFinished={hideSplash} />}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -43,6 +48,12 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AppContent />
   </QueryClientProvider>
 );
 
