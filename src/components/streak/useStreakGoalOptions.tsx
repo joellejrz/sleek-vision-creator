@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Sparkles, Brain, Zap, Waves, Rocket } from "lucide-react";
+import { Sparkles, Brain, Zap, Waves, Rocket, Crown } from "lucide-react";
 import { StreakGoalOption } from "./StreakGoalTypes";
 
 export const useStreakGoalOptions = (): StreakGoalOption[] => {
@@ -15,12 +15,22 @@ export const useStreakGoalOptions = (): StreakGoalOption[] => {
       detailedDescription: "Initial quick win to get momentum rolling. Perfect for building initial confidence."
     },
     {
-      days: 21,
-      name: "21-Day Habit Builder",
-      description: "Make consistency second nature.",
-      icon: <Brain className="h-4 w-4 text-orange-400" />,
+      days: 14,
+      name: "14-Day Momentum",
+      description: "Keep the momentum going!",
+      icon: <Rocket className="h-4 w-4 text-orange-400" />,
       requiredStreak: 7,
-      detailedDescription: "21 days creates a new habit by literally rewiring your brain. Based on neuroscientific research, this period helps solidify neural pathways.",
+      detailedDescription: "Unlock AI-generated caption packs and content boost tips to enhance your creative workflow.",
+      articleLink: "/creator-articles",
+      articleTitle: "Content Boost Tips"
+    },
+    {
+      days: 21,
+      name: "21-Day Creator Mode",
+      description: "Unlock golden UI mode and creator badges.",
+      icon: <Crown className="h-4 w-4 text-primary" />,
+      requiredStreak: 14,
+      detailedDescription: "21 days transforms your content creation into a consistent habit. Unlock exclusive gold UI theme and creator badges.",
       articleLink: "/creator-articles",
       articleTitle: "The Science of 21-Day Habit Formation"
     },

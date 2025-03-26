@@ -14,6 +14,7 @@ export const CurrentStreakIndicator = ({
   // Get the next target based on current streak
   const getNextStreakTarget = () => {
     if (currentStreak < 7) return 7;
+    if (currentStreak < 14) return 14;
     if (currentStreak < 21) return 21;
     if (currentStreak < 30) return 30;
     if (currentStreak < 60) return 60;
@@ -27,7 +28,8 @@ export const CurrentStreakIndicator = ({
     if (currentStreak >= 60) return "Building towards 90-Day Lifestyle";
     if (currentStreak >= 30) return "Building towards 60-Day Deep Dive";
     if (currentStreak >= 21) return "Building towards 30-Day Power Streak";
-    if (currentStreak >= 7) return "Building towards 21-Day Habit Builder";
+    if (currentStreak >= 14) return "Building towards 21-Day Creator Mode";
+    if (currentStreak >= 7) return "Building towards 14-Day Momentum";
     return "Building towards 7-Day Spark";
   };
 
