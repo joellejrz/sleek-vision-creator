@@ -50,7 +50,7 @@ const CreatorStreakCard = ({ streakData, onOpenStreakDialog }: CreatorStreakCard
   };
 
   return (
-    <Card className="transition-all hover:shadow-md">
+    <Card className="transition-all hover:shadow-md bg-gradient-to-br from-gray-50/70 to-white/50 dark:from-gray-900/70 dark:to-gray-800/50 backdrop-blur-md border-white/20 dark:border-gray-700/30 shadow-lg">
       <CardHeader>
         <CardTitle className="text-lg flex items-center">
           <Trophy className="mr-2 h-5 w-5 text-accent-gold" />
@@ -70,20 +70,28 @@ const CreatorStreakCard = ({ streakData, onOpenStreakDialog }: CreatorStreakCard
               </div>
               <Progress 
                 value={(streakData.current / getNextStreakTarget()) * 100} 
-                className="h-2.5" 
+                className="h-2.5"
+                animate={true}
+                goalType={
+                  streakData.current >= 90 ? "lifestyle" :
+                  streakData.current >= 60 ? "deep" :
+                  streakData.current >= 30 ? "power" :
+                  streakData.current >= 21 ? "habit" :
+                  streakData.current >= 7 ? "spark" : "custom"
+                }
               />
             </div>
           </div>
-          <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-muted/70 backdrop-blur-md rounded-lg">
             <div className="flex items-center">
               <Zap className="mr-2 h-5 w-5 text-accent-gold" />
               <span className="font-medium">{streakData.current} Day Streak</span>
             </div>
-            <Badge variant="outline">{getStreakProgressMessage()}</Badge>
+            <Badge variant="outline" className="bg-background/30 backdrop-blur-sm">{getStreakProgressMessage()}</Badge>
           </div>
           <Button 
             variant="outline" 
-            className="w-full"
+            className="w-full bg-background/30 backdrop-blur-sm hover:bg-background/50"
             onClick={onOpenStreakDialog}
           >
             <Target className="mr-2 h-4 w-4" />

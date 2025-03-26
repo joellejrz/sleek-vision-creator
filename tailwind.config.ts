@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -133,6 +134,14 @@ export default {
         "float": {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" }
+        },
+        "spark-travel": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(1000%)" }
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: "0.6", boxShadow: "0 0 5px rgba(255,255,255,0.5)" },
+          "50%": { opacity: "1", boxShadow: "0 0 15px rgba(255,255,255,0.8)" }
         }
       },
       animation: {
@@ -148,12 +157,17 @@ export default {
         "pulse-soft": "pulse-soft 2s infinite ease-in-out",
         "float": "float 3s infinite ease-in-out",
         "enter": "fade-in 0.3s ease-out, scale-in 0.2s ease-out",
-        "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out"
+        "exit": "fade-out 0.3s ease-out, scale-out 0.2s ease-out",
+        "spark-travel": "spark-travel 2.5s ease-out infinite",
+        "glow-pulse": "glow-pulse 2s infinite ease-in-out",
       },
       backgroundImage: {
         'gradient-primary': 'linear-gradient(to right, #4A80F0, #4CC1B0)',
         'gradient-secondary': 'linear-gradient(to right, #63DBC1, #4DB6A1)',
         'gradient-accent': 'linear-gradient(to right, #4CC1B0, #5AC4B9)',
+      },
+      boxShadow: {
+        'glow-streak': '0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 215, 0, 0.2)',
       }
     }
   },
